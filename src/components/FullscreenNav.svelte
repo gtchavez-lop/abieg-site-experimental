@@ -9,20 +9,24 @@
 	};
 </script>
 
-<svelte:head />
+<a href="/" class="homeButton">
+	<img src="./logo/Logo1.svg" alt="" />
+</a>
 
 <div class={isActivated ? 'button button-activated' : 'button'} on:click={toggleNav}>
-	<ion-icon name="arrow-back-outline" size="large" />
+	<span class="material-icons-round"> arrow_circle_left </span>
 </div>
 
 <div class={isActivated ? 'menu menu-activated' : 'menu'}>
 	<ul class="menu__navlinks">
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
-			<h1>JOIN US</h1>
-			<span
-				>REGISTER TO GET THE BEST OUT OF THE CONTENT FROM ABIE G - REGISTER TO GET THE BEST OUT OF
-				THE CONTENT FROM ABIE G</span
-			>
+			<a href="/account">
+				<h1>JOIN US</h1>
+				<span
+					>REGISTER TO GET THE BEST OUT OF THE CONTENT FROM ABIE G - REGISTER TO GET THE BEST OUT OF
+					THE CONTENT FROM ABIE G</span
+				>
+			</a>
 		</li>
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<h1>POSTS</h1>
@@ -45,14 +49,56 @@
 		</li>
 	</ul>
 	<div class="menu__socials">
-		<ion-icon name="logo-facebook" size="large" />
-		<ion-icon name="logo-twitter" size="large" />
-		<ion-icon name="logo-instagram" size="large" />
-		<ion-icon name="logo-tiktok" size="large" />
+		<span>
+			<img src="./facebook.svg" alt="" />
+		</span>
+		<span>
+			<img src="./twitter.svg" alt="" />
+		</span>
+		<span>
+			<img src="./snapchat.svg" alt="" />
+		</span>
+		<span>
+			<img src="./tiktok.svg" alt="" />
+		</span>
+		<span>
+			<img src="./instagram.svg" alt="" />
+		</span>
 	</div>
 </div>
 
 <style>
+	.homeButton {
+		position: fixed;
+		z-index: 8;
+		width: 50px;
+		height: 50px;
+		left: 50px;
+		top: 25px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		user-select: none;
+	}
+	.homeButton::after {
+		position: absolute;
+		content: 'ABIE G';
+		color: white;
+		opacity: 0.2;
+		width: 200%;
+		left: 100%;
+		font-family: 'Audiowide', cursive;
+		font-size: 1.2rem;
+		transition: 200ms ease all;
+	}
+	.homeButton:hover::after {
+		left: 120%;
+		opacity: 0.5;
+	}
+	.homeButton img {
+		width: 50px;
+	}
 	.button {
 		position: fixed;
 		right: 25px;
@@ -68,9 +114,13 @@
 		justify-content: center;
 		align-items: center;
 		filter: invert(1);
+		user-select: none;
 	}
 	.button-activated {
 		transform: rotate(-180deg);
+	}
+	.button .material-icons-round {
+		font-size: 2rem;
 	}
 
 	.menu {
@@ -81,24 +131,29 @@
 		top: 0;
 		left: 0;
 		z-index: 98;
-		clip-path: circle(40px at calc(100% - 50px) 50px);
-		transition: 300ms ease all;
+		clip-path: circle(1.5rem at calc(100% - 50px) 50px);
+		transition: 500ms cubic-bezier(0, 0.8, 0.8, 0) all;
 		color: white;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
 		font-family: 'Audiowide', cursive;
 	}
 	.menu-activated {
-		transition: 300ms ease all;
-		clip-path: circle(180vw at calc(100% - 50px) 50px);
+		transition: 500ms cubic-bezier(0.32, 1.02, 0.7, 0.03) all;
+		clip-path: circle(120vw at calc(100% - 50px) 50px);
 	}
 	@media screen and (max-width: 800px) {
+		.menu {
+			transition: 500ms cubic-bezier(0.32, 1.02, 0.7, 0.03) all;
+		}
 		.menu-activated {
-			clip-path: circle(200vw at calc(100% - 50px) 50px);
+			clip-path: circle(200vh at calc(100% - 50px) 50px);
 		}
 	}
-
+	a {
+		text-decoration: none;
+		color: #f88dad;
+	}
 	.menu h1 {
 		font-size: 3rem;
 	}
@@ -109,8 +164,15 @@
 		justify-content: center;
 		padding: 0;
 		margin-left: 50px;
+		margin-top: 100px;
 		list-style: none;
 		color: #f88dad;
+	}
+
+	@media screen and (max-width: 800px) {
+		.menu__navlinks {
+			margin-left: 25px;
+		}
 	}
 	.menu__navlinks__navlink {
 		position: relative;
@@ -143,18 +205,34 @@
 	}
 
 	.menu__socials {
+		position: absolute;
 		margin-top: 100px;
 		display: flex;
 		width: 100%;
+		bottom: 10%;
 		justify-content: space-evenly;
-		color: white;
 	}
-
-	.menu__socials ion-icon {
-		color: #231942;
+	.menu__socials span {
+		width: 50px;
+		height: 50px;
+		cursor: pointer;
 		transition: 200ms ease all;
 	}
-	.menu__socials ion-icon:hover {
+	.menu__socials span:hover {
 		transform: scale(1.2);
+	}
+	.menu__socials span:active {
+		transition: none;
+		transform: scale(0.8);
+	}
+	.menu__socials span img {
+		filter: invert(1);
+	}
+
+	@media screen and (max-width: 800px) {
+		.menu__socials span {
+			width: 30px;
+			height: 30px;
+		}
 	}
 </style>

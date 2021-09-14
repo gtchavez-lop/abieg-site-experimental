@@ -1,23 +1,38 @@
 <script>
 	import { fly, fade, slide } from 'svelte/transition';
+	import { expoIn, expoOut, expoInOut } from 'svelte/easing';
 	import Footer from '../components/Footer.svelte';
+	import Marquee from 'svelte-marquee';
+
+	const clippingPathIn = (node, params) => {
+		return {
+			delay: 1000,
+			duration: 1500,
+			css: (t) => `clip-path: circle(${expoOut(t) * 100}% at 50% 0%);`
+		};
+	};
 
 	let isRegister = false;
+	let isModerator = false;
 
 	const toggleCards = (e) => {
 		isRegister ? (isRegister = false) : (isRegister = true);
 	};
+	const toggleModerator = (e) => {
+		isModerator ? (isModerator = false) : (isModerator = true);
+	};
 </script>
 
-<main transition:fade={{ duration: 200 }}>
-	<div class="container" in:fly|local={{ y: -20, duration: 500, delay: 200 }}>
-		{#if !isRegister}
+<main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 500 }}>
+	<div class="container" in:clippingPathIn>
+		{#if !isRegister && !isModerator}
 			<div class="card" transition:slide|local={{ duration: 500 }}>
 				<h1>Sign In to your account</h1>
 				<input type="email" placeholder="Your Email here" />
 				<input type="password" placeholder="Your Password here" />
 				<button><span class="material-icons-round"> person </span>Log In</button>
 				<p class="toggler" on:click={toggleCards}>Don't have an account? <b>Click Me</b></p>
+				<p class="toggler" on:click={toggleModerator}>Moderator Sign in</p>
 			</div>
 		{/if}
 		{#if isRegister}
@@ -30,6 +45,21 @@
 				<p class="toggler" on:click={toggleCards}>Are you an existing User? <b>Click Me</b></p>
 			</div>
 		{/if}
+		{#if isModerator}
+			<div class="card" transition:slide|local={{ duration: 500 }}>
+				<h1>Sign in as a moderator</h1>
+				<input type="email" placeholder="Your Email here" />
+				<input type="password" placeholder="Your Password here" />
+				<button><span class="material-icons-round"> person_add_alt </span>Register Now</button>
+
+				<p class="toggler" on:click={toggleModerator}>Are you follower? <b>Click Me</b></p>
+			</div>
+		{/if}
+	</div>
+	<div class="scroller">
+		<Marquee reverse="true" content="MAKE THE MOST OUT OF IT" />
+		<Marquee reverse="true" content="MAKE THE MOST OUT OF IT" />
+		<Marquee reverse="true" content="MAKE THE MOST OUT OF IT" />
 	</div>
 </main>
 
@@ -55,7 +85,6 @@
 		margin: 0;
 		margin-bottom: 1em;
 		margin-top: 0.5em;
-		color: #1b1b1b;
 	}
 	@media screen and (max-width: 800px) {
 		.container {
@@ -71,6 +100,7 @@
 		font-size: 1rem;
 		margin-bottom: 10px;
 		color: white;
+		border: #4f56b6 solid 0.2rem;
 		border-radius: 10px;
 		padding-left: 3em;
 		transition: 200ms ease all;
@@ -119,7 +149,6 @@
 		margin: 0;
 		margin-top: 25px;
 		margin-bottom: 10px;
-		color: #1b1b1b;
 		font-weight: 700;
 		cursor: pointer;
 		text-align: center;
@@ -127,14 +156,30 @@
 	.card {
 		width: 700px;
 		padding: 1em;
-		background: #f88dad;
+		border: #f88dad solid 0.2rem;
 		border-radius: 10px;
 		display: flex;
 		flex-direction: column;
+		z-index: 3;
+		color: white;
+		backdrop-filter: blur(5px);
 	}
 	@media screen and (max-width: 800px) {
 		.card {
 			width: 100%;
 		}
+	}
+
+	.scroller {
+		width: 120%;
+
+		position: fixed;
+		bottom: -15%;
+		left: -10%;
+		color: white;
+		opacity: 0.2;
+		font-size: 10rem;
+		font-family: 'Audiowide', cursive;
+		transform: rotate(-10deg);
 	}
 </style>

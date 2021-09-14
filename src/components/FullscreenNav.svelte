@@ -29,10 +29,12 @@
 			</a>
 		</li>
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
-			<h1>POSTS</h1>
-			<span>
-				CHECK OUT WHAT IS NEW FROM ABIE G HERSELF - CHECK OUT WHAT IS NEW FROM ABIE G HERSELF
-			</span>
+			<a href="/posts">
+				<h1>POSTS</h1>
+				<span>
+					CHECK OUT WHAT IS NEW FROM ABIE G HERSELF - CHECK OUT WHAT IS NEW FROM ABIE G HERSELF
+				</span>
+			</a>
 		</li>
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<h1>ABOUT</h1>
@@ -73,7 +75,7 @@
 		z-index: 8;
 		width: 50px;
 		height: 50px;
-		left: 50px;
+		right: 130px;
 		top: 25px;
 		display: flex;
 		justify-content: center;
@@ -87,13 +89,13 @@
 		color: white;
 		opacity: 0.2;
 		width: 200%;
-		left: 100%;
+		right: 60%;
 		font-family: 'Audiowide', cursive;
 		font-size: 1.2rem;
 		transition: 200ms ease all;
 	}
 	.homeButton:hover::after {
-		left: 120%;
+		right: 90%;
 		opacity: 0.5;
 	}
 	.homeButton img {
@@ -120,7 +122,7 @@
 		transform: rotate(-180deg);
 	}
 	.button .material-icons-round {
-		font-size: 2rem;
+		font-size: 3rem;
 	}
 
 	.menu {
@@ -131,7 +133,7 @@
 		top: 0;
 		left: 0;
 		z-index: 98;
-		clip-path: circle(1.5rem at calc(100% - 50px) 50px);
+		clip-path: circle(2rem at calc(100% - 50px) 50px);
 		transition: 500ms cubic-bezier(0, 0.8, 0.8, 0) all;
 		color: white;
 		display: flex;

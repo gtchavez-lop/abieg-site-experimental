@@ -1,10 +1,27 @@
 <script>
-	import { fly, fade } from 'svelte/transition';
+	import { fly, fade, scale, blur } from 'svelte/transition';
+	import { expoIn, expoOut } from 'svelte/easing';
 	import Footer from '../components/Footer.svelte';
+	import BackgroundBlob from '../components/BackgroundBlob.svelte';
+
+	const clippingPathIn = (node, params) => {
+		return {
+			delay: 500,
+			duration: params.duration || 750,
+			css: (t) => `clip-path: circle(${expoOut(t) * 140}% at 0% 100%);`
+		};
+	};
+	const clippingPathOut = (node, params) => {
+		return {
+			delay: 500,
+			duration: params.duration || 500,
+			css: (t) => `clip-path: circle(${expoIn(t) * 140}% at 100% 0%);`
+		};
+	};
 </script>
 
 <!-- <div class="background" /> -->
-<main transition:fade={{ duration: 200 }}>
+<main in:clippingPathIn out:clippingPathOut>
 	<img
 		class="logo"
 		src="./logo/Logo1.svg"
@@ -14,14 +31,14 @@
 	<div class="brand">
 		<div class="brand__letterContainer">
 			<span class="brand__lc_letter">A</span>
-			<span class="brand__lc_letter letter-b">B</span>
+			<span class="brand__lc_letter ">B</span>
 		</div>
 		<div class="brand__letterContainer">
-			<span class="brand__lc_letter letter-i">I</span>
-			<span class="brand__lc_letter letter-e">E</span>
+			<span class="brand__lc_letter ">I</span>
+			<span class="brand__lc_letter ">E</span>
 		</div>
 		<div class="brand__letterContainer">
-			<span class="brand__lc_letter">G</span>
+			<span class="brand__lc_letter letter-g">G</span>
 		</div>
 	</div>
 	<div class="brand__candy_rec1" />
@@ -65,9 +82,8 @@
 	}
 	main {
 		margin: 0;
-		background: #1b1b1b;
 		min-height: 100vh;
-		overflow-x: hidden;
+		overflow: hidden;
 	}
 	main * {
 		margin: 0;
@@ -101,23 +117,23 @@
 		-webkit-text-stroke-color: rgba(255, 255, 255);
 	}
 
-	.letter-e {
+	.letter-g {
 		background: #1b1b1b;
 	}
 	.brand__candy_rec1 {
 		position: absolute;
-		left: 200px;
+		left: 100px;
 		top: 0;
-		width: 150px;
+		width: 50px;
 		height: 100%;
 		background: #f88dad;
 	}
 	.brand__candy_rec2 {
 		position: absolute;
 		left: 0;
-		bottom: 200px;
+		bottom: 100px;
 		width: 100%;
-		height: 150px;
+		height: 50px;
 		background: #4f56b6;
 	}
 	@media screen and (max-width: 800px) {
@@ -135,12 +151,10 @@
 		}
 
 		.brand__candy_rec1 {
-			left: 115px;
-			width: 100px;
+			left: calc(50px - 7.5px);
 		}
 		.brand__candy_rec2 {
-			bottom: 115px;
-			height: 100px;
+			bottom: calc(50px - 7.5px);
 		}
 	}
 </style>

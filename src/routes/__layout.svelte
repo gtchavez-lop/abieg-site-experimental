@@ -1,5 +1,6 @@
 <script>
 	import FullscreenNav from '../components/FullscreenNav.svelte';
+	import BackgroundBlob from '../components/BackgroundBlob.svelte';
 </script>
 
 <svelte:head>
@@ -12,3 +13,4 @@
 
 <FullscreenNav />
 <slot />
+<!-- <BackgroundBlob /> -->

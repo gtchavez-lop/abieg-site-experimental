@@ -29,9 +29,10 @@
 			anime({
 				targets: letterG,
 				opacity: [0, 1],
+				scale: [0.9, 1],
 				easing: 'easeOutExpo',
 				duration: 500,
-				delay: 500
+				delay: 1000
 			});
 		}, 750);
 	});
@@ -39,6 +40,11 @@
 
 <!-- <div class="background" /> -->
 <main class={isMounted ? 'transitioner transitioner-mounted' : 'transitioner'}>
+	<div class="videoContainer">
+		<video autoplay loop muted>
+			<source src="./video-tiktok.mp4" type="video/mp4" />
+		</video>
+	</div>
 	<img
 		class="logo"
 		src="./logo/Logo1.svg"
@@ -60,6 +66,14 @@
 	</div>
 	<div bind:this={rec1} class="brand__candy_rec1" />
 	<div bind:this={rec2} class="brand__candy_rec2" />
+
+	<div class="content">
+		<p>Register and get the best out of it</p>
+		<h1>Join us with Abie G to virtualize the world</h1>
+		<a href="/account">
+			<button class="joinbutton"> Register Now </button>
+		</a>
+	</div>
 </main>
 <Footer />
 
@@ -69,6 +83,37 @@
 </svelte:head>
 
 <style>
+	.videoContainer {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.videoContainer video {
+		height: 100%;
+		opacity: 0.05;
+	}
+	.joinbutton {
+		padding: 1em;
+		width: 300px;
+		margin-top: 50px;
+		font-size: 1rem;
+		background: none;
+		border-radius: 100px;
+		color: white;
+		border: #f88dad solid 0.2rem;
+		cursor: pointer;
+		font-weight: 700;
+		transition: 200ms ease all;
+	}
+	.joinbutton:hover {
+		color: white;
+		background: #f88dad;
+		border: #f88dad solid 0.2rem;
+		transform: scale(1.1);
+	}
 	.logo {
 		position: fixed;
 		opacity: 0.1;
@@ -81,7 +126,7 @@
 		clip-path: circle(0vw at 0% 100%);
 	}
 	.transitioner-mounted {
-		clip-path: circle(120vw at 0% 100%);
+		clip-path: circle(200vh at 0% 100%);
 	}
 
 	main {
@@ -140,6 +185,13 @@
 		height: 50px;
 		background: #4f56b6;
 	}
+	.content {
+		position: absolute;
+		right: 5%;
+		bottom: 20%;
+		color: white;
+		text-align: right;
+	}
 	@media screen and (max-width: 800px) {
 		.transitioner {
 			clip-path: circle(120vh at 0% 100%);
@@ -162,6 +214,14 @@
 		}
 		.brand__candy_rec2 {
 			bottom: calc(50px - 7.5px);
+		}
+		.content {
+			right: 5%;
+			bottom: 40%;
+			max-width: 65%;
+		}
+		.joinbutton {
+			width: 100%;
 		}
 	}
 </style>

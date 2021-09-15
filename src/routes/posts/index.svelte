@@ -11,7 +11,6 @@
 	<div class="scroller">
 		<Marquee reverse="true" content="SEE WHAT IS GOING ON" />
 		<Marquee reverse="true" content="SEE WHAT IS GOING ON" />
-		<Marquee reverse="true" content="SEE WHAT IS GOING ON" />
 	</div>
 </main>
 

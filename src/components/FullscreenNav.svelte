@@ -38,19 +38,23 @@
 			</a>
 		</li>
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
-			<h1>ABOUT</h1>
-			<span>
-				<Marquee reverse content="THIS IS A DESCRIPTION ABOUT THE TEAM CREATED THE SITE -  " />
-			</span>
+			<a href="/about">
+				<h1>ABOUT</h1>
+				<span>
+					<Marquee reverse content="THIS IS A DESCRIPTION ABOUT THE TEAM CREATED THE SITE -  " />
+				</span>
+			</a>
 		</li>
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
-			<h1>CONTACT</h1>
-			<span>
-				<Marquee
-					reverse
-					content="CONNECT WITH THE DEVELOPERS AND CONTENT MODERATORS ABOUT YOUR CONCERNS AND SUGGESTIONS - "
-				/>
-			</span>
+			<a href="/contact">
+				<h1>CONTACT</h1>
+				<span>
+					<Marquee
+						reverse
+						content="CONNECT WITH THE DEVELOPERS AND CONTENT MODERATORS ABOUT YOUR CONCERNS AND SUGGESTIONS - "
+					/>
+				</span>
+			</a>
 		</li>
 	</ul>
 	<div class="menu__socials">
@@ -82,7 +86,7 @@
 		width: 50px;
 		height: 50px;
 		right: 130px;
-		top: 25px;
+		top: 40px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -111,8 +115,8 @@
 		position: fixed;
 		right: 25px;
 		top: 25px;
-		width: 50px;
-		height: 50px;
+		width: 75px;
+		height: 75px;
 		/* background: #00212b; */
 		border-radius: 100px;
 		cursor: pointer;
@@ -123,23 +127,24 @@
 		align-items: center;
 		filter: invert(1);
 		user-select: none;
+		transform: rotate(-45deg);
 	}
 	.button-activated {
-		transform: rotate(-180deg);
+		transform: rotate(135deg);
 	}
 	.button .material-icons-round {
-		font-size: 3rem;
+		font-size: 4rem;
 	}
 
 	.menu {
 		position: fixed;
 		width: 100%;
 		height: 100%;
-		background: #4f56b6;
+		background: #231942;
 		top: 0;
 		left: 0;
 		z-index: 98;
-		clip-path: circle(2rem at calc(100% - 50px) 50px);
+		clip-path: circle(2rem at calc(100% - 0px) 0px);
 		transition: 500ms cubic-bezier(0.89, 0.07, 0.93, 0.21) all;
 		color: white;
 		display: flex;
@@ -148,22 +153,24 @@
 	}
 	.menu-activated {
 		transition: 500ms cubic-bezier(0.05, 0.75, 0.23, 0.95) all;
-		clip-path: circle(120vw at calc(100% - 50px) 50px);
+		clip-path: circle(100vh at calc(100% - 50px) 50px);
 	}
 	@media screen and (max-width: 800px) {
 		.menu {
-			transition: 500ms cubic-bezier(0.32, 1.02, 0.7, 0.03) all;
+			transition: 5 00ms cubic-bezier(0.05, 0.75, 0.23, 0.95) all;
 		}
 		.menu-activated {
-			clip-path: circle(200vh at calc(100% - 50px) 50px);
+			clip-path: circle(100vh at calc(100% - 50px) 50px);
 		}
 	}
 	a {
 		text-decoration: none;
 		color: #f88dad;
+		text-align: right;
 	}
 	.menu h1 {
 		font-size: 3rem;
+		text-align: right;
 	}
 
 	.menu__navlinks {
@@ -171,7 +178,7 @@
 		flex-direction: column;
 		justify-content: center;
 		padding: 0;
-		margin-left: 50px;
+		margin-right: 50px;
 		margin-top: 100px;
 		list-style: none;
 		color: #f88dad;
@@ -206,7 +213,7 @@
 	}
 	.menu__navlinks__navlink:hover h1 {
 		opacity: 0;
-		transform: translateX(20px);
+		transform: translateX(-20px);
 	}
 	.menu__navlinks__navlink:hover span {
 		opacity: 1;
@@ -217,15 +224,17 @@
 		position: absolute;
 		margin-top: 100px;
 		display: flex;
-		width: 100%;
+		right: 0;
+		width: 40%;
 		bottom: 10%;
 		justify-content: space-evenly;
 	}
 	.marquee2 {
 		position: absolute;
 		bottom: -50%;
+		right: 0;
 		opacity: 0.2;
-		width: 100%;
+		width: 200%;
 		user-select: none;
 		font-size: 3rem;
 	}
@@ -247,9 +256,15 @@
 	}
 
 	@media screen and (max-width: 800px) {
+		.menu__socials {
+			width: 100%;
+		}
 		.menu__socials span {
 			width: 30px;
 			height: 30px;
+		}
+		.marquee2 {
+			width: 100%;
 		}
 	}
 </style>

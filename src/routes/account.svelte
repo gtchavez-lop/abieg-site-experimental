@@ -7,7 +7,7 @@
 	const clippingPathIn = (node, params) => {
 		return {
 			delay: 1000,
-			duration: 1500,
+			duration: 500,
 			css: (t) => `clip-path: circle(${expoOut(t) * 120}% at 100% 0%);`
 		};
 	};
@@ -57,7 +57,6 @@
 		{/if}
 	</div>
 	<div class="scroller">
-		<Marquee reverse="true" content="MAKE THE MOST OUT OF IT" />
 		<Marquee reverse="true" content="MAKE THE MOST OUT OF IT" />
 		<Marquee reverse="true" content="MAKE THE MOST OUT OF IT" />
 	</div>
@@ -166,7 +165,7 @@
 	}
 	@media screen and (max-width: 800px) {
 		.card {
-			width: 100%;
+			width: 90%;
 		}
 	}
 

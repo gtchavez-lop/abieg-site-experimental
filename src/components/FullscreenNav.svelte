@@ -1,4 +1,5 @@
 <script>
+	import Marquee from 'svelte-marquee';
 	let isActivated = false;
 	const toggleNav = (e) => {
 		if (isActivated) {
@@ -18,39 +19,44 @@
 </div>
 
 <div class={isActivated ? 'menu menu-activated' : 'menu'}>
+	<div class="marquee" />
 	<ul class="menu__navlinks">
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<a href="/account">
 				<h1>JOIN US</h1>
-				<span
-					>REGISTER TO GET THE BEST OUT OF THE CONTENT FROM ABIE G - REGISTER TO GET THE BEST OUT OF
-					THE CONTENT FROM ABIE G</span
-				>
+				<span>
+					<Marquee reverse content="REGISTER TO GET THE BEST OUT OF THE CONTENT FROM ABIE G - " />
+				</span>
 			</a>
 		</li>
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<a href="/posts">
 				<h1>POSTS</h1>
 				<span>
-					CHECK OUT WHAT IS NEW FROM ABIE G HERSELF - CHECK OUT WHAT IS NEW FROM ABIE G HERSELF
+					<Marquee reverse content="CHECK OUT WHAT IS NEW FROM ABIE G HERSELF - " />
 				</span>
 			</a>
 		</li>
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<h1>ABOUT</h1>
-			<span
-				>THIS IS A DESCRIPTION ABOUT THE TEAM CREATED THE SITE - THIS IS A DESCRIPTION ABOUT THE
-				TEAM CREATED THE SITE
+			<span>
+				<Marquee reverse content="THIS IS A DESCRIPTION ABOUT THE TEAM CREATED THE SITE -  " />
 			</span>
 		</li>
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<h1>CONTACT</h1>
-			<span
-				>CONNECT WITH THE DEVELOPERS AND CONTENT MODERATORS ABOUT YOUR CONCERNS AND SUGGESTIONS
+			<span>
+				<Marquee
+					reverse
+					content="CONNECT WITH THE DEVELOPERS AND CONTENT MODERATORS ABOUT YOUR CONCERNS AND SUGGESTIONS - "
+				/>
 			</span>
 		</li>
 	</ul>
 	<div class="menu__socials">
+		<div class="marquee2">
+			<Marquee content="SOCIALIZE WITH ABIE G ON THESE LINKS -  " />
+		</div>
 		<span>
 			<img src="./facebook.svg" alt="" />
 		</span>
@@ -134,14 +140,14 @@
 		left: 0;
 		z-index: 98;
 		clip-path: circle(2rem at calc(100% - 50px) 50px);
-		transition: 500ms cubic-bezier(0, 0.8, 0.8, 0) all;
+		transition: 500ms cubic-bezier(0.89, 0.07, 0.93, 0.21) all;
 		color: white;
 		display: flex;
 		flex-direction: column;
 		font-family: 'Audiowide', cursive;
 	}
 	.menu-activated {
-		transition: 500ms cubic-bezier(0.32, 1.02, 0.7, 0.03) all;
+		transition: 500ms cubic-bezier(0.05, 0.75, 0.23, 0.95) all;
 		clip-path: circle(120vw at calc(100% - 50px) 50px);
 	}
 	@media screen and (max-width: 800px) {
@@ -188,7 +194,7 @@
 	.menu__navlinks__navlink span {
 		position: absolute;
 		top: 50%;
-		left: -25%;
+		left: -10%;
 		transform: translateY(-50%);
 		width: max-content;
 		font-size: 3rem;
@@ -196,6 +202,7 @@
 		font-weight: 700;
 		opacity: 0;
 		transition: 200ms ease all;
+		color: #7bdff2;
 	}
 	.menu__navlinks__navlink:hover h1 {
 		opacity: 0;
@@ -203,7 +210,7 @@
 	}
 	.menu__navlinks__navlink:hover span {
 		opacity: 1;
-		left: -20%;
+		left: -15%;
 	}
 
 	.menu__socials {
@@ -213,6 +220,14 @@
 		width: 100%;
 		bottom: 10%;
 		justify-content: space-evenly;
+	}
+	.marquee2 {
+		position: absolute;
+		bottom: -50%;
+		opacity: 0.2;
+		width: 100%;
+		user-select: none;
+		font-size: 3rem;
 	}
 	.menu__socials span {
 		width: 50px;

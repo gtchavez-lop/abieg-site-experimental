@@ -8,7 +8,7 @@
 		return {
 			delay: 1000,
 			duration: 1500,
-			css: (t) => `clip-path: circle(${expoOut(t) * 100}% at 50% 0%);`
+			css: (t) => `clip-path: circle(${expoOut(t) * 120}% at 100% 0%);`
 		};
 	};
 
@@ -23,7 +23,7 @@
 	};
 </script>
 
-<main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 500 }}>
+<main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
 	<div class="container" in:clippingPathIn>
 		{#if !isRegister && !isModerator}
 			<div class="card" transition:slide|local={{ duration: 500 }}>
@@ -50,7 +50,7 @@
 				<h1>Sign in as a moderator</h1>
 				<input type="email" placeholder="Your Email here" />
 				<input type="password" placeholder="Your Password here" />
-				<button><span class="material-icons-round"> person_add_alt </span>Register Now</button>
+				<button><span class="material-icons-round"> person_add_alt </span>Moderator Sign In</button>
 
 				<p class="toggler" on:click={toggleModerator}>Are you follower? <b>Click Me</b></p>
 			</div>
@@ -181,5 +181,6 @@
 		font-size: 10rem;
 		font-family: 'Audiowide', cursive;
 		transform: rotate(-10deg);
+		user-select: none;
 	}
 </style>

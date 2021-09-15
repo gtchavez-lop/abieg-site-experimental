@@ -4,7 +4,7 @@
 	import Marquee from 'svelte-marquee';
 </script>
 
-<main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 500 }}>
+<main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
 	<div class="container">
 		<h1>See what's new</h1>
 	</div>
@@ -35,5 +35,9 @@
 		font-size: 10rem;
 		font-family: 'Audiowide', cursive;
 		transform: rotate(-10deg);
+		user-select: none;
+	}
+	.scroller:first-child {
+		margin-left: -50px;
 	}
 </style>

@@ -3,25 +3,42 @@
 	import { expoIn, expoOut } from 'svelte/easing';
 	import Footer from '../components/Footer.svelte';
 	import BackgroundBlob from '../components/BackgroundBlob.svelte';
+	import { onMount } from 'svelte';
+	import anime from 'animejs';
 
-	const clippingPathIn = (node, params) => {
-		return {
-			delay: 500,
-			duration: params.duration || 750,
-			css: (t) => `clip-path: circle(${expoOut(t) * 140}% at 0% 100%);`
-		};
-	};
-	const clippingPathOut = (node, params) => {
-		return {
-			delay: 500,
-			duration: params.duration || 500,
-			css: (t) => `clip-path: circle(${expoIn(t) * 140}% at 100% 0%);`
-		};
-	};
+	let rec1;
+	let rec2;
+	let letterG;
+	let isMounted = false;
+	onMount((e) => {
+		isMounted = true;
+		setTimeout(() => {
+			anime({
+				targets: rec1,
+				height: [0, '100%'],
+				easing: 'easeOutExpo',
+				duration: 500
+			});
+			anime({
+				targets: rec2,
+				width: [0, '100%'],
+				easing: 'easeOutExpo',
+				duration: 500,
+				delay: 200
+			});
+			anime({
+				targets: letterG,
+				opacity: [0, 1],
+				easing: 'easeOutExpo',
+				duration: 500,
+				delay: 500
+			});
+		}, 750);
+	});
 </script>
 
 <!-- <div class="background" /> -->
-<main in:clippingPathIn out:clippingPathOut>
+<main class={isMounted ? 'transitioner transitioner-mounted' : 'transitioner'}>
 	<img
 		class="logo"
 		src="./logo/Logo1.svg"
@@ -38,11 +55,11 @@
 			<span class="brand__lc_letter ">E</span>
 		</div>
 		<div class="brand__letterContainer">
-			<span class="brand__lc_letter letter-g">G</span>
+			<span bind:this={letterG} class="brand__lc_letter letter-g">G</span>
 		</div>
 	</div>
-	<div class="brand__candy_rec1" />
-	<div class="brand__candy_rec2" />
+	<div bind:this={rec1} class="brand__candy_rec1" />
+	<div bind:this={rec2} class="brand__candy_rec2" />
 </main>
 <Footer />
 
@@ -59,27 +76,14 @@
 		top: calc(7 0% - 500px);
 		right: calc(5% - 300px);
 	}
-	.background {
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		background: url('https://images.unsplash.com/photo-1586765677067-f8030bd8e303?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-		background-size: cover;
-		background-position: center;
-		/* animation: clipping 20s ease infinite; */
-		clip-path: polygon(56% 0, 100% 0, 100% 100%, 33% 100%);
+	.transitioner {
+		transition: 750ms cubic-bezier(0.1, 0.69, 0.3, 0.91) all 500ms;
+		clip-path: circle(0vw at 0% 100%);
 	}
-	@media screen and (max-width: 800px) {
-		.background {
-			clip-path: polygon(0 30%, 100% 45%, 100% 100%, 0% 100%);
-		}
+	.transitioner-mounted {
+		clip-path: circle(120vw at 0% 100%);
 	}
 
-	@keyframes clipping {
-		50% {
-			clip-path: polygon(70% 0, 100% 0, 100% 100%, 40% 100%);
-		}
-	}
 	main {
 		margin: 0;
 		min-height: 100vh;
@@ -123,20 +127,23 @@
 	.brand__candy_rec1 {
 		position: absolute;
 		left: 100px;
-		top: 0;
+		bottom: 0;
 		width: 50px;
-		height: 100%;
+		height: 0;
 		background: #f88dad;
 	}
 	.brand__candy_rec2 {
 		position: absolute;
 		left: 0;
 		bottom: 100px;
-		width: 100%;
+		width: 0%;
 		height: 50px;
 		background: #4f56b6;
 	}
 	@media screen and (max-width: 800px) {
+		.transitioner {
+			clip-path: circle(120vh at 0% 100%);
+		}
 		.brand {
 			bottom: 15px;
 			left: 15px;

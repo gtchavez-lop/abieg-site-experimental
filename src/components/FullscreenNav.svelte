@@ -155,6 +155,29 @@
 		transition: 500ms cubic-bezier(0.05, 0.75, 0.23, 0.95) all;
 		clip-path: circle(100vh at calc(100% - 50px) 50px);
 	}
+	.menu-activated::after {
+		content: '';
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 100px;
+		height: 100px;
+		border: solid white 10px;
+		animation: glow 0.75s cubic-bezier(0.05, 0.75, 0.23, 0.95) 100ms;
+		border-radius: 100px;
+		opacity: 0;
+		z-index: -1;
+	}
+	@keyframes glow {
+		from {
+			opacity: 1;
+			transform: scale(0);
+		}
+		to {
+			opacity: 0;
+			transform: scale(10);
+		}
+	}
 	@media screen and (max-width: 800px) {
 		.menu {
 			transition: 5 00ms cubic-bezier(0.05, 0.75, 0.23, 0.95) all;

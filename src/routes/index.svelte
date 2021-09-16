@@ -5,11 +5,14 @@
 	import BackgroundBlob from '../components/BackgroundBlob.svelte';
 	import { onMount } from 'svelte';
 	import anime from 'animejs';
+	import { text } from 'svelte/internal';
 
 	let rec1;
 	let rec2;
 	let letterG;
 	let isMounted = false;
+
+	let texteffect;
 	onMount((e) => {
 		isMounted = true;
 		setTimeout(() => {
@@ -33,6 +36,11 @@
 				easing: 'easeOutExpo',
 				duration: 500,
 				delay: 1000
+			});
+			let text = new Blotter.Text('visualize', {
+				family: 'serif',
+				fill: '#171717',
+				size: '70'
 			});
 		}, 750);
 	});
@@ -64,16 +72,19 @@
 			<span bind:this={letterG} class="brand__lc_letter letter-g">G</span>
 		</div>
 	</div>
-	<div bind:this={rec1} class="brand__candy_rec1" />
-	<div bind:this={rec2} class="brand__candy_rec2" />
 
 	<div class="content">
 		<p>Register and get the best out of it</p>
-		<h1>Join us with Abie G to virtualize the world</h1>
+		<h1 class="textEffectContainer">Join us with Abie G to VIRTUALIZE the world</h1>
 		<a href="/account">
 			<button class="joinbutton"> Register Now </button>
 		</a>
 	</div>
+	<div bind:this={rec1} class="brand__candy_rec1" />
+	<div bind:this={rec2} class="brand__candy_rec2" />
+</main>
+<main>
+	<p>asd</p>
 </main>
 <Footer />
 
@@ -133,6 +144,7 @@
 		margin: 0;
 		min-height: 100vh;
 		overflow: hidden;
+		z-index: 2;
 	}
 	main * {
 		margin: 0;
@@ -165,25 +177,23 @@
 		-webkit-text-stroke-width: 0.2px;
 		-webkit-text-stroke-color: rgba(255, 255, 255);
 	}
-
-	.letter-g {
-		background: #1b1b1b;
-	}
 	.brand__candy_rec1 {
-		position: absolute;
+		position: fixed;
 		left: 100px;
 		bottom: 0;
 		width: 50px;
 		height: 0;
 		background: #f88dad;
+		z-index: 1;
 	}
 	.brand__candy_rec2 {
-		position: absolute;
+		position: fixed;
 		left: 0;
 		bottom: 100px;
 		width: 0%;
 		height: 50px;
 		background: #4f56b6;
+		z-index: 1;
 	}
 	.content {
 		position: absolute;
@@ -219,6 +229,10 @@
 			right: 5%;
 			bottom: 40%;
 			max-width: 65%;
+		}
+		.content .textEffectContainer {
+			display: flex;
+			align-items: center;
 		}
 		.joinbutton {
 			width: 100%;

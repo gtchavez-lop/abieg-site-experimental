@@ -14,7 +14,7 @@
 			<p>Please do note that this website is for academic purpose only</p>
 			<p>To fulfill the requirement to the course, Advanced Web Systems</p>
 		</div>
-		<div class="card">
+		<!-- <div class="card">
 			<h3>The Team behind the scenes</h3>
 			<h4>Lead Designer and Programmer</h4>
 			<p>Gerald Chavez</p>
@@ -27,7 +27,7 @@
 			<p>Kevin Corpin</p>
 			<h4>Server Maintenance and Hosting</h4>
 			<p>Edriane Barcita</p>
-		</div>
+		</div> -->
 		<div class="card">
 			<h3>About the website</h3>
 			<p>This website is powered by SvelteKit</p>

@@ -48,17 +48,17 @@
 
 <!-- <div class="background" /> -->
 <main class={isMounted ? 'transitioner transitioner-mounted' : 'transitioner'}>
-	<div class="videoContainer">
-		<video autoplay loop muted>
-			<source src="./video-tiktok.mp4" type="video/mp4" />
-		</video>
-	</div>
 	<img
 		class="logo"
 		src="./logo/Logo1.svg"
 		alt=""
 		transition:fade|local={{ delay: 200, duration: 200 }}
 	/>
+	<div class="videoContainer">
+		<video autoplay loop muted>
+			<source src="./video-tiktok.mp4" type="video/mp4" />
+		</video>
+	</div>
 	<div class="brand">
 		<div class="brand__letterContainer">
 			<span class="brand__lc_letter">A</span>
@@ -79,12 +79,29 @@
 		<a href="/account">
 			<button class="joinbutton"> Register Now </button>
 		</a>
+		<p class="scrollDown" />
 	</div>
 	<div bind:this={rec1} class="brand__candy_rec1" />
 	<div bind:this={rec2} class="brand__candy_rec2" />
 </main>
-<main>
-	<p>asd</p>
+<main class="celebration">
+	<div class="container">
+		<h1>ABIE G WEBSITE IS NOW LIVE!!!</h1>
+		<p>
+			In celebration for hitting the two-million [!!!] follower mark on each of her social media
+			accounts, AbieG formally welcomes you (yes, you!) to her namesake website’s ribbon-cutting
+			ceremony. Fancy.
+		</p>
+		<p>
+			<b>ABIEG.VERCEL.APP</b> is created to bring BabieGs together in an exclusive, AbieG-centric community
+			where the most freshest and exclusive news, updates, and giveaway announcements are delivered by
+			AbieG herself.
+		</p>
+		<p>
+			The website focuses on providing each of the community members a safe space to communicate
+			with each other and gush over all things AbieG.
+		</p>
+	</div>
 </main>
 <Footer />
 
@@ -131,6 +148,7 @@
 		width: 1000px;
 		top: calc(7 0% - 500px);
 		right: calc(5% - 300px);
+		z-index: -1;
 	}
 	.transitioner {
 		transition: 750ms cubic-bezier(0.1, 0.69, 0.3, 0.91) all 500ms;
@@ -202,6 +220,29 @@
 		color: white;
 		text-align: right;
 	}
+	.scrollDown {
+		width: 15px;
+		height: 15px;
+		border: white 5px solid;
+		border-top: none;
+		border-right: none;
+		transform: rotate(-45deg);
+		animation: scrolldown 1s ease infinite;
+	}
+	@keyframes scrolldown {
+		0% {
+			opacity: 0;
+			transform: rotate(-45deg) translate(5px, -5px);
+		}
+		50% {
+			opacity: 1;
+			/* transform: rotate(-45deg) translate(10px, -10px); */
+		}
+		100% {
+			opacity: 0;
+			transform: rotate(-45deg) translate(-5px, 5px);
+		}
+	}
 	@media screen and (max-width: 800px) {
 		.transitioner {
 			clip-path: circle(120vh at 0% 100%);
@@ -237,5 +278,28 @@
 		.joinbutton {
 			width: 100%;
 		}
+	}
+	.celebration {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		z-index: 5;
+		color: white;
+	}
+	.celebration .container {
+		margin-right: 5%;
+		width: 80%;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		justify-content: center;
+		text-align: right;
+		font-size: 1.1rem;
+	}
+	.celebration .container h1 {
+		margin-bottom: 2em;
+	}
+	.celebration .container p {
+		margin-bottom: 1em;
 	}
 </style>

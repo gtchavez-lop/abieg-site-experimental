@@ -99,13 +99,13 @@
 		color: white;
 		opacity: 0.2;
 		width: 200%;
-		right: 60%;
+		right: 100%;
 		font-family: 'Audiowide', cursive;
 		font-size: 1.2rem;
 		transition: 200ms ease all;
 	}
 	.homeButton:hover::after {
-		right: 90%;
+		right: 110%;
 		opacity: 0.5;
 	}
 	.homeButton img {

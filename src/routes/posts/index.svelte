@@ -9,8 +9,8 @@
 		<h1>See what's new</h1>
 	</div>
 	<div class="scroller">
-		<Marquee reverse="true" content="SEE WHAT IS GOING ON" />
-		<Marquee reverse="true" content="SEE WHAT IS GOING ON" />
+		<Marquee autoplay="true" reverse="true" content="SEE WHAT IS GOING ON" />
+		<Marquee autoplay="true" reverse="true" content="SEE WHAT IS GOING ON" />
 	</div>
 </main>
 
@@ -32,7 +32,7 @@
 		color: white;
 		opacity: 0.2;
 		font-size: 10rem;
-		font-family: 'Audiowide', cursive;
+		font-family: 'XoloniumRegular';
 		transform: rotate(-10deg);
 		user-select: none;
 	}

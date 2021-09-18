@@ -19,13 +19,16 @@
 </div>
 
 <div class={isActivated ? 'menu menu-activated' : 'menu'}>
-	<div class="marquee" />
 	<ul class="menu__navlinks">
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<a href="/account">
 				<h1>JOIN US</h1>
 				<span>
-					<Marquee reverse content="REGISTER TO GET THE BEST OUT OF THE CONTENT FROM ABIE G - " />
+					<Marquee
+						autoplay="true"
+						reverse
+						content="REGISTER TO GET THE BEST OUT OF THE CONTENT FROM ABIE G - "
+					/>
 				</span>
 			</a>
 		</li>
@@ -33,7 +36,7 @@
 			<a href="/posts">
 				<h1>POSTS</h1>
 				<span>
-					<Marquee reverse content="CHECK OUT WHAT IS NEW FROM ABIE G HERSELF - " />
+					<Marquee autoplay="true" reverse content="CHECK OUT WHAT IS NEW FROM ABIE G HERSELF - " />
 				</span>
 			</a>
 		</li>
@@ -41,7 +44,11 @@
 			<a href="/about">
 				<h1>ABOUT</h1>
 				<span>
-					<Marquee reverse content="THIS IS A DESCRIPTION ABOUT THE TEAM CREATED THE SITE -  " />
+					<Marquee
+						autoplay="true"
+						reverse
+						content="THIS IS A DESCRIPTION ABOUT THE TEAM CREATED THE SITE -  "
+					/>
 				</span>
 			</a>
 		</li>
@@ -50,6 +57,7 @@
 				<h1>CONTACT</h1>
 				<span>
 					<Marquee
+						autoplay="true"
 						reverse
 						content="CONNECT WITH THE DEVELOPERS AND CONTENT MODERATORS ABOUT YOUR CONCERNS AND SUGGESTIONS - "
 					/>
@@ -100,8 +108,10 @@
 		opacity: 0.2;
 		width: 200%;
 		right: 100%;
-		font-family: 'Audiowide', cursive;
+		font-family: 'XoloniumRegular';
 		font-size: 1.2rem;
+		/* font-weight: normal;
+		font-style: normal; */
 		transition: 200ms ease all;
 	}
 	.homeButton:hover::after {
@@ -149,7 +159,7 @@
 		color: white;
 		display: flex;
 		flex-direction: column;
-		font-family: 'Audiowide', cursive;
+		font-family: 'XoloniumRegular';
 	}
 	.menu-activated {
 		transition: 500ms cubic-bezier(0.05, 0.75, 0.23, 0.95) all;
@@ -188,7 +198,7 @@
 	}
 	a {
 		text-decoration: none;
-		color: #f88dad;
+		color: #f7749c;
 		text-align: right;
 	}
 	.menu h1 {
@@ -204,7 +214,7 @@
 		margin-right: 50px;
 		margin-top: 100px;
 		list-style: none;
-		color: #f88dad;
+		color: #f7749c;
 	}
 
 	@media screen and (max-width: 800px) {
@@ -232,7 +242,7 @@
 		font-weight: 700;
 		opacity: 0;
 		transition: 200ms ease all;
-		color: #7bdff2;
+		color: #819ef7;
 	}
 	.menu__navlinks__navlink:hover h1 {
 		opacity: 0;

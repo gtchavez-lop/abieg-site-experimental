@@ -21,6 +21,7 @@
   "type": "module",
   "dependencies": {
     "animejs": "^3.2.1",
+    "smooth-scrollbar": "^8.6.3",
     "svelte-marquee": "^0.1.4"
   }
 }

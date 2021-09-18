@@ -1,20 +1,33 @@
 <script>
 	import { fly, fade, scale, blur } from 'svelte/transition';
-	import { expoIn, expoOut } from 'svelte/easing';
 	import Footer from '../components/Footer.svelte';
-	import BackgroundBlob from '../components/BackgroundBlob.svelte';
 	import { onMount } from 'svelte';
 	import anime from 'animejs';
-	import { text } from 'svelte/internal';
 
 	let rec1;
 	let rec2;
 	let letterG;
 	let isMounted = false;
+	let windowScrollY;
+	let mainContainer;
 
-	let texteffect;
 	onMount((e) => {
+		AOS.init();
 		isMounted = true;
+		window.onscroll = (e) => {
+			windowScrollY = window.scrollY;
+			if (windowScrollY > 100) {
+				rec1.style.opacity = 0;
+				rec1.style.height = 0;
+				rec2.style.opacity = 0;
+				rec2.style.width = 0;
+			} else {
+				rec1.style.opacity = 1;
+				rec1.style.height = '100%';
+				rec2.style.opacity = 1;
+				rec2.style.width = '100%';
+			}
+		};
 		setTimeout(() => {
 			anime({
 				targets: rec1,
@@ -37,17 +50,15 @@
 				duration: 500,
 				delay: 1000
 			});
-			let text = new Blotter.Text('visualize', {
-				family: 'serif',
-				fill: '#171717',
-				size: '70'
-			});
 		}, 750);
 	});
 </script>
 
 <!-- <div class="background" /> -->
-<main class={isMounted ? 'transitioner transitioner-mounted' : 'transitioner'}>
+<main
+	bind:this={mainContainer}
+	class={isMounted ? 'transitioner transitioner-mounted' : 'transitioner'}
+>
 	<img
 		class="logo"
 		src="./logo/Logo1.svg"
@@ -56,7 +67,7 @@
 	/>
 	<div class="videoContainer">
 		<video autoplay loop muted>
-			<source src="./video-tiktok.mp4" type="video/mp4" />
+			<source src="./video-glitch.mp4" type="video/mp4" />
 		</video>
 	</div>
 	<div class="brand">
@@ -85,7 +96,7 @@
 	<div bind:this={rec2} class="brand__candy_rec2" />
 </main>
 <main class="celebration">
-	<div class="container">
+	<div data-aos="fade-up" data-aos-anchor-placement="center-center" class="container">
 		<h1>ABIE G WEBSITE IS NOW LIVE!!!</h1>
 		<p>
 			In celebration for hitting the two-million [!!!] follower mark on each of her social media
@@ -108,6 +119,8 @@
 <svelte:head>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </svelte:head>
 
 <style>
@@ -121,7 +134,7 @@
 	}
 	.videoContainer video {
 		height: 100%;
-		opacity: 0.05;
+		opacity: 0.2;
 	}
 	.joinbutton {
 		padding: 1em;
@@ -184,7 +197,7 @@
 
 	.brand__letterContainer .brand__lc_letter {
 		font-weight: 600;
-		font-family: 'Audiowide', cursive;
+		font-family: 'XoloniumRegular';
 		font-size: 8rem;
 		width: 150px;
 		height: 150px;
@@ -192,26 +205,30 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		-webkit-text-stroke-width: 0.2px;
-		-webkit-text-stroke-color: rgba(255, 255, 255);
+		color: white;
+	}
+	.letter-g {
+		opacity: 0;
 	}
 	.brand__candy_rec1 {
 		position: fixed;
-		left: 100px;
+		left: 0px;
 		bottom: 0;
-		width: 50px;
+		width: 125px;
 		height: 0;
-		background: #f88dad;
+		background: #f7749c;
 		z-index: 1;
+		transition: 200ms ease all;
 	}
 	.brand__candy_rec2 {
 		position: fixed;
 		left: 0;
-		bottom: 100px;
+		bottom: 0px;
 		width: 0%;
-		height: 50px;
-		background: #4f56b6;
+		height: 125px;
+		background: #819ef7;
 		z-index: 1;
+		transition: 200ms ease all 100ms;
 	}
 	.content {
 		position: absolute;
@@ -261,10 +278,12 @@
 		}
 
 		.brand__candy_rec1 {
-			left: calc(50px - 7.5px);
+			left: 0;
+			width: 65px;
 		}
 		.brand__candy_rec2 {
-			bottom: calc(50px - 7.5px);
+			bottom: 0;
+			height: 65px;
 		}
 		.content {
 			right: 5%;
@@ -282,18 +301,15 @@
 	.celebration {
 		display: flex;
 		align-items: center;
-		justify-content: flex-end;
 		z-index: 5;
 		color: white;
 	}
 	.celebration .container {
-		margin-right: 5%;
+		margin-left: 5%;
 		width: 80%;
 		display: flex;
 		flex-direction: column;
-		align-items: flex-end;
 		justify-content: center;
-		text-align: right;
 		font-size: 1.1rem;
 	}
 	.celebration .container h1 {

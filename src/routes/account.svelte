@@ -68,7 +68,7 @@
 	main {
 		min-height: 100vh;
 		background: #1b1b1b;
-		font-family: 'Lato';
+		font-family: 'Nunito';
 		color: #f2f2f2;
 		display: flex;
 		justify-content: center;
@@ -95,7 +95,6 @@
 		background: #1b1b1b;
 		outline: none;
 		padding: 1em;
-		font-family: 'Lato';
 		font-size: 1rem;
 		margin-bottom: 10px;
 		color: white;
@@ -109,7 +108,7 @@
 		background: #4f56b6;
 		outline: none;
 		padding: 1em;
-		font-family: 'Lato';
+		font-family: 'Nunito';
 		font-size: 1rem;
 		margin-top: 50px;
 		font-weight: 700;
@@ -178,7 +177,7 @@
 		color: white;
 		opacity: 0.2;
 		font-size: 10rem;
-		font-family: 'Audiowide', cursive;
+		font-family: 'XoloniumRegular';
 		transform: rotate(-10deg);
 		user-select: none;
 	}

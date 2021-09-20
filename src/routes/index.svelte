@@ -10,9 +10,9 @@
 	let isMounted = false;
 	let windowScrollY;
 	let mainContainer;
+	let floatingImage;
 
 	onMount((e) => {
-		AOS.init();
 		isMounted = true;
 		window.onscroll = (e) => {
 			windowScrollY = window.scrollY;
@@ -21,11 +21,13 @@
 				rec1.style.height = 0;
 				rec2.style.opacity = 0;
 				rec2.style.width = 0;
+				floatingImage.style.clipPath = 'circle(80% at 100% 0%)';
 			} else {
 				rec1.style.opacity = 1;
 				rec1.style.height = '100%';
 				rec2.style.opacity = 1;
 				rec2.style.width = '100%';
+				floatingImage.style.clipPath = 'circle(80% at 100% 40%)';
 			}
 		};
 		setTimeout(() => {
@@ -59,17 +61,20 @@
 	bind:this={mainContainer}
 	class={isMounted ? 'transitioner transitioner-mounted' : 'transitioner'}
 >
+	<div class="floatingImage">
+		<img bind:this={floatingImage} src="./hero.jpg" alt="" />
+	</div>
 	<img
 		class="logo"
-		src="./logo/Logo1.svg"
+		src="https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/Logo1@1x.png"
 		alt=""
 		transition:fade|local={{ delay: 200, duration: 200 }}
 	/>
-	<div class="videoContainer">
-		<video autoplay loop muted>
-			<source src="./video-glitch.mp4" type="video/mp4" />
+	<!-- <div class="videoContainer">
+		<video autoplay loop muted preload="auto">
+			<source src="./video-gradient.mp4" type="video/mp4" />
 		</video>
-	</div>
+	</div> -->
 	<div class="brand">
 		<div class="brand__letterContainer">
 			<span class="brand__lc_letter">A</span>
@@ -86,7 +91,7 @@
 
 	<div class="content">
 		<p>Register and get the best out of it</p>
-		<h1 class="textEffectContainer">Join us with Abie G to VIRTUALIZE the world</h1>
+		<h4 class="textEffectContainer">Join us with Abie G to VIRTUALIZE the world</h4>
 		<a href="/account">
 			<button class="joinbutton"> Register Now </button>
 		</a>
@@ -96,7 +101,7 @@
 	<div bind:this={rec2} class="brand__candy_rec2" />
 </main>
 <main class="celebration">
-	<div data-aos="fade-up" data-aos-anchor-placement="center-center" class="container">
+	<div class="container">
 		<h1>ABIE G WEBSITE IS NOW LIVE!!!</h1>
 		<p>
 			In celebration for hitting the two-million [!!!] follower mark on each of her social media
@@ -119,12 +124,10 @@
 <svelte:head>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </svelte:head>
 
 <style>
-	.videoContainer {
+	/* .videoContainer {
 		position: fixed;
 		width: 100%;
 		height: 100%;
@@ -134,7 +137,27 @@
 	}
 	.videoContainer video {
 		height: 100%;
-		opacity: 0.2;
+		opacity: 0.5;
+	} */
+	/* .background {
+	} */
+	.floatingImage {
+		position: fixed;
+		width: 50vw;
+		height: 100vh;
+		right: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.floatingImage img {
+		width: 100%;
+		height: 100%;
+
+		opacity: 0.5;
+		object-fit: cover;
+		clip-path: circle(80% at 100% 40%);
+		transition: 500ms ease all;
 	}
 	.joinbutton {
 		padding: 1em;
@@ -175,7 +198,7 @@
 		margin: 0;
 		min-height: 100vh;
 		overflow: hidden;
-		z-index: 2;
+		z-index: 3;
 	}
 	main * {
 		margin: 0;
@@ -261,6 +284,9 @@
 		}
 	}
 	@media screen and (max-width: 800px) {
+		.floatingImage {
+			width: 100vw;
+		}
 		.transitioner {
 			clip-path: circle(120vh at 0% 100%);
 		}
@@ -299,10 +325,12 @@
 		}
 	}
 	.celebration {
+		position: relative;
 		display: flex;
 		align-items: center;
 		z-index: 5;
 		color: white;
+		z-index: 5;
 	}
 	.celebration .container {
 		margin-left: 5%;

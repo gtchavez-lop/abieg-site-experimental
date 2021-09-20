@@ -11,7 +11,10 @@
 </script>
 
 <a href="/" class="homeButton">
-	<img src="./logo/Logo1.svg" alt="" />
+	<img
+		src="https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/Logo1@1x.png"
+		alt=""
+	/>
 </a>
 
 <div class={isActivated ? 'button button-activated' : 'button'} on:click={toggleNav}>
@@ -70,19 +73,29 @@
 			<Marquee content="SOCIALIZE WITH ABIE G ON THESE LINKS -  " />
 		</div>
 		<span>
-			<img src="./facebook.svg" alt="" />
+			<a href="https://facebook.com">
+				<img src="./facebook.svg" alt="" />
+			</a>
 		</span>
 		<span>
-			<img src="./twitter.svg" alt="" />
+			<a href="https://twitter.com">
+				<img src="./twitter.svg" alt="" />
+			</a>
 		</span>
 		<span>
-			<img src="./snapchat.svg" alt="" />
+			<a href="https://snapchat.com">
+				<img src="./snapchat.svg" alt="" />
+			</a>
 		</span>
 		<span>
-			<img src="./tiktok.svg" alt="" />
+			<a href="https://tiktok.com">
+				<img src="./tiktok.svg" alt="" />
+			</a>
 		</span>
 		<span>
-			<img src="./instagram.svg" alt="" />
+			<a href="https://instagram.com">
+				<img src="./instagram.svg" alt="" />
+			</a>
 		</span>
 	</div>
 </div>
@@ -157,12 +170,13 @@
 		clip-path: circle(2rem at calc(100% - 0px) 0px);
 		transition: 500ms cubic-bezier(0.89, 0.07, 0.93, 0.21) all;
 		color: white;
-		display: flex;
 		flex-direction: column;
 		font-family: 'XoloniumRegular';
+		opacity: 0;
 	}
 	.menu-activated {
-		transition: 500ms cubic-bezier(0.05, 0.75, 0.23, 0.95) all;
+		opacity: 1;
+		transition: 500ms cubic-bezier(0.05, 0.75, 0.23, 0.95) all 200ms;
 		clip-path: circle(100vh at calc(100% - 50px) 50px);
 	}
 	.menu-activated::after {

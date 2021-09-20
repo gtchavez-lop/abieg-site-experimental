@@ -1,13 +1,9 @@
 <script>
 	import FullscreenNav from '../components/FullscreenNav.svelte';
 	import BackgroundBlob from '../components/BackgroundBlob.svelte';
-	import Scrollbar from 'smooth-scrollbar';
 	import { onMount } from 'svelte';
 
 	let mainContainer;
-	onMount((e) => {
-		Scrollbar.init(mainContainer);
-	});
 </script>
 
 <svelte:head>

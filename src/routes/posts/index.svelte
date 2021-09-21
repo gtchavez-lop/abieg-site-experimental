@@ -1,42 +1,62 @@
 <script>
 	import { fly, fade, scale, blur } from 'svelte/transition';
-	import { expoIn, expoOut } from 'svelte/easing';
-	import Marquee from 'svelte-marquee';
+	import MarqueeTextWidget from 'svelte-marquee-text-widget';
+
+	import { supabase, global_account, global_posts } from '../../global';
+	import Post_BlogCard from '../../components/Post_BlogCard.svelte';
+
+	const fetchdata = (async (e) => {
+		let { data: Posts, error } = await supabase.from('abieg_posts-public').select('*');
+		if (!error) {
+			global_posts.set(Posts);
+		}
+	})();
 </script>
 
 <main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
-	<div class="container">
-		<h1>See what's new</h1>
-	</div>
-	<div class="scroller">
-		<Marquee autoplay="true" reverse="true" content="SEE WHAT IS GOING ON" />
-		<Marquee autoplay="true" reverse="true" content="SEE WHAT IS GOING ON" />
+	<div class="container white-text">
+		<h2>See what's new</h2>
+		<div class="container1">
+			<div class="row">
+				<div class="col s12">
+					<h4>Public Posts</h4>
+					<div class="container1">
+						{#await fetchdata}
+							<div class="progress">
+								<div class="indeterminate" />
+							</div>
+						{:then data}
+							{#each $global_posts as post, index}
+								<Post_BlogCard {...post} {index} />
+							{/each}
+						{/await}
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </main>
+<div class="scroller" transition:fade={{ duration: 500 }}>
+	<MarqueeTextWidget duration={15}>SEE WHAT'S GOING ON &nbsp;</MarqueeTextWidget>
+</div>
 
 <style>
 	main {
+		position: relative;
 		min-height: 100vh;
-		display: flex;
-		justify-content: center;
-		color: white;
-	}
-	main .container {
-		margin-top: 100px;
-		width: 80vw;
+		margin-top: 120px;
+		font-family: 'Nunito';
+		z-index: 3;
 	}
 	.scroller {
 		position: fixed;
-		bottom: 10%;
+		bottom: -7%;
 		left: -10%;
 		color: white;
 		opacity: 0.2;
 		font-size: 10rem;
 		font-family: 'XoloniumRegular';
-		transform: rotate(-10deg);
 		user-select: none;
-	}
-	.scroller:first-child {
-		margin-left: -50px;
+		z-index: 1;
 	}
 </style>

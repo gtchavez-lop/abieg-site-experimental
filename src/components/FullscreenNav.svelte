@@ -1,5 +1,6 @@
 <script>
 	import Marquee from 'svelte-marquee';
+	import MarqueeTextWidget from 'svelte-marquee-text-widget';
 	let isActivated = false;
 	const toggleNav = (e) => {
 		if (isActivated) {
@@ -27,11 +28,9 @@
 			<a href="/account">
 				<h1>JOIN US</h1>
 				<span>
-					<Marquee
-						autoplay="true"
-						reverse
-						content="REGISTER TO GET THE BEST OUT OF THE CONTENT FROM ABIE G - "
-					/>
+					<MarqueeTextWidget duration={10}>
+						REGISTER TO GET THE BEST OUT OF THE CONTENT FROM ABIE G &nbsp;
+					</MarqueeTextWidget>
 				</span>
 			</a>
 		</li>
@@ -39,7 +38,9 @@
 			<a href="/posts">
 				<h1>POSTS</h1>
 				<span>
-					<Marquee autoplay="true" reverse content="CHECK OUT WHAT IS NEW FROM ABIE G HERSELF - " />
+					<MarqueeTextWidget duration={10}>
+						CHECK OUT WHAT IS NEW FROM ABIE G HERSELF &nbsp;
+					</MarqueeTextWidget>
 				</span>
 			</a>
 		</li>
@@ -47,11 +48,9 @@
 			<a href="/about">
 				<h1>ABOUT</h1>
 				<span>
-					<Marquee
-						autoplay="true"
-						reverse
-						content="THIS IS A DESCRIPTION ABOUT THE TEAM CREATED THE SITE -  "
-					/>
+					<MarqueeTextWidget duration={10}>
+						THIS IS A DESCRIPTION ABOUT THE TEAM CREATED THE SITE &nbsp;
+					</MarqueeTextWidget>
 				</span>
 			</a>
 		</li>
@@ -59,18 +58,19 @@
 			<a href="/contact">
 				<h1>CONTACT</h1>
 				<span>
-					<Marquee
-						autoplay="true"
-						reverse
-						content="CONNECT WITH THE DEVELOPERS AND CONTENT MODERATORS ABOUT YOUR CONCERNS AND SUGGESTIONS - "
-					/>
+					<MarqueeTextWidget duration={10}>
+						CONNECT WITH THE DEVELOPERS AND CONTENT MODERATORS ABOUT YOUR CONCERNS AND SUGGESTIONS
+						&nbsp;
+					</MarqueeTextWidget>
 				</span>
 			</a>
 		</li>
 	</ul>
 	<div class="menu__socials">
 		<div class="marquee2">
-			<Marquee content="SOCIALIZE WITH ABIE G ON THESE LINKS -  " />
+			<MarqueeTextWidget duration={5}>
+				SOCIALIZE WITH ABIE G ON THESE LINKS &nbsp;
+			</MarqueeTextWidget>
 		</div>
 		<span>
 			<a href="https://facebook.com">

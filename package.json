@@ -21,7 +21,10 @@
   },
   "type": "module",
   "dependencies": {
+    "@supabase/supabase-js": "^1.22.6",
     "animejs": "^3.2.1",
-    "svelte-marquee": "^0.1.4"
+    "svelte-marquee": "^0.1.4",
+    "svelte-marquee-text-widget": "^1.1.0",
+    "uuid": "^8.3.2"
   }
 }

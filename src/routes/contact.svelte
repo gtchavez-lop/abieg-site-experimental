@@ -1,7 +1,6 @@
 <script>
-	import { fly, fade, slide } from 'svelte/transition';
-	import { expoIn, expoOut } from 'svelte/easing';
-	import Marquee from 'svelte-marquee';
+	import { fly, fade } from 'svelte/transition';
+	import MarqueeTextWidget from 'svelte-marquee-text-widget';
 </script>
 
 <main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
@@ -27,16 +26,15 @@
 			<div class="row center-align">
 				<div class="col s12">
 					<button class="waves-effect waves-light btn-large pink darken-4 "
-						>Sign In<i class="material-icons right">send</i></button
+						>Send some thoughts<i class="material-icons right">send</i></button
 					>
 				</div>
 			</div>
 		</div>
 	</div>
 </main>
-<div class="scroller">
-	<Marquee autoplay="true" reverse="true" content="KEEP IN TOUCH" />
-	<Marquee autoplay="true" reverse="true" content="KEEP IN TOUCH" />
+<div class="scroller" transition:fade={{ duration: 500 }}>
+	<MarqueeTextWidget duration={15}>KEEP IN TOUCH &nbsp;</MarqueeTextWidget>
 </div>
 
 <style>
@@ -54,13 +52,12 @@
 	}
 	.scroller {
 		position: fixed;
-		bottom: 10%;
+		bottom: -7%;
 		left: -10%;
 		color: white;
 		opacity: 0.2;
 		font-size: 10rem;
 		font-family: 'XoloniumRegular';
-		transform: rotate(-10deg);
 		user-select: none;
 		z-index: 1;
 	}

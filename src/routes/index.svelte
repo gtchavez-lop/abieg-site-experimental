@@ -1,6 +1,5 @@
 <script>
 	import { fly, fade, scale, blur } from 'svelte/transition';
-	import Footer from '../components/Footer.svelte';
 	import { onMount } from 'svelte';
 	import anime from 'animejs';
 
@@ -70,11 +69,6 @@
 		alt=""
 		transition:fade|local={{ delay: 200, duration: 200 }}
 	/>
-	<!-- <div class="videoContainer">
-		<video autoplay loop muted preload="auto">
-			<source src="./video-gradient.mp4" type="video/mp4" />
-		</video>
-	</div> -->
 	<div class="brand">
 		<div class="brand__letterContainer">
 			<span class="brand__lc_letter">A</span>
@@ -119,7 +113,14 @@
 		</p>
 	</div>
 </main>
-<Footer />
+
+<!-- for maintenance -->
+<!-- <main style="display: flex; align-items:center;">
+	<div class="container white-text">
+		<h1>Sorry, we are fixing or updating something</h1>
+		<p>Please come back in some time</p>
+	</div>
+</main> -->
 
 <svelte:head>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -1,18 +1,6 @@
 <script>
 	import { fly, fade, slide } from 'svelte/transition';
-	import { expoIn, expoOut, expoInOut } from 'svelte/easing';
-
-	import Footer from '../components/Footer.svelte';
-	import Marquee from 'svelte-marquee';
-	import { onMount, tick } from 'svelte';
-
-	// const clippingPathIn = (node, params) => {
-	// 	return {
-	// 		delay: 1000,
-	// 		duration: 500,
-	// 		css: (t) => `clip-path: circle(${expoOut(t) * 120}% at 100% 0%);`
-	// 	};
-	// };
+	import MarqueeTextWidget from 'svelte-marquee-text-widget';
 
 	let isRegister = false;
 	let birhtdate;
@@ -167,12 +155,9 @@
 		</div>
 	</div>
 </main>
-<div class="scroller">
-	<Marquee autoplay="true" reverse="true" content="MAKE THE MOST OUT OF IT" />
-	<Marquee autoplay="true" reverse="true" content="MAKE THE MOST OUT OF IT" />
+<div class="scroller" transition:fade={{ duration: 500 }}>
+	<MarqueeTextWidget duration={15}>BE ACTIVE WITH ABIE G &nbsp;</MarqueeTextWidget>
 </div>
-
-<Footer />
 
 <style>
 	main {
@@ -301,15 +286,13 @@
  */
 	.scroller {
 		width: 120%;
-
 		position: fixed;
-		bottom: -15%;
+		bottom: -7%;
 		left: -10%;
 		color: white;
 		opacity: 0.2;
 		font-size: 10rem;
 		font-family: 'XoloniumRegular';
-		transform: rotate(-10deg);
 		user-select: none;
 		z-index: 1;
 	}

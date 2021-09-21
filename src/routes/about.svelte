@@ -1,16 +1,8 @@
 <script>
 	import { fly, fade, scale, blur } from 'svelte/transition';
-	import { expoIn, expoOut } from 'svelte/easing';
-	import Marquee from 'svelte-marquee';
+	import MarqueeTextWidget from 'svelte-marquee-text-widget';
 </script>
 
-<svg width="0" height="0">
-	<defs>
-		<clipPath id="squircle" clipPathUnits="objectBoundingBox">
-			<path d="M .5,0 C .1,0 0,.1 0,.5 0,.9 .1,1 .5,1 .9,1 1,.9 1,.5 1,.1 .9,0 .5,0 Z" />
-		</clipPath>
-	</defs>
-</svg>
 <main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
 	<div class="container white-text">
 		<h2>About the Team</h2>
@@ -21,7 +13,7 @@
 			only.
 		</p>
 	</div>
-	<div class="container white-text" style="margin-top: 100px;">
+	<div class="container container1 white-text" style="margin-top: 100px;">
 		<h4>The Team behind the scences</h4>
 		<div class="row">
 			<div class="col s12 valign-wrapper center-align white-text profile profile-gerald">
@@ -74,18 +66,9 @@
 		<p>Hosted in Vercel</p>
 		<p>And supported by Supabase</p>
 	</div>
-	<!-- 
-		<div class="card">
-			<h4>About the website</h4>
-			<p><b>AbieG-vercel.app</b> is powered by SvelteKit</p>
-			<p>Hosted in Vercel</p>
-			<p>And supported by Supabase</p>
-		</div>
-	</div> -->
 </main>
-<div class="scroller">
-	<Marquee autoplay="true" reverse="true" content="WHO MADE THIS SITE?" />
-	<Marquee autoplay="true" reverse="true" content="WHO MADE THIS SITE?" />
+<div class="scroller" transition:fade={{ duration: 500 }}>
+	<MarqueeTextWidget duration={30}>WHO MADE THIS SITE? &nbsp;</MarqueeTextWidget>
 </div>
 
 <style>
@@ -96,7 +79,7 @@
 		font-family: 'Nunito';
 		z-index: 3;
 	}
-	.container {
+	.container1 {
 		padding-left: 1em;
 		padding-right: 1em;
 	}
@@ -156,15 +139,13 @@
 	}
 
 	.scroller {
-		width: 120%;
 		position: fixed;
-		bottom: -15%;
+		bottom: -7%;
 		left: -10%;
 		color: white;
 		opacity: 0.2;
 		font-size: 10rem;
 		font-family: 'XoloniumRegular';
-		transform: rotate(-10deg);
 		user-select: none;
 		z-index: 1;
 	}

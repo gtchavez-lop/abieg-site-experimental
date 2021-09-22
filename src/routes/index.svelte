@@ -94,23 +94,63 @@
 	<div bind:this={rec1} class="brand__candy_rec1" />
 	<div bind:this={rec2} class="brand__candy_rec2" />
 </main>
-<main class="celebration">
-	<div class="container">
-		<h1>ABIE G WEBSITE IS NOW LIVE!!!</h1>
-		<p>
-			In celebration for hitting the two-million [!!!] follower mark on each of her social media
-			accounts, AbieG formally welcomes you (yes, you!) to her namesake website’s ribbon-cutting
-			ceremony. Fancy.
-		</p>
-		<p>
-			<b>ABIEG.VERCEL.APP</b> is created to bring BabieGs together in an exclusive, AbieG-centric community
-			where the most freshest and exclusive news, updates, and giveaway announcements are delivered by
-			AbieG herself.
-		</p>
-		<p>
-			The website focuses on providing each of the community members a safe space to communicate
-			with each other and gush over all things AbieG.
-		</p>
+
+<main class="celebration white-text  valign-wrapper ">
+	<div class="container center-align">
+		<img src="./illustrations/undraw_Online_party_re_7t6g.svg" width="350" alt="" />
+		<div class="row ">
+			<div class="col s12 center-align ">
+				<h2 style="margin-bottom: 2em;">ABIE G WEBSITE IS NOW LIVE!!!</h2>
+			</div>
+			<div class="col s12 ">
+				<p class="flow-text">
+					In celebration for hitting the two-million [!!!] follower mark on each of her social media
+					accounts, AbieG formally welcomes you (yes, you!) to her namesake website’s ribbon-cutting
+					ceremony. Fancy.
+					<!-- <br /><br />
+					<b>ABIEG.VERCEL.APP</b> is created to bring BabieGs together in an exclusive,
+					AbieG-centric community where the most freshest and exclusive news, updates, and giveaway
+					announcements are delivered by AbieG herself.
+					<br /><br />
+					The website focuses on providing each of the community members a safe space to communicate
+					with each other and gush over all things AbieG. -->
+				</p>
+			</div>
+		</div>
+	</div>
+</main>
+<main class="celebration white-text  valign-wrapper ">
+	<div class="container center-align">
+		<img src="./illustrations/undraw_community_8nwl.svg" width="350" alt="" />
+		<div class="row ">
+			<div class="col s12 center-align ">
+				<h2 style="margin-bottom: 2em;">Abie G Community Moderators</h2>
+			</div>
+			<div class="col s12 ">
+				<p class="flow-text">
+					To ensure a safe space for the community members, this site is regularly kept in check by
+					the moderators. Inappropriate conducts are strictly discouraged and violation to community
+					rules may result to account suspension and/or removal.
+				</p>
+			</div>
+		</div>
+	</div>
+</main>
+<main class="celebration valign-wrapper white-text ">
+	<div class="container center-align">
+		<img class="center-align" src="./illustrations/undraw_begin_chat_c6pj.svg" alt="" width="350" />
+		<div class="row ">
+			<div class="col s12 center-align">
+				<h2 style="margin-bottom: 2em;">Connect with Abie G with exclusive content</h2>
+			</div>
+			<div class="col s12 ">
+				<p class="flow-text">
+					This site takes BabieGs to a much more intimate interaction with AbieG herself as she
+					shares with them glimpses of her everyday life, ambitions, and aspirations as well as
+					site-exclusive giveaways and surprises.
+				</p>
+			</div>
+		</div>
 	</div>
 </main>
 
@@ -128,20 +168,6 @@
 </svelte:head>
 
 <style>
-	/* .videoContainer {
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.videoContainer video {
-		height: 100%;
-		opacity: 0.5;
-	} */
-	/* .background {
-	} */
 	.floatingImage {
 		position: fixed;
 		width: 50vw;
@@ -192,17 +218,17 @@
 		clip-path: circle(0vw at 0% 100%);
 	}
 	.transitioner-mounted {
-		clip-path: circle(200vh at 0% 100%);
+		clip-path: circle(175vw at 0% 100%);
 	}
 
 	main {
-		margin: 0;
+		/* margin: 0; */
 		min-height: 100vh;
 		overflow: hidden;
 		z-index: 3;
 	}
 	main * {
-		margin: 0;
+		/* margin: 0; */
 		user-select: none;
 	}
 	.brand {
@@ -327,13 +353,15 @@
 	}
 	.celebration {
 		position: relative;
-		display: flex;
+		/* display: flex;
 		align-items: center;
 		z-index: 5;
-		color: white;
+		color: white; */
 		z-index: 5;
+		padding-top: 5em;
+		padding-bottom: 5em;
 	}
-	.celebration .container {
+	/* .celebration .container {
 		margin-left: 5%;
 		width: 80%;
 		display: flex;
@@ -346,5 +374,5 @@
 	}
 	.celebration .container p {
 		margin-bottom: 1em;
-	}
+	} */
 </style>

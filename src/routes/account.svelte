@@ -18,32 +18,38 @@
 		transition:slide|local={{ duration: 500 }}
 	>
 		<h2>Your Account</h2>
-		<div class="container1 blue-grey darken-4">
-			<div class="row">
-				<div class="col">
-					<h4>Sign in to your account</h4>
+		<div class="">
+			<div class="row container1 valign-wrapper">
+				<div class="col s6">
+					<div class="center-align">
+						<img src="./illustrations/undraw_profile_image_re_ic2f.svg" width="300" alt="" />
+					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="input-field col s12 m6 white-text">
-					<i class="material-icons prefix">email</i>
-					<input id="email" type="text" class="validate  white-text" />
-					<label for="email">Email Address</label>
-				</div>
-				<div class="input-field col s12 m6 white-text">
-					<i class="material-icons prefix">password</i>
-					<input id="password" type="text" class="validate  white-text" />
-					<label for="password">Password</label>
+				<div class="col container1 s6 blue-grey darken-4 ">
+					<div class="col s12">
+						<h4>Sign in to your account</h4>
+					</div>
+					<div class="input-field col s12 white-text">
+						<i class="material-icons prefix">email</i>
+						<input id="email" type="text" class="validate  white-text" />
+						<label for="email">Email Address</label>
+					</div>
+					<div class="input-field col s12 white-text">
+						<i class="material-icons prefix">password</i>
+						<input id="password" type="text" class="validate  white-text" />
+						<label for="password">Password</label>
+					</div>
+
+					<div class="col s12 center-align">
+						<button class="waves-effect waves-light btn-large pink darken-4 "
+							>Sign In<i class="material-icons right">send</i></button
+						>
+					</div>
 				</div>
 			</div>
 			<div class="row center-align">
-				<div class="col s12">
-					<button class="waves-effect waves-light btn-large pink darken-4 "
-						>Sign In<i class="material-icons right">send</i></button
-					>
-				</div>
 				{#if !isRegister}
-					<div class="col s12">
+					<div class="col s12 grey darken-4" style="border-radius: 10px;">
 						<p on:click={toggleCards} style="cursor:pointer;">Don't have an account? Click Me</p>
 					</div>
 				{/if}
@@ -168,8 +174,9 @@
 		z-index: 3;
 	}
 	.container1 {
-		padding-left: 1em;
-		padding-right: 1em;
+		padding: 1em;
+		padding-top: 2em;
+		padding-bottom: 2em;
 		border-radius: 10px;
 	}
 	/* main {

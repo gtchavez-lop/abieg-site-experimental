@@ -32,6 +32,9 @@
 						{/await}
 					</div>
 				</div>
+				<div class="col s12 disabled">
+					<h4>Public Posts</h4>
+				</div>
 			</div>
 		</div>
 	</div>

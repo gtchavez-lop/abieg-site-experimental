@@ -50,9 +50,6 @@
 			}
 		]);
 
-		console.log(data);
-		console.log(error);
-
 		if (!error) {
 			M.toast({ html: 'Blog Posted' });
 			M.toast({ html: 'Please refresh the page to update' });

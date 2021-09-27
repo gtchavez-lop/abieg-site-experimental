@@ -18,16 +18,35 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gemunu+Libre"
+      rel="stylesheet"
+    />
     %svelte.head%
 
     <style>
+      @font-face {
+        font-family: "Thunder Bold";
+        src: url("/font/Thunder-VF.otf") format("opentype");
+        font-weight: 700;
+      }
+      @font-face {
+        font-family: "Thunder Medium";
+        src: url("/font/Thunder-VF.otf") format("opentype");
+        font-weight: 500;
+      }
+      @font-face {
+        font-family: "Thunder Light";
+        src: url("/font/Thunder-VF.otf") format("opentype");
+        font-weight: 300;
+      }
       body,
       html {
         margin: 0;
         padding: 0;
-        font-family: "Nunito", sans-serif;
+        font-family: "Gemunu Lobre", sans-serif;
         overflow-x: hidden;
-        background: #1b1b1b;
+        background: #323232;
       }
       ::-webkit-scrollbar {
         display: none;
@@ -38,8 +57,8 @@
   </head>
   <body>
     <div id="svelte">%svelte.body%</div>
+    <script>
+      M.AutoInit();
+    </script>
   </body>
-  <script>
-    M.AutoInit();
-  </script>
 </html>

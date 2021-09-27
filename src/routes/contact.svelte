@@ -34,7 +34,9 @@
 	</div>
 </main>
 <div class="scroller" transition:fade={{ duration: 500 }}>
-	<MarqueeTextWidget duration={15}>KEEP IN TOUCH &nbsp;</MarqueeTextWidget>
+	<MarqueeTextWidget duration={15}
+		>KEEP IN TOUCH &nbsp;KEEP IN TOUCH &nbsp;KEEP IN TOUCH &nbsp;</MarqueeTextWidget
+	>
 </div>
 
 <style>
@@ -42,7 +44,6 @@
 		position: relative;
 		min-height: 100vh;
 		margin-top: 120px;
-		font-family: 'Nunito';
 		z-index: 3;
 	}
 
@@ -57,7 +58,7 @@
 		color: white;
 		opacity: 0.2;
 		font-size: 10rem;
-		font-family: 'XoloniumRegular';
+		font-family: 'Thunder Bold';
 		user-select: none;
 		z-index: 1;
 	}

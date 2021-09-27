@@ -28,7 +28,7 @@
 			<a href="/account">
 				<h1>JOIN US</h1>
 				<span>
-					<MarqueeTextWidget duration={10}>
+					<MarqueeTextWidget duration={20}>
 						REGISTER TO GET THE BEST OUT OF THE CONTENT FROM ABIE G &nbsp;
 					</MarqueeTextWidget>
 				</span>
@@ -38,8 +38,9 @@
 			<a href="/posts">
 				<h1>POSTS</h1>
 				<span>
-					<MarqueeTextWidget duration={10}>
-						CHECK OUT WHAT IS NEW FROM ABIE G HERSELF &nbsp;
+					<MarqueeTextWidget duration={20}>
+						CHECK OUT WHAT IS NEW FROM ABIE G HERSELF &nbsp; CHECK OUT WHAT IS NEW FROM ABIE G
+						HERSELF &nbsp;
 					</MarqueeTextWidget>
 				</span>
 			</a>
@@ -48,8 +49,9 @@
 			<a href="/about">
 				<h1>ABOUT</h1>
 				<span>
-					<MarqueeTextWidget duration={10}>
-						THIS IS A DESCRIPTION ABOUT THE TEAM CREATED THE SITE &nbsp;
+					<MarqueeTextWidget duration={20}>
+						THIS IS A DESCRIPTION ABOUT THE TEAM CREATED THE SITE &nbsp; THIS IS A DESCRIPTION ABOUT
+						THE TEAM CREATED THE SITE &nbsp;
 					</MarqueeTextWidget>
 				</span>
 			</a>
@@ -58,7 +60,7 @@
 			<a href="/contact">
 				<h1>CONTACT</h1>
 				<span>
-					<MarqueeTextWidget duration={10}>
+					<MarqueeTextWidget duration={20}>
 						CONNECT WITH THE DEVELOPERS AND CONTENT MODERATORS ABOUT YOUR CONCERNS AND SUGGESTIONS
 						&nbsp;
 					</MarqueeTextWidget>
@@ -68,7 +70,8 @@
 	</ul>
 	<div class="menu__socials">
 		<div class="marquee2">
-			<MarqueeTextWidget duration={5}>
+			<MarqueeTextWidget duration={15}>
+				SOCIALIZE WITH ABIE G ON THESE LINKS &nbsp; SOCIALIZE WITH ABIE G ON THESE LINKS &nbsp;
 				SOCIALIZE WITH ABIE G ON THESE LINKS &nbsp;
 			</MarqueeTextWidget>
 		</div>
@@ -118,18 +121,17 @@
 		position: absolute;
 		content: 'ABIE G';
 		color: white;
-		opacity: 0.2;
+		opacity: 0;
 		width: 200%;
+		top: 5%;
 		right: 100%;
-		font-family: 'XoloniumRegular';
-		font-size: 1.2rem;
-		/* font-weight: normal;
-		font-style: normal; */
+		font-family: 'Thunder Bold';
+		font-size: 2.5em;
 		transition: 200ms ease all;
 	}
 	.homeButton:hover::after {
 		right: 110%;
-		opacity: 0.5;
+		opacity: 1;
 	}
 	.homeButton img {
 		width: 50px;
@@ -216,7 +218,7 @@
 		text-align: right;
 	}
 	.menu h1 {
-		font-size: 3rem;
+		font-size: 5em;
 		text-align: right;
 	}
 
@@ -229,6 +231,7 @@
 		margin-top: 100px;
 		list-style: none;
 		color: #f7749c;
+		font-family: 'Thunder Medium';
 	}
 
 	@media screen and (max-width: 800px) {
@@ -240,10 +243,10 @@
 		position: relative;
 		transition: 200ms ease all;
 		cursor: pointer;
+		margin-top: -25px;
 	}
 	.menu__navlinks__navlink h1 {
 		transition: 200ms ease all;
-		opacity: 1;
 	}
 	.menu__navlinks__navlink span {
 		position: absolute;
@@ -251,19 +254,19 @@
 		left: -10%;
 		transform: translateY(-50%);
 		width: max-content;
-		font-size: 3rem;
+		font-size: 7em;
 		user-select: none;
-		font-weight: 700;
+		font-family: 'Thunder Light';
 		opacity: 0;
 		transition: 200ms ease all;
 		color: #819ef7;
+		z-index: -1;
 	}
 	.menu__navlinks__navlink:hover h1 {
-		opacity: 0;
-		transform: translateX(-20px);
+		transform: translateX(-25px);
 	}
 	.menu__navlinks__navlink:hover span {
-		opacity: 1;
+		opacity: 0.25;
 		left: -15%;
 	}
 
@@ -284,6 +287,7 @@
 		width: 200%;
 		user-select: none;
 		font-size: 3rem;
+		font-family: 'Thunder Bold';
 	}
 	.menu__socials span {
 		width: 50px;

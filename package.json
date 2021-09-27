@@ -17,12 +17,16 @@
     "prettier": "~2.2.1",
     "prettier-plugin-svelte": "^2.2.0",
     "svelte": "^3.34.0",
+    "svelte-calendar": "^3.1.6",
     "svelte-preprocess": "^4.9.4"
   },
   "type": "module",
   "dependencies": {
     "@supabase/supabase-js": "^1.22.6",
     "animejs": "^3.2.1",
+    "crypto-js": "^4.1.1",
+    "date-fns": "^2.24.0",
+    "dayjs": "^1.10.7",
     "svelte-marquee": "^0.1.4",
     "svelte-marquee-text-widget": "^1.1.0",
     "uuid": "^8.3.2"

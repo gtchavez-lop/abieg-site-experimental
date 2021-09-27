@@ -17,7 +17,7 @@
 	<div class="col s12 center-align">
 		<a
 			style="width: 100%;"
-			class="waves-effect waves-dark btn white-text btn-large cyan lighten-1"
+			class="waves-effect waves-dark btn white-text btn-large blue darken-2"
 			href="#!"
 		>
 			<a href="./posts/{id}" class="valign-wrapper center-align white-text" style="width: 100%;">

@@ -61,29 +61,29 @@
 	};
 
 	onMount((e) => {
-		if (localStorage.getItem('data_mod') != '') {
-			global_mod_account.set(JSON.parse(localStorage.getItem('data_mod')));
-			// console.log($global_mod_account);
-		} else {
+		if (localStorage.getItem('data_mod') === null) {
 			goto('/admin');
-		}
-		(async (e) => {
-			if ($global_mod_account) {
-				const { data, error } = await supabase
-					.from('posts')
-					.select('*')
-					.eq('author', $global_mod_account.username);
+		} else {
+			global_mod_account.set(JSON.parse(localStorage.getItem('data_mod')));
 
-				hasBlog = null;
-				if (error || data.length < 1) {
-					hasBlog = false;
+			(async (e) => {
+				if ($global_mod_account) {
+					const { data, error } = await supabase
+						.from('posts')
+						.select('*')
+						.eq('author', $global_mod_account.username);
+
+					hasBlog = null;
+					if (error || data.length < 1) {
+						hasBlog = false;
+					}
+					if (!error) {
+						blogs = data;
+						hasBlog = true;
+					}
 				}
-				if (!error) {
-					blogs = data;
-					hasBlog = true;
-				}
-			}
-		})();
+			})();
+		}
 	});
 </script>
 
@@ -100,20 +100,35 @@
 				on:click={() => (tabActive = 1)}
 				class={tabActive == 1
 					? 'btn waves-effect waves-light cyan darken-2'
-					: 'btn waves-effect waves-light pink darken-2'}>Post a Story</button
+					: 'btn waves-effect waves-light pink darken-2'}
+			>
+				<div class="valign-wrapper">
+					<span class="material-icons" style="margin-right: 1em;"> post_add </span>
+					Post a Story
+				</div></button
 			>
 			<button
 				on:click={() => (tabActive = 2)}
 				class={tabActive == 2
 					? 'btn waves-effect waves-light cyan darken-2'
-					: 'btn waves-effect waves-light pink darken-2'}>Your Stories</button
+					: 'btn waves-effect waves-light pink darken-2'}
 			>
+				<div class="valign-wrapper">
+					<span class="material-icons" style="margin-right: 1em;"> menu_book </span>
+					Your Stories
+				</div>
+			</button>
 			<button
 				on:click={() => (tabActive = 3)}
 				class={tabActive == 3
 					? 'btn waves-effect waves-light cyan darken-2'
-					: 'btn waves-effect waves-light pink darken-2'}>Your Moderator Account</button
+					: 'btn waves-effect waves-light pink darken-2'}
 			>
+				<div class="valign-wrapper">
+					<span class="material-icons" style="margin-right: 1em;"> manage_accounts </span>
+					Your Moderator Account
+				</div>
+			</button>
 		</div>
 
 		<!-- post a story -->

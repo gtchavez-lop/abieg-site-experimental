@@ -38,7 +38,7 @@
 
 	onMount((e) => {
 		if (!$global_mod_account) {
-			if (localStorage.getItem('data_mod') != '') {
+			if (localStorage.getItem('data_mod') != null) {
 				global_mod_account.set(JSON.parse(localStorage.getItem('data_mod')));
 				goto('admin/dashboard');
 			}

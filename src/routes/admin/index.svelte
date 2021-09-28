@@ -37,9 +37,11 @@
 	};
 
 	onMount((e) => {
-		if (localStorage.getItem('data_mod') != '') {
-			global_mod_account.set(JSON.parse(localStorage.getItem('data_mod')));
-			goto('admin/dashboard');
+		if (!$global_mod_account) {
+			if (localStorage.getItem('data_mod') != '') {
+				global_mod_account.set(JSON.parse(localStorage.getItem('data_mod')));
+				goto('admin/dashboard');
+			}
 		}
 	});
 </script>

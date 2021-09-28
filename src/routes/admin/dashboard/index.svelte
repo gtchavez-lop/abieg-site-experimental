@@ -98,18 +98,21 @@
 		<div class="flex">
 			<button
 				on:click={() => (tabActive = 1)}
-				disabled={tabActive == 1 ? true : false}
-				class="btn waves-effect waves-light pink darken-2">Post a Story</button
+				class={tabActive == 1
+					? 'btn waves-effect waves-light cyan darken-2'
+					: 'btn waves-effect waves-light pink darken-2'}>Post a Story</button
 			>
 			<button
 				on:click={() => (tabActive = 2)}
-				disabled={tabActive == 2 ? true : false}
-				class="btn waves-effect waves-light pink darken-2">Your Stories</button
+				class={tabActive == 2
+					? 'btn waves-effect waves-light cyan darken-2'
+					: 'btn waves-effect waves-light pink darken-2'}>Your Stories</button
 			>
 			<button
 				on:click={() => (tabActive = 3)}
-				disabled={tabActive == 3 ? true : false}
-				class="btn waves-effect waves-light pink darken-2">Your Moderator Account</button
+				class={tabActive == 3
+					? 'btn waves-effect waves-light cyan darken-2'
+					: 'btn waves-effect waves-light pink darken-2'}>Your Moderator Account</button
 			>
 		</div>
 

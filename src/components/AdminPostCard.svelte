@@ -1,5 +1,7 @@
 <script>
 	import { fly, fade, scale, slide } from 'svelte/transition';
+	import { supabase } from '../global';
+	export let blog;
 
 	let isActive = false;
 	let isDeleting = true;
@@ -18,8 +20,17 @@
 			isDeleting = true;
 		}
 	};
+	let deletePost = async (e) => {
+		if (blog) {
+			let { data, error } = await supabase.from('posts').delete().match({ id: blog.id });
+			console.log(data);
+			console.log(error);
 
-	export let blog;
+			if (!error) {
+				location.reload();
+			}
+		}
+	};
 </script>
 
 <div class="row  ">
@@ -102,7 +113,7 @@
 
 		<div class="col s12 " transition:slide|local={{ duration: 500 }}>
 			{#if !isDeleting}
-				<button class="btn right red darken-3 waves-effect waves-light">
+				<button on:click={deletePost} class="btn right red darken-3 waves-effect waves-light">
 					<div class="valign-wrapper">
 						<i class="material-icons" style="margin-right: 1em;">delete</i>
 						<span>Confirm Delete</span>
@@ -114,7 +125,7 @@
 					on:click={confirmDelete}
 				>
 					<div class="valign-wrapper">
-						<i class="material-icons" style="margin-right: 1em;">delete</i>
+						<i class="material-icons" style="margin-right: 1em;">cancel</i>
 						<span>I changed my mind</span>
 					</div>
 				</button>

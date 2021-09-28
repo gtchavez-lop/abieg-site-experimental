@@ -12,6 +12,7 @@
 	let hasBlog = null;
 	let blogs;
 	let username;
+	let tabActive = 1;
 
 	// blog content
 	let blog_title;
@@ -41,7 +42,7 @@
 	};
 
 	let postBlog = async (e) => {
-		const { data, error } = await supabase.from('abieg_posts-public').insert([
+		const { data, error } = await supabase.from('posts').insert([
 			{
 				title: blog_title,
 				author: $global_mod_account.username,
@@ -52,10 +53,10 @@
 
 		if (!error) {
 			M.toast({ html: 'Blog Posted' });
-			M.toast({ html: 'Please refresh the page to update' });
 			blog_title = '';
 			blog_content = '';
 			blog_visibility = false;
+			location.reload();
 		}
 	};
 
@@ -69,7 +70,7 @@
 		(async (e) => {
 			if ($global_mod_account) {
 				const { data, error } = await supabase
-					.from('abieg_posts-public')
+					.from('posts')
 					.select('*')
 					.eq('author', $global_mod_account.username);
 
@@ -93,176 +94,206 @@
 >
 	<div class="container white-text">
 		<h1>Moderator Dashboard</h1>
+		<!-- tabs -->
+		<div class="flex">
+			<button
+				on:click={() => (tabActive = 1)}
+				disabled={tabActive == 1 ? true : false}
+				class="btn waves-effect waves-light pink darken-2">Post a Story</button
+			>
+			<button
+				on:click={() => (tabActive = 2)}
+				disabled={tabActive == 2 ? true : false}
+				class="btn waves-effect waves-light pink darken-2">Your Stories</button
+			>
+			<button
+				on:click={() => (tabActive = 3)}
+				disabled={tabActive == 3 ? true : false}
+				class="btn waves-effect waves-light pink darken-2">Your Moderator Account</button
+			>
+		</div>
+
 		<!-- post a story -->
-		{#if $global_mod_account}
-			<div class="row" style="margin-bottom: 10em;">
-				<div class="col s12">
-					<h3>Post a Story</h3>
-				</div>
-				<div class="col s12">
-					<div class="input-field">
-						<i class="material-icons prefix">book</i>
-						<input
-							bind:value={blog_title}
-							id="story_title"
-							type="text"
-							class="validate white-text"
-						/>
-						<label for="story_title">Story Title</label>
+		{#if tabActive == 1}
+			{#if $global_mod_account}
+				<div class="row" style="margin-bottom: 10em;" in:fly={{ x: 20, duration: 500 }}>
+					<div class="col s12">
+						<h3>Post a Story</h3>
 					</div>
-				</div>
-				<div class="col s12">
-					<div class="input-field">
-						<i class="material-icons prefix">person</i>
-						<input
-							id="story_author"
-							bind:value={$global_mod_account.username}
-							type="text"
-							disabled
-							class="validate white-text"
-						/>
-						<span class="helper-text white-text">Story Author</span>
+					<div class="col s12">
+						<div class="input-field">
+							<i class="material-icons prefix">book</i>
+							<input
+								bind:value={blog_title}
+								id="story_title"
+								type="text"
+								class="validate white-text"
+							/>
+							<label for="story_title">Story Title</label>
+						</div>
 					</div>
-				</div>
-				<div class="col s12">
-					<div class="input-field">
-						<i class="material-icons prefix">image</i>
-						<input
-							bind:value={blog_imageURI}
-							id="story_headerImg_src"
-							type="text"
-							class="validate white-text"
-						/>
-						<label for="story_headerImg_src">Story Header Image URL</label>
+					<div class="col s12">
+						<div class="input-field">
+							<i class="material-icons prefix">person</i>
+							<input
+								id="story_author"
+								bind:value={$global_mod_account.username}
+								type="text"
+								disabled
+								class="validate white-text"
+							/>
+							<span class="helper-text white-text">Story Author</span>
+						</div>
 					</div>
-				</div>
-				<div class="col s12">
-					<div class="input-field">
-						<i class="material-icons prefix">library_books</i>
-						<input
-							bind:value={blog_content}
-							id="story_content"
-							type="text"
-							class="validate white-text"
-						/>
-						<label for="story_content">Story Content</label>
-						<span class="helper-text white-text"
-							>This can be written as is or HTML (We recommened to write the story in HTML)</span
+					<div class="col s12">
+						<div class="input-field">
+							<i class="material-icons prefix">image</i>
+							<input
+								bind:value={blog_imageURI}
+								id="story_headerImg_src"
+								type="text"
+								class="validate white-text"
+							/>
+							<label for="story_headerImg_src">Story Header Image URL</label>
+						</div>
+					</div>
+					<div class="col s12">
+						<div class="input-field">
+							<i class="material-icons prefix">library_books</i>
+							<input
+								bind:value={blog_content}
+								id="story_content"
+								type="text"
+								class="validate white-text"
+							/>
+							<label for="story_content">Story Content</label>
+							<span class="helper-text white-text"
+								>This can be written as is or HTML (We recommened to write the story in HTML)</span
+							>
+						</div>
+					</div>
+					<div class="col s12">
+						<div style="padding: 1em;">
+							<p>
+								{#if blog_visibility}
+									This Post will be exclusive to members
+								{:else}
+									This Post will be public to all visitors
+								{/if}
+							</p>
+							<button
+								on:click={toggleVisibiltiy}
+								class="btn waves-effect waves-light blue darken-4 "
+							>
+								<div class="valign-wrapper">
+									{#if blog_visibility}
+										<i class="material-icons" style="margin-right: 1em;"> lock </i>
+										<span>Exclusive</span>
+									{:else}
+										<i class="material-icons" style="margin-right: 1em;"> public </i>
+										<span>Public</span>
+									{/if}
+								</div>
+							</button>
+						</div>
+					</div>
+					<div class="col s12 " style="margin-top: 2em;">
+						<button
+							on:click={postBlog}
+							class="btn right btn-large waves-effect waves-light blue darken-3"
+						>
+							<i class="material-icons left">post_add</i>Post</button
 						>
 					</div>
 				</div>
-				<div class="col s12">
-					<div style="padding: 1em;">
-						<p>
-							{#if blog_visibility}
-								This Post will be exclusive to members
-							{:else}
-								This Post will be public to all visitors
+			{/if}
+		{/if}
+
+		<!-- Your stories -->
+		{#if tabActive == 2}
+			{#if $global_mod_account}
+				<div class="row" style="margin-bottom: 10em;" in:fly={{ x: 20, duration: 500 }}>
+					<div class="col s12">
+						<h3>Your Stories</h3>
+					</div>
+					{#if hasBlog == null}
+						<div class="col s12">
+							<div class="progress transparent">
+								<div class="indeterminate blue darken-4" />
+							</div>
+							<p>Searching for your posts</p>
+						</div>
+					{/if}
+					{#if !hasBlog || blogs.length < 1}
+						<div class="col s12">
+							<h5>Seems like its empty</h5>
+							<p>Make one of your own</p>
+						</div>
+					{:else}
+						<div class="col s12">
+							<h5>Available Stories</h5>
+							<!-- stories -->
+							{#each blogs as blog}
+								<AdminPostCard {blog} />
+							{/each}
+						</div>
+					{/if}
+				</div>
+			{/if}
+		{/if}
+
+		<!-- account detail -->
+		{#if tabActive == 3}
+			{#if $global_mod_account}
+				<div class="row" in:fly={{ x: 20, duration: 500 }}>
+					<div class="col s12">
+						<h3>Moderator Account Information</h3>
+
+						<div class="row">
+							<div class="col s4">Account Holder</div>
+							<div class="col s8">{$global_mod_account.username}</div>
+						</div>
+						<div class="row">
+							<div class="col s4">Account ID</div>
+							<div class="col s8">{$global_mod_account.id}</div>
+						</div>
+						<div class="row" style="margin-top: 5em;">
+							{#if isLoggingOut}
+								<div class="col s4 offset-s8 " in:fly|local={{ y: -25, duration: 500 }}>
+									<button
+										on:click={toggleLogOut}
+										class="btn right btn-large waves-effect waves-light blue lighten-1"
+									>
+										No</button
+									>
+									<button
+										on:click={logout}
+										style="margin-right: 2em;"
+										class="btn right btn-large waves-effect waves-light red lighten-1"
+									>
+										Yes</button
+									>
+								</div>
 							{/if}
-						</p>
-						<button on:click={toggleVisibiltiy} class="btn waves-effect waves-light blue darken-4 ">
-							<div class="valign-wrapper">
-								{#if blog_visibility}
-									<i class="material-icons" style="margin-right: 1em;"> lock </i>
-									<span>Exclusive</span>
+							<div class="col s6 offset-s6 ">
+								{#if !isLoggingOut}
+									<button
+										in:fly|local={{ x: 20, duration: 500 }}
+										on:click={toggleLogOut}
+										class="btn right btn-large waves-effect waves-light red lighten-1"
+										><i class="material-icons left">logout</i>
+										Log Out</button
+									>
 								{:else}
-									<i class="material-icons" style="margin-right: 1em;"> public </i>
-									<span>Public</span>
+									<h5 in:fly|local={{ y: -20, duration: 500 }} class="right-align">
+										Do you really want to log out?
+									</h5>
 								{/if}
 							</div>
-						</button>
-					</div>
-				</div>
-				<div class="col s12 " style="margin-top: 2em;">
-					<button
-						on:click={postBlog}
-						class="btn right btn-large waves-effect waves-light blue darken-3"
-					>
-						<i class="material-icons left">post_add</i>Post</button
-					>
-				</div>
-			</div>
-		{/if}
-		<!-- Your stories -->
-		{#if $global_mod_account}
-			<div class="row" style="margin-bottom: 10em;">
-				<div class="col s12">
-					<h3>Your Stories</h3>
-				</div>
-				{#if hasBlog == null}
-					<div class="col s12">
-						<div class="progress transparent">
-							<div class="indeterminate blue darken-4" />
-						</div>
-						<p>Searching for your posts</p>
-					</div>
-				{/if}
-				{#if !hasBlog || blogs.length < 1}
-					<div class="col s12">
-						<h5>Seems like its empty</h5>
-						<p>Make one of your own</p>
-					</div>
-				{:else}
-					<div class="col s12">
-						<h5>Available Stories</h5>
-						<!-- stories -->
-						{#each blogs as blog}
-							<AdminPostCard {blog} />
-						{/each}
-					</div>
-				{/if}
-			</div>
-		{/if}
-		<!-- account detail -->
-		{#if $global_mod_account}
-			<div class="row" transition:fly|local={{ y: 10, duration: 500 }}>
-				<div class="col s12">
-					<h3>Moderator Account Information</h3>
-
-					<div class="row">
-						<div class="col s4">Account Holder</div>
-						<div class="col s8">{$global_mod_account.username}</div>
-					</div>
-					<div class="row">
-						<div class="col s4">Account ID</div>
-						<div class="col s8">{$global_mod_account.id}</div>
-					</div>
-					<div class="row" style="margin-top: 5em;">
-						{#if isLoggingOut}
-							<div class="col s4 offset-s8 " in:fly|local={{ y: -25, duration: 500 }}>
-								<button
-									on:click={toggleLogOut}
-									class="btn right btn-large waves-effect waves-light blue lighten-1"
-								>
-									No</button
-								>
-								<button
-									on:click={logout}
-									style="margin-right: 2em;"
-									class="btn right btn-large waves-effect waves-light red lighten-1"
-								>
-									Yes</button
-								>
-							</div>
-						{/if}
-						<div class="col s6 offset-s6 ">
-							{#if !isLoggingOut}
-								<button
-									in:fly|local={{ x: 20, duration: 500 }}
-									on:click={toggleLogOut}
-									class="btn right btn-large waves-effect waves-light red lighten-1"
-									><i class="material-icons left">logout</i>
-									Log Out</button
-								>
-							{:else}
-								<h5 in:fly|local={{ y: -20, duration: 500 }} class="right-align">
-									Do you really want to log out?
-								</h5>
-							{/if}
 						</div>
 					</div>
 				</div>
-			</div>
+			{/if}
 		{/if}
 	</div>
 </main>

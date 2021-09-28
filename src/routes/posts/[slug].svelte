@@ -6,19 +6,29 @@
 </script>
 
 <script>
-	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
+	import { onMount } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
-	import { global_posts } from '../../global';
+	import { global_posts, supabase } from '../../global';
+
 	export let slug;
+	export let blogData;
+
+	onMount(async (e) => {
+		let { data, error } = await supabase.from('posts').select('*').eq('id', slug);
+
+		if (!error || data.length > 0) {
+			blogData = data[0];
+			// console.log(blogData);
+		}
+	});
 </script>
 
 <svelte:head>
-	{#each $global_posts as post}
-		{#if post.id == slug}
-			<title>ABIE G | {post.title}</title>
-		{/if}
-	{/each}
+	{#if blogData}
+		<title>ABIE G | {blogData.title}</title>
+	{/if}
 </svelte:head>
 
 <main id="top" in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
@@ -26,19 +36,15 @@
 		<a class="btn-floating btn-large waves-effect waves-light  blue lighten-2" href="/posts"
 			><i class="material-icons">arrow_back</i></a
 		>
-		{#each $global_posts as post}
-			{#if post.id == slug}
-				<h1>{post.title}</h1>
-				<img src={post.header_img} alt="" />
-			{/if}
-		{/each}
+		{#if blogData}
+			<h1>{blogData.title}</h1>
+			<img src={blogData.header_img} alt="" />
+		{/if}
 	</div>
 	<div class="container white-text content">
-		{#each $global_posts as post}
-			{#if post.id == slug}
-				<p class="flow-text">{@html post.content}</p>
-			{/if}
-		{/each}
+		{#if blogData}
+			<p class="flow-text">{@html blogData.content}</p>
+		{/if}
 	</div>
 </main>
 
@@ -47,7 +53,6 @@
 		position: relative;
 		min-height: 100vh;
 		margin-top: 120px;
-		font-family: 'Nunito';
 		z-index: 3;
 	}
 	img {

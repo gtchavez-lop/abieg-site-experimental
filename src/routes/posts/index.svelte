@@ -13,24 +13,18 @@
 
 	onMount((e) => {
 		(async (e) => {
-			let { data, error } = await supabase
-				.from('abieg_posts-public')
-				.select('*')
-				.eq('isExclusive', 'false');
+			let { data, error } = await supabase.from('posts').select('*').eq('isExclusive', 'false');
 			hasPublicBlogs = null;
-			if (!error || data.length > 0) {
+			if (!error || data) {
 				hasPublicBlogs = true;
 				publicBlogs = data;
 			}
 		})();
 		(async (e) => {
-			if ($global_account.email) {
-				let { data, error } = await supabase
-					.from('abieg_posts-public')
-					.select('*')
-					.eq('isExclusive', 'true');
+			if ($global_account) {
+				let { data, error } = await supabase.from('posts').select('*').eq('isExclusive', 'true');
 				hasPrivateBlogs = null;
-				if (!error || data.length > 0) {
+				if (!error || data) {
 					hasPrivateBlogs = true;
 					privateBlogs = data;
 				}
@@ -38,6 +32,10 @@
 		})();
 	});
 </script>
+
+<svelte:head>
+	<title>Abie G | Posts</title>
+</svelte:head>
 
 <main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
 	<div class="container white-text">

@@ -47,6 +47,7 @@
 				title: blog_title,
 				author: $global_mod_account.username,
 				content: blog_content,
+				header_img: blog_imageURI,
 				isExclusive: blog_visibility
 			}
 		]);

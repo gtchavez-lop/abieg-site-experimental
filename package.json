@@ -29,6 +29,7 @@
     "dayjs": "^1.10.7",
     "svelte-marquee": "^0.1.4",
     "svelte-marquee-text-widget": "^1.1.0",
+    "svelte-material-icons": "^1.0.3",
     "uuid": "^8.3.2"
   }
 }

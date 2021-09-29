@@ -1,6 +1,7 @@
 <script>
 	import Marquee from 'svelte-marquee';
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';
+
 	let isActivated = false;
 	const toggleNav = (e) => {
 		if (isActivated) {
@@ -11,15 +12,13 @@
 	};
 </script>
 
-<a href="/" class="homeButton">
-	<img
-		src="https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/Logo1@1x.png"
-		alt=""
-	/>
-</a>
+<div class="menucontainer">
+	<a href="/" class="homeButton"> ABIE G </a>
 
-<div class={isActivated ? 'button button-activated' : 'button'} on:click={toggleNav}>
-	<span class="material-icons-round"> arrow_circle_left </span>
+	<div class={isActivated ? 'button button-activated' : 'button'} on:click={toggleNav}>
+		<i class={!isActivated ? 'bi bi-list icon_activated' : 'bi bi-list'} style="font-size: 3em;" />
+		<i class={isActivated ? 'bi bi-x icon_activated' : 'bi bi-list'} style="font-size: 3em;" />
+	</div>
 </div>
 
 <div class={isActivated ? 'menu menu-activated' : 'menu'}>
@@ -77,71 +76,81 @@
 		</div>
 		<span>
 			<a href="https://facebook.com">
-				<img src="./facebook.svg" alt="" />
+				<i class="bi bi-facebook" style="font-size: 3em;" />
 			</a>
 		</span>
 		<span>
 			<a href="https://twitter.com">
-				<img src="./twitter.svg" alt="" />
+				<i class="bi bi-twitter" style="font-size: 3em;" />
 			</a>
 		</span>
 		<span>
-			<a href="https://snapchat.com">
-				<img src="./snapchat.svg" alt="" />
+			<a href="https://twitch.tv">
+				<i class="bi bi-twitch" style="font-size: 3em;" />
 			</a>
 		</span>
 		<span>
-			<a href="https://tiktok.com">
-				<img src="./tiktok.svg" alt="" />
+			<a href="https://youtube.com">
+				<i class="bi bi-youtube" style="font-size: 3em;" />
 			</a>
 		</span>
 		<span>
 			<a href="https://instagram.com">
-				<img src="./instagram.svg" alt="" />
+				<i class="bi bi-instagram" style="font-size: 3em;" />
 			</a>
 		</span>
 	</div>
 </div>
 
 <style>
-	.homeButton {
+	.menucontainer {
 		position: fixed;
-		z-index: 8;
-		width: 50px;
-		height: 50px;
-		right: 130px;
-		top: 40px;
+		top: 0;
+		width: 100%;
+		height: 100px;
+		/* background: black; */
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		transform-style: preserve-3d;
+
+		z-index: 999;
+	}
+	.homeButton {
+		position: relative;
+		text-align: right;
+		width: 75px;
+		height: 75px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		cursor: pointer;
 		user-select: none;
+		font-size: 1.5em;
 	}
 	.homeButton::after {
 		position: absolute;
 		content: 'ABIE G';
 		color: white;
 		opacity: 0;
-		width: 200%;
-		top: 5%;
-		right: 100%;
-		font-family: 'Thunder Bold';
-		font-size: 2.5em;
+		width: 150%;
+		top: 50%;
+		transform: translateY(-50%);
+		right: 0;
+		font-size: 1.5em;
 		transition: 200ms ease all;
+		z-index: -1;
 	}
 	.homeButton:hover::after {
-		right: 110%;
-		opacity: 1;
-	}
-	.homeButton img {
-		width: 50px;
+		right: 10%;
+		opacity: 0.2;
 	}
 	.button {
-		position: fixed;
-		right: 25px;
-		top: 25px;
-		width: 75px;
-		height: 75px;
+		position: relative;
+		width: 80px;
+		height: 80px;
+		margin-right: 20px;
+		margin-left: 10px;
 		/* background: #00212b; */
 		border-radius: 100px;
 		cursor: pointer;
@@ -152,64 +161,72 @@
 		align-items: center;
 		filter: invert(1);
 		user-select: none;
-		transform: rotate(-45deg);
+		transform: rotateZ(0deg);
 	}
 	.button-activated {
-		transform: rotate(135deg);
+		transform: rotateZ(-180deg);
 	}
-	.button .material-icons-round {
-		font-size: 4rem;
+	.button i {
+		position: absolute;
+		opacity: 0;
+		margin: 0;
+	}
+	.button .icon_activated {
+		opacity: 1;
 	}
 
 	.menu {
 		position: fixed;
-		width: 100%;
+		width: 70%;
 		height: 100%;
 		background: #231942;
 		top: 0;
-		left: 0;
-		z-index: 98;
-		clip-path: circle(2rem at calc(100% - 0px) 0px);
-		transition: 500ms cubic-bezier(0.89, 0.07, 0.93, 0.21) all;
+		right: 0;
+		z-index: 998;
+		/* clip-path: circle(2rem at calc(100% - 0px) 0px); */
+		transition: 200ms cubic-bezier(0.69, 0.15, 0.86, 0.29) all;
 		color: white;
 		flex-direction: column;
+		transform: translateX(100%);
 		font-family: 'XoloniumRegular';
-		opacity: 0;
+		opacity: 1;
+		overflow: hidden;
 	}
 	.menu-activated {
 		opacity: 1;
-		transition: 500ms cubic-bezier(0.05, 0.75, 0.23, 0.95) all 200ms;
-		clip-path: circle(100vh at calc(100% - 50px) 50px);
+		transform: translateX(0%);
+		transition: 500ms cubic-bezier(0, 0.98, 0, 0.98) all;
+		/* clip-path: circle(100vh at calc(100% - 50px) 50px); */
 	}
-	.menu-activated::after {
+	.menu-activated::before {
 		content: '';
 		position: absolute;
 		right: 0;
 		top: 0;
-		width: 100px;
-		height: 100px;
-		border: solid white 10px;
-		animation: glow 0.75s cubic-bezier(0.05, 0.75, 0.23, 0.95) 100ms;
-		border-radius: 100px;
+		width: 100%;
+		height: 100%;
+		border: solid white 5em;
+		border-bottom: solid transparent 0;
+		border-right: solid transparent 0;
+		border-top: solid transparent 0;
+		animation: glow 1s cubic-bezier(0.23, 0.93, 0, 1);
 		opacity: 0;
-		z-index: -1;
+		/* z-index: -1; */
 	}
 	@keyframes glow {
-		from {
+		0% {
 			opacity: 1;
-			transform: scale(0);
 		}
-		to {
+		10% {
+			opacity: 0.5;
+		}
+		100% {
 			opacity: 0;
-			transform: scale(10);
 		}
 	}
 	@media screen and (max-width: 800px) {
 		.menu {
-			transition: 5 00ms cubic-bezier(0.05, 0.75, 0.23, 0.95) all;
-		}
-		.menu-activated {
-			clip-path: circle(100vh at calc(100% - 50px) 50px);
+			width: 100%;
 		}
 	}
 	a {
@@ -275,18 +292,20 @@
 		margin-top: 100px;
 		display: flex;
 		right: 0;
-		width: 40%;
+		width: 100%;
 		bottom: 10%;
 		justify-content: space-evenly;
+		z-index: 3;
 	}
 	.marquee2 {
 		position: absolute;
-		bottom: -50%;
+		bottom: -150%;
 		right: 0;
 		opacity: 0.2;
 		width: 200%;
 		user-select: none;
 		font-size: 3rem;
+		z-index: 1;
 		font-family: 'Thunder Bold';
 	}
 	.menu__socials span {
@@ -301,9 +320,6 @@
 	.menu__socials span:active {
 		transition: none;
 		transform: scale(0.8);
-	}
-	.menu__socials span img {
-		filter: invert(1);
 	}
 
 	@media screen and (max-width: 800px) {

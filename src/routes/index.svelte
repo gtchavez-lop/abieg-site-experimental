@@ -95,7 +95,7 @@
 	<div bind:this={rec2} class="brand__candy_rec2" />
 </main>
 
-<main class="celebration white-text  valign-wrapper ">
+<main class="celebration white-text  valign-wrapper live">
 	<div class="container center-align">
 		<img src="./illustrations/undraw_Online_party_re_7t6g.svg" width="350" alt="" />
 		<div class="row ">

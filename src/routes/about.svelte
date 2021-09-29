@@ -57,9 +57,6 @@
 </div>
 
 <style>
-	h2 {
-		font-family: 'Thunder Bold';
-	}
 	main {
 		position: relative;
 		min-height: 100vh;
@@ -72,9 +69,6 @@
 		position: relative;
 		margin-bottom: 10em;
 		transition: 200ms ease all;
-	}
-	.devCard:hover {
-		transform: translateX(-15%);
 	}
 	.devCard h5 {
 		font-family: 'Thunder Light';
@@ -94,8 +88,8 @@
 		background: black;
 		position: absolute;
 		top: 50%;
-		left: 10%;
-		transform: translateY(-50%) translateX(0%);
+		left: 50%;
+		transform: translate(-50%, -50%);
 		/* border-radius: 100%; */
 		width: 50vw;
 		height: 350px;
@@ -104,8 +98,12 @@
 		border-radius: 10px;
 	}
 	.devCard:hover::before {
-		opacity: 1;
-		transform: translateY(-50%) translateX(30%);
+		opacity: 0.5;
+	}
+	@media screen and (max-width: 1000px) {
+		.devCard::before {
+			width: 100vw;
+		}
 	}
 
 	.devCard_gerald::before {

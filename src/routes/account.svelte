@@ -137,7 +137,7 @@
 		{#if !$global_account}
 			<div class="row container1 center-align " in:fly|local={{ y: -40, duration: 500 }}>
 				<div class="col s12 m5 ">
-					<div style="margin: 0 auto;">
+					<div class="imageContainer">
 						<img src="./illustrations/undraw_profile_image_re_ic2f.svg" width="250" alt="" />
 					</div>
 				</div>
@@ -459,5 +459,10 @@
 		font-family: 'Thunder Bold';
 		user-select: none;
 		z-index: 1;
+	}
+	.imageContainer {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>

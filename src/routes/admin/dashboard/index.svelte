@@ -42,22 +42,28 @@
 	};
 
 	let postBlog = async (e) => {
-		const { data, error } = await supabase.from('posts').insert([
-			{
-				title: blog_title,
-				author: $global_mod_account.username,
-				content: blog_content,
-				header_img: blog_imageURI,
-				isExclusive: blog_visibility
-			}
-		]);
+		if (blog_title && blog_content) {
+			const { data, error } = await supabase.from('posts').insert([
+				{
+					title: blog_title,
+					author: $global_mod_account.username,
+					content: blog_content,
+					header_img: blog_imageURI
+						? blog_imageURI
+						: 'https://thecatapi.com/api/images/get?format=src&type=png',
+					isExclusive: blog_visibility
+				}
+			]);
 
-		if (!error) {
-			M.toast({ html: 'Blog Posted' });
-			blog_title = '';
-			blog_content = '';
-			blog_visibility = false;
-			location.reload();
+			if (!error) {
+				M.toast({ html: 'Blog Posted' });
+				blog_title = '';
+				blog_content = '';
+				blog_visibility = false;
+				location.reload();
+			}
+		} else {
+			M.toast({ html: 'Please fill out all the input fields' });
 		}
 	};
 
@@ -96,40 +102,48 @@
 	<div class="container white-text">
 		<h1>Moderator Dashboard</h1>
 		<!-- tabs -->
-		<div class="flex">
-			<button
-				on:click={() => (tabActive = 1)}
-				class={tabActive == 1
-					? 'btn waves-effect waves-light cyan darken-2'
-					: 'btn waves-effect waves-light pink darken-2'}
-			>
-				<div class="valign-wrapper">
-					<span class="material-icons" style="margin-right: 1em;"> post_add </span>
-					Post a Story
-				</div></button
-			>
-			<button
-				on:click={() => (tabActive = 2)}
-				class={tabActive == 2
-					? 'btn waves-effect waves-light cyan darken-2'
-					: 'btn waves-effect waves-light pink darken-2'}
-			>
-				<div class="valign-wrapper">
-					<span class="material-icons" style="margin-right: 1em;"> menu_book </span>
-					Your Stories
-				</div>
-			</button>
-			<button
-				on:click={() => (tabActive = 3)}
-				class={tabActive == 3
-					? 'btn waves-effect waves-light cyan darken-2'
-					: 'btn waves-effect waves-light pink darken-2'}
-			>
-				<div class="valign-wrapper">
-					<span class="material-icons" style="margin-right: 1em;"> manage_accounts </span>
-					Your Moderator Account
-				</div>
-			</button>
+		<div class="row">
+			<div class="col s12 m4">
+				<button
+					on:click={() => (tabActive = 1)}
+					class={tabActive == 1
+						? 'btn waves-effect waves-light cyan darken-2'
+						: 'btn waves-effect waves-light pink darken-2'}
+				>
+					<div class="valign-wrapper">
+						<span class="material-icons" style="margin-right: 1em;"> post_add </span>
+						Post a Story
+					</div></button
+				>
+			</div>
+			<div class="col s12 m4">
+				<button
+					on:click={() => (tabActive = 2)}
+					class={tabActive == 2
+						? 'btn waves-effect waves-light cyan darken-2'
+						: 'btn waves-effect waves-light pink darken-2'}
+				>
+					<div class="valign-wrapper">
+						<span class="material-icons" style="margin-right: 1em;"> menu_book </span>
+						Your Stories
+					</div>
+				</button>
+			</div>
+			<div class="col s12 m4">
+				<button
+					on:click={() => (tabActive = 3)}
+					class={tabActive == 3
+						? 'btn waves-effect waves-light cyan darken-2'
+						: 'btn waves-effect waves-light pink darken-2'}
+				>
+					<div class="valign-wrapper">
+						<span class="material-icons" style="margin-right: 1em;"> manage_accounts </span>
+						Your Moderator Account
+					</div>
+				</button>
+			</div>
+			<!-- 
+			 -->
 		</div>
 
 		<!-- post a story -->
@@ -174,6 +188,9 @@
 								class="validate white-text"
 							/>
 							<label for="story_headerImg_src">Story Header Image URL</label>
+							<span class="helper-text white-text"
+								>If you leave this blank, the site will generate a placeholder image</span
+							>
 						</div>
 					</div>
 					<div class="col s12">

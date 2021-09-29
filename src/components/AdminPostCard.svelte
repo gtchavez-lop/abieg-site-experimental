@@ -99,7 +99,7 @@
 			transition:slide|local={{ duration: 500 }}
 		>
 			<h5>Blog Header Image Preview</h5>
-			<img src={blog.header_img} alt="" class="headerimage" />
+			<img src={blog.header_img} width="500" height="500" alt="" class="headerimage" />
 		</div>
 
 		<div

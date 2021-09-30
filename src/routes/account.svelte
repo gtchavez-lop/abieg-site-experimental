@@ -3,14 +3,13 @@
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';
 	import { Datepicker } from 'svelte-calendar';
 	import dayjs from 'dayjs';
-	import { supabase, global_account, HASH_KEY } from '../global';
+	import { supabase, global_account, global_hasAccount } from '../global';
 	import cryptojs from 'crypto-js';
 	import { onMount } from 'svelte';
 
 	let isRegister = false;
 	let birthdate;
 	let confirmLogout = false;
-	let logInStatus;
 	let login_email;
 	let login_password;
 	let reg_email;
@@ -120,7 +119,13 @@
 
 	onMount((e) => {
 		let data = localStorage.getItem('data');
-		data ? global_account.set(JSON.parse(data)) : global_account.set(null);
+		if (data) {
+			global_account.set(JSON.parse(data));
+			global_hasAccount.set(true);
+		} else {
+			global_account.set(null);
+			global_hasAccount.set(false);
+		}
 	});
 </script>
 

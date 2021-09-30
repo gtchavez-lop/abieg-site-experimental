@@ -10,6 +10,7 @@ const supabaseURL ='https://sgocnrgwrtdruxnxpxyl.supabase.co'
 export const supabase = createClient(supabaseURL, SUPABASE_KEY)
 
 // global objects
+export const global_hasAccount = writable(false)
 export const global_account = writable();
 export const global_posts = writable()
 export const global_mod_account = writable()

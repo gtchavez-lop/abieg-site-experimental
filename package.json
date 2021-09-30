@@ -18,6 +18,7 @@
     "prettier-plugin-svelte": "^2.2.0",
     "svelte": "^3.34.0",
     "svelte-calendar": "^3.1.6",
+    "svelte-parallax": "^0.3.1",
     "svelte-preprocess": "^4.9.4"
   },
   "type": "module",

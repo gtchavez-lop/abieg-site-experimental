@@ -1,8 +1,12 @@
 <script>
+	import { onMount } from 'svelte';
+
+	import { global_hasAccount } from '../global';
 	import Marquee from 'svelte-marquee';
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';
 
 	let isActivated = false;
+
 	const toggleNav = (e) => {
 		if (isActivated) {
 			isActivated = false;
@@ -10,10 +14,15 @@
 			isActivated = true;
 		}
 	};
+	const toggleNavOff = (e) => {
+		if (isActivated) {
+			isActivated = false;
+		}
+	};
 </script>
 
 <div class="menucontainer">
-	<a href="/" class="homeButton"> ABIE G </a>
+	<a href="/" class="homeButton" on:click={toggleNavOff}> ABIE G </a>
 
 	<div class={isActivated ? 'button button-activated' : 'button'} on:click={toggleNav}>
 		<i class={!isActivated ? 'bi bi-list icon_activated' : 'bi bi-list'} style="font-size: 3em;" />
@@ -25,7 +34,7 @@
 	<ul class="menu__navlinks">
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<a href="/account">
-				<h1>JOIN US</h1>
+				<h1>ACCOUNT</h1>
 				<span>
 					<MarqueeTextWidget duration={20}>
 						REGISTER TO GET THE BEST OUT OF THE CONTENT FROM ABIE G &nbsp;
@@ -111,7 +120,7 @@
 		/* background: black; */
 		display: flex;
 		align-items: center;
-		justify-content: flex-end;
+		justify-content: space-between;
 		transform-style: preserve-3d;
 
 		z-index: 999;
@@ -127,6 +136,7 @@
 		cursor: pointer;
 		user-select: none;
 		font-size: 1.5em;
+		margin-left: 2em;
 	}
 	.homeButton::after {
 		position: absolute;
@@ -136,13 +146,13 @@
 		width: 150%;
 		top: 50%;
 		transform: translateY(-50%);
-		right: 0;
+		left: -5%;
 		font-size: 1.5em;
 		transition: 200ms ease all;
 		z-index: -1;
 	}
 	.homeButton:hover::after {
-		right: 10%;
+		left: 0%;
 		opacity: 0.2;
 	}
 	.button {
@@ -161,15 +171,16 @@
 		align-items: center;
 		filter: invert(1);
 		user-select: none;
-		transform: rotateZ(0deg);
+		transform: rotateX(0deg);
 	}
 	.button-activated {
-		transform: rotateZ(-180deg);
+		transform: rotateX(-180deg);
 	}
-	.button i {
+	.button .bi {
 		position: absolute;
 		opacity: 0;
 		margin: 0;
+		padding: 0;
 	}
 	.button .icon_activated {
 		opacity: 1;
@@ -177,7 +188,7 @@
 
 	.menu {
 		position: fixed;
-		width: 70%;
+		width: 100%;
 		height: 100%;
 		background: #231942;
 		top: 0;
@@ -191,6 +202,7 @@
 		font-family: 'XoloniumRegular';
 		opacity: 1;
 		overflow: hidden;
+		box-shadow: #323232 0 0 10px;
 	}
 	.menu-activated {
 		opacity: 1;
@@ -323,13 +335,13 @@
 	}
 
 	@media screen and (max-width: 800px) {
-		.menu__socials {
+		/* .menu__socials {
 			width: 100%;
 		}
 		.menu__socials span {
 			width: 30px;
 			height: 30px;
-		}
+		} */
 		.marquee2 {
 			width: 100%;
 		}

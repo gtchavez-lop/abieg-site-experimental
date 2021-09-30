@@ -48,9 +48,7 @@
 					title: blog_title,
 					author: $global_mod_account.username,
 					content: blog_content,
-					header_img: blog_imageURI
-						? blog_imageURI
-						: 'https://thecatapi.com/api/images/get?format=src&type=png',
+					header_img: blog_imageURI ? blog_imageURI : 'https://picsum.photos/500/500',
 					isExclusive: blog_visibility
 				}
 			]);

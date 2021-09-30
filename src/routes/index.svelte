@@ -3,64 +3,34 @@
 	import { onMount } from 'svelte';
 	import anime from 'animejs';
 
-	let rec1;
-	let rec2;
-	let letterG;
-	let isMounted = false;
-	let windowScrollY;
-	let mainContainer;
-	let floatingImage;
+	let windowScrollY, loading, mainContainer, floatingImage;
+
+	console.log(windowScrollY);
 
 	onMount((e) => {
-		isMounted = true;
 		window.onscroll = (e) => {
-			windowScrollY = window.scrollY;
-			if (windowScrollY > 100) {
-				rec1.style.opacity = 0;
-				rec1.style.height = 0;
-				rec2.style.opacity = 0;
-				rec2.style.width = 0;
-				floatingImage.style.clipPath = 'circle(80% at 100% 0%)';
-			} else {
-				rec1.style.opacity = 1;
-				rec1.style.height = '100%';
-				rec2.style.opacity = 1;
-				rec2.style.width = '100%';
-				floatingImage.style.clipPath = 'circle(80% at 100% 40%)';
-			}
+			console.log(windowScrollY);
 		};
-		setTimeout(() => {
-			anime({
-				targets: rec1,
-				height: [0, '100%'],
-				easing: 'easeOutExpo',
-				duration: 500
-			});
-			anime({
-				targets: rec2,
-				width: [0, '100%'],
-				easing: 'easeOutExpo',
-				duration: 500,
-				delay: 200
-			});
-			anime({
-				targets: letterG,
-				opacity: [0, 1],
-				scale: [0.9, 1],
-				easing: 'easeOutExpo',
-				duration: 500,
-				delay: 1000
-			});
-		}, 750);
 	});
 </script>
 
+<svelte:window bind:scrollY={windowScrollY} />
+<!-- <svelte:body bind:offsetHeight={documentHeight} /> -->
+
+<div class="loading" bind:this={loading}>
+	<div class="loadingBar" />
+</div>
+<p class="scrollDown" />
+
 <!-- <div class="background" /> -->
-<main
-	bind:this={mainContainer}
-	class={isMounted ? 'transitioner transitioner-mounted' : 'transitioner'}
->
-	<div class="floatingImage">
+<main bind:this={mainContainer}>
+	<div
+		class="floatingImage"
+		style="
+			transform: translateX({Math.min((windowScrollY / 500) * 30, 60)}%);
+			opacity: {windowScrollY > 200 ? 0 : 1};
+		"
+	>
 		<img bind:this={floatingImage} src="./hero.jpg" alt="" />
 	</div>
 	<img
@@ -69,30 +39,62 @@
 		alt=""
 		transition:fade|local={{ delay: 200, duration: 200 }}
 	/>
-	<div class="brand">
+	<div class="brand" style="transform: translateY(-{Math.min((windowScrollY / 20) * 5, 300)}%);">
 		<div class="brand__letterContainer">
 			<span class="brand__lc_letter">A</span>
-			<span class="brand__lc_letter ">B</span>
+			<span class="brand__lc_letter">B</span>
+			<span class="brand__lc_letter">I</span>
+			<span class="brand__lc_letter">E</span>
+			<span class="brand__lc_letter letter-g">G</span>
 		</div>
+	</div>
+	<div
+		class="brand brand2"
+		style="transform: translateY(-{Math.min((windowScrollY / 20) * 7, 300)}%);"
+	>
 		<div class="brand__letterContainer">
-			<span class="brand__lc_letter ">I</span>
-			<span class="brand__lc_letter ">E</span>
+			<span class="brand__lc_letter">A</span>
+			<span class="brand__lc_letter">B</span>
+			<span class="brand__lc_letter">I</span>
+			<span class="brand__lc_letter">E</span>
+			<span class="brand__lc_letter letter-g">G</span>
 		</div>
+	</div>
+	<div
+		class="brand brand3"
+		style="transform: translateY(-{Math.min((windowScrollY / 20) * 9, 300)}%);"
+	>
 		<div class="brand__letterContainer">
-			<span bind:this={letterG} class="brand__lc_letter letter-g">G</span>
+			<span class="brand__lc_letter">A</span>
+			<span class="brand__lc_letter">B</span>
+			<span class="brand__lc_letter">I</span>
+			<span class="brand__lc_letter">E</span>
+			<span class="brand__lc_letter letter-g">G</span>
+		</div>
+	</div>
+	<div
+		class="brand brand4"
+		style="transform: translateY(-{Math.min((windowScrollY / 20) * 11, 300)}%);"
+	>
+		<div class="brand__letterContainer">
+			<span class="brand__lc_letter">A</span>
+			<span class="brand__lc_letter">B</span>
+			<span class="brand__lc_letter">I</span>
+			<span class="brand__lc_letter">E</span>
+			<span class="brand__lc_letter letter-g">G</span>
 		</div>
 	</div>
 
 	<div class="content">
 		<p>Register and get the best out of it</p>
+		<!-- <p>{height}</p> -->
 		<h4 class="textEffectContainer">Join us with Abie G to VIRTUALIZE the world</h4>
 		<a href="/account">
 			<button class="joinbutton"> Register Now </button>
 		</a>
-		<p class="scrollDown" />
 	</div>
-	<div bind:this={rec1} class="brand__candy_rec1" />
-	<div bind:this={rec2} class="brand__candy_rec2" />
+	<!-- <div bind:this={rec1} class="brand__candy_rec1" />
+	<div bind:this={rec2} class="brand__candy_rec2" /> -->
 </main>
 
 <main class="celebration white-text  valign-wrapper live">
@@ -107,13 +109,6 @@
 					In celebration for hitting the two-million [!!!] follower mark on each of her social media
 					accounts, AbieG formally welcomes you (yes, you!) to her namesake website’s ribbon-cutting
 					ceremony. Fancy.
-					<!-- <br /><br />
-					<b>ABIEG.VERCEL.APP</b> is created to bring BabieGs together in an exclusive,
-					AbieG-centric community where the most freshest and exclusive news, updates, and giveaway
-					announcements are delivered by AbieG herself.
-					<br /><br />
-					The website focuses on providing each of the community members a safe space to communicate
-					with each other and gush over all things AbieG. -->
 				</p>
 			</div>
 		</div>
@@ -168,6 +163,9 @@
 </svelte:head>
 
 <style>
+	.loading {
+		position: fixed;
+	}
 	.floatingImage {
 		position: fixed;
 		width: 50vw;
@@ -176,6 +174,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		transition: 200ms ease opacity;
 	}
 	.floatingImage img {
 		width: 100%;
@@ -183,12 +182,12 @@
 
 		opacity: 0.5;
 		object-fit: cover;
-		clip-path: circle(80% at 100% 40%);
+		clip-path: polygon(5% 0%, 100% 0%, 100% 100%, 5% 100%);
 		transition: 500ms ease all;
 	}
 	.joinbutton {
 		padding: 1em;
-		width: 300px;
+		width: 60%;
 		margin-top: 50px;
 		font-size: 1rem;
 		background: none;
@@ -213,13 +212,6 @@
 		right: calc(5% - 300px);
 		z-index: -1;
 	}
-	.transitioner {
-		transition: 750ms cubic-bezier(0.1, 0.69, 0.3, 0.91) all 500ms;
-		clip-path: circle(0vw at 0% 100%);
-	}
-	.transitioner-mounted {
-		clip-path: circle(175vw at 0% 100%);
-	}
 
 	main {
 		/* margin: 0; */
@@ -233,115 +225,89 @@
 	}
 	.brand {
 		position: absolute;
-		bottom: 50px;
-		left: 50px;
-		z-index: 2;
+		bottom: 25%;
+		left: 25px;
+		opacity: 0.4;
+	}
+	.brand2 {
+		opacity: 0.3;
+	}
+	.brand3 {
+		opacity: 0.2;
+	}
+	.brand4 {
+		opacity: 0.1;
 	}
 	.brand__letterContainer {
 		width: 100%;
 		height: 150px;
 		display: flex;
-		justify-content: flex-start;
-		align-items: center;
+		/* justify-content: flex-start; */
+		/* align-items: center; */
 	}
 
 	.brand__letterContainer .brand__lc_letter {
 		font-weight: 600;
-		font-family: 'XoloniumRegular';
+		font-family: 'Montserrat', sans-serif;
 		font-size: 8rem;
-		width: 150px;
-		height: 150px;
+		width: 125px;
+		height: 125px;
+		opacity: 0.5;
 		color: transparent;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		color: white;
+		color: transparent;
+		-webkit-text-stroke-width: 1px;
+		-webkit-text-stroke-color: white;
+		transition: opacity 200ms ease;
 	}
 	.letter-g {
-		opacity: 0;
-	}
-	.brand__candy_rec1 {
-		position: fixed;
-		left: 0px;
-		bottom: 0;
-		width: 125px;
-		height: 0;
-		background: #f7749c;
-		z-index: 1;
-		transition: 200ms ease all;
-	}
-	.brand__candy_rec2 {
-		position: fixed;
-		left: 0;
-		bottom: 0px;
-		width: 0%;
-		height: 125px;
-		background: #819ef7;
-		z-index: 1;
-		transition: 200ms ease all 100ms;
+		margin-left: 25px;
 	}
 	.content {
 		position: absolute;
 		right: 5%;
-		bottom: 20%;
+		bottom: 10%;
 		color: white;
 		text-align: right;
 	}
 	.scrollDown {
-		width: 15px;
-		height: 15px;
-		border: white 5px solid;
-		border-top: none;
-		border-right: none;
-		transform: rotate(-45deg);
+		position: fixed;
+		top: 50%;
+		right: 5%;
+		width: 5px;
+		height: 5px;
+		border: white 10px solid;
+		border-radius: 100px;
 		animation: scrolldown 1s ease infinite;
+		z-index: 3;
 	}
 	@keyframes scrolldown {
 		0% {
 			opacity: 0;
-			transform: rotate(-45deg) translate(5px, -5px);
+			transform: translateY(20px);
 		}
-		50% {
+		20% {
+			opacity: 1;
+			/* transform: rotate(-45deg) translate(10px, -10px); */
+		}
+		60% {
 			opacity: 1;
 			/* transform: rotate(-45deg) translate(10px, -10px); */
 		}
 		100% {
 			opacity: 0;
-			transform: rotate(-45deg) translate(-5px, 5px);
+			transform: translateY(-20px);
 		}
 	}
 	@media screen and (max-width: 800px) {
 		.floatingImage {
 			width: 100vw;
 		}
-		.transitioner {
-			clip-path: circle(120vh at 0% 100%);
-		}
-		.brand {
-			bottom: 15px;
-			left: 15px;
-		}
-		.brand__letterContainer {
-			height: 100px;
-		}
-		.brand__letterContainer .brand__lc_letter {
-			font-size: 5rem;
-			width: 100px;
-			height: 100px;
-		}
-
-		.brand__candy_rec1 {
-			left: 0;
-			width: 65px;
-		}
-		.brand__candy_rec2 {
-			bottom: 0;
-			height: 65px;
-		}
 		.content {
 			right: 5%;
-			bottom: 40%;
-			max-width: 65%;
+			max-width: 75%;
 		}
 		.content .textEffectContainer {
 			display: flex;
@@ -351,28 +317,4 @@
 			width: 100%;
 		}
 	}
-	.celebration {
-		position: relative;
-		/* display: flex;
-		align-items: center;
-		z-index: 5;
-		color: white; */
-		z-index: 5;
-		padding-top: 5em;
-		padding-bottom: 5em;
-	}
-	/* .celebration .container {
-		margin-left: 5%;
-		width: 80%;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		font-size: 1.1rem;
-	}
-	.celebration .container h1 {
-		margin-bottom: 2em;
-	}
-	.celebration .container p {
-		margin-bottom: 1em;
-	} */
 </style>

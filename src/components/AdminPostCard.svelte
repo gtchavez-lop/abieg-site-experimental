@@ -2,17 +2,10 @@
 	import { fly, fade, scale, slide } from 'svelte/transition';
 	import { supabase } from '../global';
 	export let blog;
+	export let index;
 
-	let isActive = false;
-	let isDeleting = true;
+	let isDeleting = false;
 
-	let toggleActive = (e) => {
-		if (isActive) {
-			isActive = false;
-		} else {
-			isActive = true;
-		}
-	};
 	let confirmDelete = (e) => {
 		if (isDeleting) {
 			isDeleting = false;
@@ -33,7 +26,101 @@
 	};
 </script>
 
-<div class="row  ">
+<div class="accordion-item bg-transparent">
+	<h2 class="accordion-header">
+		<button
+			class="accordion-button"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#acc_{index}"
+			aria-expanded="true"
+			aria-controls="acc_{index}"
+		>
+			{blog.title}
+		</button>
+	</h2>
+	<div id="acc_{index}" class="accordion-collapse collapse" aria-labelledby="headingOne">
+		<div class="accordion-body">
+			<div class="accordion-body">
+				<h3>Commands</h3>
+				<div class="row mb-5">
+					<div class="col-12">
+						{#if !isDeleting}
+							<button style="min-width: 200px;" on:click={confirmDelete} class="btn btn-danger"
+								>Delete Post</button
+							>
+						{/if}
+						{#if isDeleting}
+							<button style="min-width: 200px;" on:click={confirmDelete} class="btn btn-primary"
+								>No</button
+							>
+							<button style="min-width: 200px;" on:click={deletePost} class="btn btn-danger"
+								>Confirm Delete</button
+							>
+						{/if}
+					</div>
+				</div>
+				<h3>Blog Information</h3>
+				<div class="row">
+					<div class="col-12">
+						<table class="table text-white">
+							<tbody>
+								<tr>
+									<td><h5>Blog UID</h5></td>
+									<td><h6>{blog.id.toUpperCase()}</h6></td>
+								</tr>
+								<tr>
+									<td><h5>Blog Visibility</h5></td>
+									<td>
+										{#if blog.isExclusive}
+											<h6>Exclusive</h6>
+										{:else}
+											<h6>Public</h6>
+										{/if}</td
+									>
+								</tr>
+								<tr>
+									<td><h5>Publisher</h5></td>
+									<td>
+										<h6>{blog.author}</h6>
+									</td>
+								</tr>
+								<tr>
+									<td><h5>Created at</h5></td>
+									<td>
+										<h6>{blog.created_at}</h6>
+									</td>
+								</tr>
+								<tr>
+									<td><h5>Header Image URI</h5></td>
+									<td>
+										<h6>{blog.header_img}</h6>
+									</td>
+								</tr>
+								<tr>
+									<td><h5>Header Image Preview</h5></td>
+									<td>
+										<img src={blog.header_img} width="200" alt="" />
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12 mt-5" />
+				</div>
+
+				<h3 class="mt-4">Blog Content</h3>
+				<div class="col-12">
+					<p>
+						{@html blog.content}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- <div class="row  ">
 	<div
 		class="col blogContainer s12 valign-wrapper title blue-grey darken-3"
 		on:click={toggleActive}
@@ -50,14 +137,14 @@
 			<div class="row">
 				<div class="col s12">
 					<div class="row">
-						<!-- id -->
+						
 						<div class="col s3">
 							<p>Blog UID</p>
 						</div>
 						<div class="col s9">
 							<p>{blog.id.toUpperCase()}</p>
 						</div>
-						<!-- is exclusive -->
+						
 						<div class="col s3">
 							<p>Blog Visibility</p>
 						</div>
@@ -68,21 +155,21 @@
 								<p>Public</p>
 							{/if}
 						</div>
-						<!-- publisher -->
+						
 						<div class="col s3">
 							<p>Publisher</p>
 						</div>
 						<div class="col s9">
 							<p>{blog.author}</p>
 						</div>
-						<!-- date created -->
+						
 						<div class="col s3">
 							<p>Created at</p>
 						</div>
 						<div class="col s9">
 							<p>{blog.created_at}</p>
 						</div>
-						<!-- image URI -->
+						
 						<div class="col s3">
 							<p>Header Image URI</p>
 						</div>
@@ -148,23 +235,6 @@
 			</button>
 		</div>
 	{/if}
-</div>
-
+</div> -->
 <style>
-	.blogContainer {
-		padding: 1em;
-		margin-left: 1em;
-		border-radius: 10px;
-		margin-top: 2em;
-		user-select: none;
-	}
-	.title {
-		cursor: pointer;
-	}
-	.material-icons {
-		transition: 500ms ease all;
-	}
-	.inverted {
-		transform: rotate(-180deg);
-	}
 </style>

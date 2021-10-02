@@ -27,12 +27,18 @@
 					hasBlogs = true;
 					blogs = data;
 				}
+				if (data.length < 1) {
+					hasBlogs = false;
+				}
 			} else {
 				let { data, error } = await supabase.from('posts').select('*').eq('isExclusive', 'false');
 				hasBlogs = null;
 				if (!error || data) {
 					hasBlogs = true;
 					blogs = data;
+				}
+				if (data.length < 1) {
+					hasBlogs = false;
 				}
 			}
 		})();

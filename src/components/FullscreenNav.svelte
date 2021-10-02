@@ -272,7 +272,7 @@
 		position: relative;
 		transition: 200ms ease all;
 		cursor: pointer;
-		margin-top: 1.5em;
+		margin-top: 2vh;
 	}
 	.menu__navlinks__navlink h1 {
 		transition: 200ms ease all;

@@ -7,20 +7,6 @@
 	let mainContainer;
 </script>
 
-<svelte:head>
-	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link
-		href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap"
-		rel="stylesheet"
-	/>
-	<link
-		rel="stylesheet"
-		media="screen"
-		href="https://fontlibrary.org//face/xolonium"
-		type="text/css"
-	/>
-</svelte:head>
-
 <FullscreenNav />
 <main bind:this={mainContainer} />
 <slot />

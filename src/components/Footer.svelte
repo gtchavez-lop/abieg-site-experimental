@@ -1,4 +1,4 @@
-<footer class="page-footer teal darken-3">
+<!-- <footer class="page-footer teal darken-3">
 	<div class="container">
 		<div class="row">
 			<div class="col l6 s12">
@@ -32,7 +32,26 @@
 			<a class="grey-text text-lighten-4 right" href="/">Abie G</a>
 		</div>
 	</div>
-</footer>
+</footer> -->
+
+<div class="text-white py-5 shadow bg-grey-900">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<h4>Abie G</h4>
+			</div>
+			<div class="col-sm-12">
+				<a class="link-light me-2" href="facebook.com"><i class="bi bi-facebook" /></a>
+				<a class="link-light me-2" href="twitch.tv"><i class="bi bi-twitch" /></a>
+				<a class="link-light me-2" href="twitter.com"><i class="bi bi-twitter" /></a>
+				<a class="link-light me-2" href="instagram.com"><i class="bi bi-instagram" /></a>
+			</div>
+			<div class="col-sm-12">
+				<p>© 2021</p>
+			</div>
+		</div>
+	</div>
+</div>
 
 <style>
 	footer {

@@ -54,7 +54,33 @@
 	{/if}
 </svelte:head>
 
-<main id="top" in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
+<div class="imgContainer" bind:this={image}>
+	{#if blogData}
+		<img src={blogData.header_img} alt="" />
+	{/if}
+</div>
+<main style="margin-top: calc(50vh + 2em);">
+	<div class="container text-white">
+		<a href="/posts" class="btn btn-primary bg-secondary mb-2">
+			<i class="bi bi-x me-3" />Close Article
+		</a>
+		<div class="row">
+			<div class="col-12">
+				{#if blogData}
+					<h3 class="display-1">{blogData.title}</h3>
+					<h5>by: {blogData.author}</h5>
+				{/if}
+			</div>
+			<div class="col-12 mt-5">
+				{#if blogData}
+					<p class="flow-text white-text">{@html blogData.content}</p>
+				{/if}
+			</div>
+		</div>
+	</div>
+</main>
+
+<!-- <main id="top" in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
 	<div class="imgContainer" bind:this={image}>
 		{#if blogData}
 			<img src={blogData.header_img} alt="" />
@@ -78,23 +104,7 @@
 			<p class="flow-text white-text">{@html blogData.content}</p>
 		{/if}
 	</div>
-	<!-- <div class="container backbutton" style="margin-top: 2em">
-		<a class="btn-floating btn-large waves-effect waves-light  blue lighten-2" href="/posts"
-			><i class="material-icons">arrow_back</i></a
-		>
-	</div>
-	<div class="container white-text">
-		{#if blogData}
-			<h1>{blogData.title}</h1>
-		{/if}
-	</div>
-	<div class="container white-text content">
-		{#if blogData}
-			<p class="flow-text">{@html blogData.content}</p>
-		{/if}
-	</div> -->
-</main>
-
+</main> -->
 <style>
 	main {
 		position: relative;
@@ -105,7 +115,7 @@
 		position: fixed;
 		top: 0;
 		width: 100vw;
-		height: 100vh;
+		height: 50vh;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -113,24 +123,6 @@
 		perspective: 1px;
 		opacity: 1;
 		transition: 500ms ease all;
-	}
-	.flex {
-		position: relative;
-		height: 100vh;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		text-align: center;
-		z-index: 2;
-		margin-bottom: 5em;
-	}
-	.backbutton {
-		margin-bottom: 5em;
-	}
-	.content {
-		position: relative;
-		z-index: 2;
-		margin-bottom: 5em;
 	}
 	img {
 		position: absolute;

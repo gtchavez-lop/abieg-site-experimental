@@ -19,19 +19,19 @@
 		// console.log(moderators[0]);
 		// console.log(error);
 		if (!moderators[0]) {
-			M.toast({ html: `That user does not exist` });
+			// M.toast({ html: `That user does not exist` });
 		} else {
 			if (!error) {
 				delete moderators[0].password;
 				global_mod_account.set(moderators[0]);
 				localStorage.setItem('data_mod', JSON.stringify(moderators[0]));
-				M.toast({ html: `Welcome ${$global_mod_account.username}` });
-				M.toast({ html: `You will be redirected to the dashboard` });
+				// M.toast({ html: `Welcome ${$global_mod_account.username}` });
+				// M.toast({ html: `You will be redirected to the dashboard` });
 				setTimeout(() => {
 					goto('admin/dashboard', { replaceState: true });
 				}, 500);
 			} else {
-				M.toast({ html: `Something went wrong. Try again later` });
+				// M.toast({ html: `Something went wrong. Try again later` });
 			}
 		}
 	};

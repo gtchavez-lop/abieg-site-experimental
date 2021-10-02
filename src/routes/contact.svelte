@@ -4,7 +4,37 @@
 </script>
 
 <main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
-	<div class="container white-text">
+	<div class="container text-white">
+		<p class="display-3">Connect with us</p>
+		<div class="row mt-5">
+			<div class="col-12">
+				<h3>Write your thoughts</h3>
+			</div>
+			<div class="col-12 mt-3	">
+				<form class="form-floating mb-3">
+					<input
+						type="email"
+						class="form-control bg-transparent"
+						id="email"
+						placeholder="name@example.com"
+					/>
+					<label for="email">Your Email Address</label>
+				</form>
+				<div class="form-floating ">
+					<textarea
+						class="form-control bg-transparent"
+						placeholder="Leave a comment here"
+						id="comment"
+					/>
+					<label for="comment">Your can write your thoughts here</label>
+				</div>
+				<button class="btn btn-primary mt-5"
+					><i class="bi bi-cloud-arrow-up me-2" style="font-size: 1.5em;" />Send your thoughts</button
+				>
+			</div>
+		</div>
+	</div>
+	<!-- <div class="container white-text">
 		<h2>Keep in touch</h2>
 		<div class="container1 blue-grey darken-4">
 			<div class="row">
@@ -31,7 +61,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 </main>
 <div class="scroller" transition:fade={{ duration: 500 }}>
 	<MarqueeTextWidget duration={15}
@@ -47,10 +77,6 @@
 		z-index: 3;
 	}
 
-	.container1 {
-		padding: 1em;
-		border-radius: 10px;
-	}
 	.scroller {
 		position: fixed;
 		bottom: -7%;

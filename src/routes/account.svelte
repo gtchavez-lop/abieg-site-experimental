@@ -1,11 +1,10 @@
 <script>
 	import { fly, fade, slide } from 'svelte/transition';
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';
-	import { Datepicker } from 'svelte-calendar';
-	import dayjs from 'dayjs';
+	// import dayjs from 'dayjs';
 	import { supabase, global_account, global_hasAccount } from '../global';
-	import cryptojs from 'crypto-js';
 	import { onMount } from 'svelte';
+	import { toast, SvelteToast } from '@zerodevx/svelte-toast';
 
 	let isRegister = false;
 	let birthdate;
@@ -19,35 +18,9 @@
 	let reg_gender;
 	let reg_address;
 
-	const theme = {
-		calendar: {
-			width: '700px',
-			maxWidth: '100vw',
-			legend: {
-				height: '35px'
-			},
-			shadow: 'none',
-			colors: {
-				text: {
-					primary: '#eee',
-					highlight: '#fff'
-				},
-				background: {
-					primary: '#1B1B1B',
-					highlight: '#EB6F95',
-					hover: '#263238'
-				},
-				border: '#222'
-			},
-			font: {
-				regular: '1.5em',
-				large: '5em'
-			},
-			grid: {
-				disabledOpacity: '.5',
-				outsiderOpacity: '.2'
-			}
-		}
+	const flatpickrOptions = {
+		enableTime: true,
+		onChange: (selectedDates, dateStr, instance) => {}
 	};
 
 	const toggleCards = (e) => {
@@ -60,13 +33,18 @@
 			.select('*')
 			.eq('email', login_email)
 			.eq('password', login_password);
-		if (!error) {
+		if (data.length > 0) {
 			delete data[0].password;
 			global_account.set(data[0]);
 			localStorage.setItem('data', JSON.stringify(data[0]));
-			M.toast({ html: `Hello, ${$global_account.given_name} ${$global_account.family_name}` });
+			toast.push(`Hello, ${$global_account.given_name} ${$global_account.family_name}`);
+			// M.toast({ html: `Hello, ${$global_account.given_name} ${$global_account.family_name}` });
 		} else {
-			M.toast({ html: `Email or Password incorrect.` });
+			toast.push('Email or Password incorrect');
+			// M.toast({ html: `Email or Password incorrect.` });
+		}
+		if (error) {
+			toast.push('Email or Password incorrect');
 		}
 	};
 
@@ -78,14 +56,14 @@
 					family_name: reg_familyName,
 					email: reg_email,
 					password: reg_password,
-					birthdate: dayjs($birthdate.selected).format('YYYY-MM-DD'),
+					// birthdate: dayjs($birthdate.selected).format('YYYY-MM-DD'),
 					gender: reg_gender,
 					shipping_address: reg_address
 				}
 			]);
 
 			if (error) {
-				M.toast({ html: 'Something went wrong. Try again' });
+				// M.toast({ html: 'Something went wrong. Try again' });
 			} else {
 				login_email = reg_email;
 				isRegister = false;
@@ -94,11 +72,11 @@
 				reg_familyName = null;
 				reg_password = null;
 				reg_email = null;
-				$birthdate.set(null);
-				M.toast({ html: 'Registration Successful, please login ' });
+				// $birthdate.set(null);
+				// M.toast({ html: 'Registration Successful, please login ' });
 			}
 		} else {
-			M.toast({ html: 'Please enter all required fields' });
+			// M.toast({ html: 'Please enter all required fields' });
 		}
 	};
 
@@ -130,280 +108,234 @@
 </script>
 
 <main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
-	<!-- {#if !isRegister} -->
-
+	<SvelteToast options={{ duration: 1000 }} />
 	<div
-		class="container white-text"
+		class="container text-white"
 		style="border-radius:10px"
 		transition:slide|local={{ duration: 500 }}
 	>
-		<h2>Your Account</h2>
-
+		<p class="display-3">Your Account</p>
 		{#if !$global_account}
-			<div class="row container1 center-align " in:fly|local={{ y: -40, duration: 500 }}>
-				<div class="col s12 m5 ">
-					<div class="imageContainer">
-						<img src="./illustrations/undraw_profile_image_re_ic2f.svg" width="250" alt="" />
-					</div>
+			<div class="row" style="min-height: 50vh;" in:fly|local={{ y: -40, duration: 500 }}>
+				<div class="col-md-6 d-flex justify-content-center align-items-center mt-md-5">
+					<img
+						class="mx-auto"
+						src="./illustrations/undraw_profile_image_re_ic2f.svg"
+						width="250"
+						alt=""
+					/>
 				</div>
-				<div class="col s12 m7 container1 blue-grey darken-4 z-depth-1">
-					<div class="">
-						<h4>Sign in to your account</h4>
-					</div>
-					<div class="input-field col s12 white-text">
-						<i class="material-icons prefix">email</i>
-						<input id="email" bind:value={login_email} type="email" class="validate  white-text" />
-						<label for="email">Email Address</label>
-					</div>
-					<div class="input-field col s12 white-text">
-						<i class="material-icons prefix">password</i>
+				<div class="col-md-6 d-flex flex-column justify-content-center mt-md-5">
+					<h4>Sign in to your account</h4>
+
+					<div class="form-floating my-3 ">
 						<input
-							id="password"
-							bind:value={login_password}
-							type="password"
-							class="validate  white-text"
+							type="email"
+							class="form-control bg-transparent text-white"
+							id="login_email"
+							placeholder="Your Registered Email Address"
+							bind:value={login_email}
 						/>
-						<label for="password">Password</label>
+						<label for="login_email">Your Registered Email Address</label>
 					</div>
-
-					<div class="col s12 center-align">
-						<button
-							on:click={login_emailPass}
-							class="waves-effect waves-light btn-large pink darken-4 "
-							>Sign In<i class="material-icons right">east</i></button
-						>
+					<div class="form-floating mb-4 ">
+						<input
+							type="password"
+							class="form-control bg-transparent text-white"
+							id="login_password"
+							placeholder="Your Password"
+							bind:value={login_password}
+						/>
+						<label for="login_password">Your Password</label>
 					</div>
+					<button class="btn btn-primary" on:click={login_emailPass}> Sign In </button>
+					<button on:click={toggleCards} class="btn btn-link mt-3 text-info"
+						>Don't have an account? Click Me</button
+					>
 				</div>
 			</div>
-			<div class="row center-align" in:fly|local={{ y: -40, duration: 500, delay: 200 }}>
-				{#if !isRegister}
-					<div class="col s12 blue-grey darken-3 z-depth-1" style="border-radius: 10px;">
-						<p on:click={toggleCards} style="cursor:pointer;">Don't have an account? Click Me</p>
-					</div>
-				{/if}
-			</div>
-			<!-- {/if} -->
+
 			{#if isRegister}
-				<div
-					class="container1 white-text blue-grey darken-4 z-depth-1"
-					style="border-radius:10px"
-					transition:slide|local={{ duration: 500 }}
-				>
-					<div class="row">
-						<div class="col">
-							<div class="container" />
-							<h4>Join with us</h4>
-						</div>
+				<div class="row my-5" transition:slide|local={{ duration: 500 }}>
+					<div class="col col-12">
+						<h4>Join with us</h4>
 					</div>
-					<div class="row">
-						<div class="col s12">
-							<h6>User Account</h6>
-						</div>
-						<div class="input-field col s12 m6 white-text">
-							<input
-								bind:value={reg_email}
-								id="reg_email"
-								type="email"
-								class="white-text validate"
-							/>
-							<label for="reg_email">Your Email Adress</label>
-						</div>
-						<div class="input-field col s12 m6 white-text">
-							<input
-								bind:value={reg_password}
-								id="reg_password"
-								type="password"
-								class="white-text"
-							/>
-							<label for="reg_password">Your Password</label>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col s12">
-							<h6>Basic Information</h6>
-						</div>
-						<div class="input-field col s12 m6 white-text">
-							<input bind:value={reg_givenName} id="given_name" type="text" class="white-text" />
-							<label for="given_name">Your Given Name</label>
-						</div>
-						<div class="input-field col s12 m6 white-text">
-							<input bind:value={reg_familyName} id="family_name" type="text" class="white-text" />
-							<label for="family_name">Your Family Name</label>
-						</div>
-
-						<!-- birthdate -->
-						<!-- <div class="input-field col s3 m4 white-text">
-							<input id="birthdate" type="number" min="1" max="31" class="white-text" />
-							<label for="birthdate">Birth Day</label>
-						</div>
-						<div class="input-field col s5 m4 white-text">
-							<input id="birthdate" type="text" class="white-text" />
-							<label for="birthdate">Birth Month Name</label>
-						</div>
-						<div class="input-field col s4 m4 white-text">
-							<input id="birthdate" type="number" min="1900" max="2009" class="white-text" />
-							<label for="birthdate">Birth Year</label>
-						</div> -->
-						<div class="col s12 white-text valign-wrapper">
-							<label style="font-size: 1em; margin-right: 1em;" for="">Birth Date</label>
-							<Datepicker bind:store={birthdate} {theme} let:key let:send let:receive>
-								<button
-									class="waves-effect waves-light btn blue-grey darken-3"
-									in:receive|local={{ key }}
-									out:send|local={{ key }}
-								>
-									{#if $birthdate?.hasChosen}
-										{dayjs($birthdate.selected).format('YYYY-MM-DD')}
-									{:else}
-										When is your birthday?
-									{/if}
-								</button>
-							</Datepicker>
-							<!-- <p>{$birthdate?.selected}</p> -->
-						</div>
-
-						<div class="input-field col s12 white-text">
-							<input id="phoneNumber" type="number" min="1900" max="2009" class="white-text" />
-							<label for="phoneNumber">Phone Number</label>
-						</div>
-						<!-- identity -->
-						<div class="input-field col s12 m5 white-text">
-							<p>
-								<label class="center-align">
+					<div class="col col-12 mt-4">
+						<h5>User Account</h5>
+						<div class="row">
+							<div class="col-sm-12 col-md-6">
+								<div class="form-floating mb-3 ">
 									<input
-										class="with-gap"
-										bind:group={reg_gender}
-										value="male"
-										name="group1"
-										type="radio"
+										type="email"
+										class="form-control bg-transparent text-white"
+										id="reg_email"
+										placeholder="username@domain.com"
+										bind:value={reg_email}
 									/>
-									<span>Male</span>
-								</label>
-							</p>
-							<p>
-								<label class="center-align">
+									<label for="reg_email">Your Email address</label>
+								</div>
+							</div>
+							<div class="col col-md-6">
+								<div class="form-floating mb-3 ">
 									<input
-										class="with-gap"
-										bind:group={reg_gender}
-										value="female"
-										name="group1"
-										type="radio"
+										type="password"
+										class="form-control bg-transparent text-white"
+										id="reg_password"
+										placeholder="Your Secure Password"
+										bind:value={reg_password}
 									/>
-									<span>Female</span>
-								</label>
-							</p>
-							<p>
-								<label class="center-align">
-									<input
-										class="with-gap"
-										bind:group={reg_gender}
-										value="nonBinary"
-										name="group1"
-										type="radio"
-									/>
-									<span>Non-binary</span>
-								</label>
-							</p>
-							<!-- <p>
-								<label class="center-align">
-									<input class="with-gap" name="group1" type="radio" />
-									<span>Attack Helicopter</span>
-								</label>
-							</p> -->
-						</div>
-
-						<div class="input-field col s12 white-text">
-							<input id="shipAddress" bind:value={reg_address} type="text" class="white-text" />
-							<label for="shipAddress">Shipping Address</label>
+									<label for="reg_password">Your Password</label>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="row center-align">
-						<div class="col s12">
-							<button
-								on:click={registerUser}
-								class="waves-effect waves-light btn-large deep-orange darken-4 "
-								>Register<i class="material-icons right">person_add</i></button
-							>
+					<div class="col col-sm-12 mt-4">
+						<h5>Basic Information</h5>
+						<div class="row">
+							<div class="col-sm-12 col-md-6">
+								<div class="form-floating mb-3 ">
+									<input
+										type="text"
+										class="form-control bg-transparent text-white"
+										id="reg_givenName"
+										placeholder="Your Given Name"
+										bind:value={reg_givenName}
+									/>
+									<label for="reg_givenName">Your Given Name</label>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-6">
+								<div class="form-floating mb-3 ">
+									<input
+										type="text"
+										class="form-control bg-transparent text-white"
+										id="reg_familyName"
+										placeholder="Your Surname"
+										bind:value={reg_familyName}
+									/>
+									<label for="reg_familyName">Your Surname</label>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="form-floating mb-3 ">
+									<input
+										type="text"
+										class="form-control bg-transparent text-white"
+										id="reg_address"
+										placeholder="Your Shipping Addresse"
+										bind:value={reg_address}
+									/>
+									<label for="reg_address">Your Shipping Address</label>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-6 mb-4">
+								<div class="form-floating mb-3 ">
+									<input
+										type="text"
+										class="form-control bg-transparent text-white"
+										id="reg_birthdate"
+										placeholder="Birthdate"
+										bind:value={birthdate}
+									/>
+									<label for="reg_birthdate">Birthdate</label>
+								</div>
+								<p>*format follows MM/DD/YYYY</p>
+							</div>
+							<div class="col-sm-12 col-md-6 ">
+								<div><h5>Gender</h5></div>
+								<div class="form-check">
+									<input
+										bind:group={reg_gender}
+										class="form-check-input"
+										type="radio"
+										name="reg_gender"
+										id="reg_gender1"
+									/>
+									<label class="form-check-label" for="reg_gender1"> Male </label>
+								</div>
+								<div class="form-check">
+									<input
+										bind:group={reg_gender}
+										class="form-check-input"
+										type="radio"
+										name="reg_gender"
+										id="reg_gender2"
+									/>
+									<label class="form-check-label" for="reg_gender2"> Female </label>
+								</div>
+								<div class="form-check">
+									<input
+										bind:group={reg_gender}
+										class="form-check-input"
+										type="radio"
+										name="reg_gender"
+										id="reg_gender3"
+									/>
+									<label class="form-check-label" for="reg_gender3"> Non-binary </label>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="row" />
+					<button on:click={registerUser} class="btn btn-outline-primary mt-5">
+						Register Now
+					</button>
 				</div>
 			{/if}
 		{/if}
-
 		{#if $global_account}
-			<div class="row pink darken-4 container1" style="margin-top: 5em;">
-				<div class="col s12">
-					<div class="row valign-wrapper">
-						<!-- account ID -->
-						<div class="col s12 m3">
-							<h6>Account ID:</h6>
-						</div>
-						<div class="col s12 m9">
-							<h6>{$global_account.id.toUpperCase()}</h6>
-						</div>
-					</div>
-					<div class="row valign-wrapper">
-						<!-- account holder -->
-						<div class="col s12 m3">
-							<h6>Account Holder:</h6>
-						</div>
-						<div class="col s12 m9">
-							<h6>{$global_account.given_name} {$global_account.family_name}</h6>
-						</div>
-					</div>
-					<div class="row valign-wrapper">
-						<!-- account email -->
-						<div class="col s12 m3">
-							<h6>Account Email:</h6>
-						</div>
-						<div class="col s12 m9">
-							<h6>{$global_account.email}</h6>
-						</div>
-					</div>
-					<div class="row valign-wrapper" style="margin-top: 4em;">
-						<!-- birthdate -->
-						<div class="col s12 m3">
-							<h6>Birthdate:</h6>
-						</div>
-						<div class="col s12 m9">
-							<h6>{$global_account.birthdate}</h6>
-						</div>
-					</div>
-					<div class="row valign-wrapper">
-						<!-- gender -->
-						<div class="col s12 m3">
-							<h6>Gender:</h6>
-						</div>
-						<div class="col s12 m9">
-							<h6>{$global_account.gender.toUpperCase()}</h6>
-						</div>
-					</div>
-					<div class="row valign-wrapper">
-						<!-- shipping Address -->
-						<div class="col s12 m3">
-							<h6>Shipping Address:</h6>
-						</div>
-						<div class="col s12 m9">
-							<h6>{$global_account.shipping_address}</h6>
-						</div>
-					</div>
-				</div>
+			<div class="row mt-5" in:fly|local={{ y: -20, duration: 500 }}>
+				<table class="table text-white">
+					<tbody>
+						<tr>
+							<td><h6>Account ID</h6></td>
+							<td>{$global_account.id.toUpperCase()}</td>
+						</tr>
+						<tr>
+							<td><h6>Account Holder</h6></td>
+							<td>{$global_account.given_name} {$global_account.family_name}</td>
+						</tr>
+						<tr>
+							<td><h6>Account Email Address</h6></td>
+							<td>{$global_account.email}</td>
+						</tr>
+						<tr>
+							<td><h6>Birthdate</h6></td>
+							<td>{$global_account.birthdate}</td>
+						</tr>
+						<tr>
+							<td><h6>Gender</h6></td>
+							<td>{$global_account.gender.toUpperCase()}</td>
+						</tr>
+						<tr>
+							<td><h6>Shipping Address</h6></td>
+							<td>{$global_account.shipping_address}</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-			<div class="row" style="margin-top: 5em;" in:fly|local={{ y: -40, duration: 500 }}>
+			<div class="row mt-5" in:fly|local={{ y: -20, duration: 500, delay: 200 }}>
 				{#if !confirmLogout}
-					<div class="row center-align">
-						<div
-							in:fly|local={{ y: -20, duration: 500 }}
-							on:click={logoutConfirm}
-							class="btn btn-large waves-effect waves-light red lighten-1 right"
-						>
-							Log Out
-						</div>
-					</div>
+					<button
+						in:fly|local={{ x: 20, duration: 500 }}
+						class="btn btn-danger"
+						on:click={logoutConfirm}
+					>
+						Log out
+					</button>
 				{:else}
-					<div class="row right-align">
-						<div class="col s2 offset-s8">
+					<h4 in:fly|local={{ x: -20, duration: 500 }}>Do you really want to log out</h4>
+					<div
+						class="d-flex justtify-content-center"
+						in:fly|local={{ x: -20, duration: 500, delay: 100 }}
+					>
+						<button on:click={logout} class="btn btn-danger me-4" style="min-width: 150px;">
+							Yes
+						</button>
+						<button on:click={logoutConfirm} class="btn btn-primary" style="min-width: 150px;">
+							No
+						</button>
+					</div>
+					<!-- <div class="col s2 offset-s8">
 							<button
 								on:click={logout}
 								in:fly|local={{ x: 20, duration: 500, delay: 400 }}
@@ -423,17 +355,13 @@
 						</div>
 						<div class="col s12">
 							<h4 in:fly|local={{ x: 20, duration: 500 }}>Do you really want to logout?</h4>
-						</div>
-					</div>
+						</div> -->
 				{/if}
 			</div>
 		{/if}
-
-		<div class="row">
-			<div class="col" />
-		</div>
 	</div>
 </main>
+
 <div class="scroller" transition:fade={{ duration: 500 }}>
 	<MarqueeTextWidget duration={15}
 		>BE ACTIVE WITH ABIE G &nbsp;BE ACTIVE WITH ABIE G &nbsp;BE ACTIVE WITH ABIE G &nbsp;</MarqueeTextWidget
@@ -447,12 +375,12 @@
 		margin-top: 120px;
 		z-index: 3;
 	}
-	.container1 {
+	/* .container1 {
 		padding: 1em;
 		padding-top: 2em;
 		padding-bottom: 2em;
 		border-radius: 10px;
-	}
+	} */
 	.scroller {
 		width: 120%;
 		position: fixed;
@@ -464,10 +392,5 @@
 		font-family: 'Thunder Bold';
 		user-select: none;
 		z-index: 1;
-	}
-	.imageContainer {
-		display: flex;
-		justify-content: center;
-		align-items: center;
 	}
 </style>

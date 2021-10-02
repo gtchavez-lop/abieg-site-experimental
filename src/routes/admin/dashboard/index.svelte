@@ -54,14 +54,14 @@
 			]);
 
 			if (!error) {
-				M.toast({ html: 'Blog Posted' });
+				// M.toast({ html: 'Blog Posted' });
 				blog_title = '';
 				blog_content = '';
 				blog_visibility = false;
 				location.reload();
 			}
 		} else {
-			M.toast({ html: 'Please fill out all the input fields' });
+			// M.toast({ html: 'Please fill out all the input fields' });
 		}
 	};
 
@@ -100,44 +100,49 @@
 	<div class="container white-text">
 		<h1>Moderator Dashboard</h1>
 		<!-- tabs -->
-		<div class="row">
-			<div class="col s12 m4">
+		<div class="row" style="margin-top: 5em;">
+			<div class="col s3 center-align">
 				<button
 					on:click={() => (tabActive = 1)}
+					data-tooltip-content="Add a Story"
 					class={tabActive == 1
-						? 'btn waves-effect waves-light cyan darken-2'
-						: 'btn waves-effect waves-light pink darken-2'}
+						? 'btn-floating btn-large waves-effect waves-light cyan darken-2 topbutton'
+						: 'btn-floating btn-large waves-effect waves-light pink darken-2 topbutton'}
 				>
-					<div class="valign-wrapper">
-						<span class="material-icons" style="margin-right: 1em;"> post_add </span>
-						Post a Story
-					</div></button
-				>
-			</div>
-			<div class="col s12 m4">
-				<button
-					on:click={() => (tabActive = 2)}
-					class={tabActive == 2
-						? 'btn waves-effect waves-light cyan darken-2'
-						: 'btn waves-effect waves-light pink darken-2'}
-				>
-					<div class="valign-wrapper">
-						<span class="material-icons" style="margin-right: 1em;"> menu_book </span>
-						Your Stories
-					</div>
+					<i class="material-icons"> post_add </i>
 				</button>
 			</div>
-			<div class="col s12 m4">
+			<div class="col s3 center-align">
+				<button
+					on:click={() => (tabActive = 2)}
+					data-tooltip-content="Your Stories"
+					class={tabActive == 2
+						? 'btn-floating btn-large waves-effect waves-light cyan darken-2 topbutton'
+						: 'btn-floating btn-large waves-effect waves-light pink darken-2 topbutton'}
+				>
+					<i class="material-icons"> menu_book </i>
+				</button>
+			</div>
+			<div class="col s3 center-align">
 				<button
 					on:click={() => (tabActive = 3)}
+					data-tooltip-content="Your Account"
 					class={tabActive == 3
-						? 'btn waves-effect waves-light cyan darken-2'
-						: 'btn waves-effect waves-light pink darken-2'}
+						? 'btn-floating btn-large waves-effect waves-light cyan darken-2 topbutton'
+						: 'btn-floating btn-large waves-effect waves-light pink darken-2 topbutton'}
 				>
-					<div class="valign-wrapper">
-						<span class="material-icons" style="margin-right: 1em;"> manage_accounts </span>
-						Your Moderator Account
-					</div>
+					<i class="material-icons"> manage_accounts </i>
+				</button>
+			</div>
+			<div class="col s3 center-align">
+				<button
+					on:click={() => (tabActive = 4)}
+					data-tooltip-content="Edit Content"
+					class={tabActive == 4
+						? 'btn-floating btn-large waves-effect waves-light cyan darken-2 topbutton'
+						: 'btn-floating btn-large waves-effect waves-light pink darken-2 topbutton'}
+				>
+					<i class="material-icons"> edit </i>
 				</button>
 			</div>
 			<!-- 
@@ -338,5 +343,27 @@
 		min-height: 100vh;
 		margin-top: 120px;
 		z-index: 3;
+	}
+	.topbutton {
+		overflow: visible;
+	}
+	.topbutton::after {
+		content: attr(data-tooltip-content);
+		position: absolute;
+		top: -100%;
+		background: #323232;
+		box-shadow: rgba(34, 34, 34, 0.5) 0 0 10px;
+		/* min-width: 100px; */
+		left: 50%;
+		width: 175px;
+		padding: 0em;
+		margin: 0em;
+		transform: translateX(-50%);
+		opacity: 0;
+		transition: 200ms ease all;
+	}
+	.topbutton:hover::after {
+		top: -110%;
+		opacity: 1;
 	}
 </style>

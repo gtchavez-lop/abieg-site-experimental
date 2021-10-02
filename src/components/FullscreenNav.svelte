@@ -272,14 +272,14 @@
 		position: relative;
 		transition: 200ms ease all;
 		cursor: pointer;
-		margin-top: -25px;
+		margin-top: 1.5em;
 	}
 	.menu__navlinks__navlink h1 {
 		transition: 200ms ease all;
 	}
 	.menu__navlinks__navlink span {
 		position: absolute;
-		top: 50%;
+		top: 40%;
 		left: -10%;
 		transform: translateY(-50%);
 		width: max-content;

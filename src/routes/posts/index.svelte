@@ -5,28 +5,34 @@
 	import { supabase, global_account, global_posts } from '../../global';
 	import Post_BlogCard from '../../components/Post_BlogCard.svelte';
 	import { onMount } from 'svelte';
+	import PostBlogCard from '../../components/Post_BlogCard.svelte';
 
+	let hasAccount = false;
 	let privateBlogs;
 	let publicBlogs;
 	let hasPrivateBlogs = null;
 	let hasPublicBlogs = null;
+	let blogs;
+	let hasBlogs = null;
 
 	onMount((e) => {
+		if (localStorage.getItem('data') != '') {
+			hasAccount = true;
+		}
 		(async (e) => {
-			let { data, error } = await supabase.from('posts').select('*').eq('isExclusive', 'false');
-			hasPublicBlogs = null;
-			if (!error || data) {
-				hasPublicBlogs = true;
-				publicBlogs = data;
-			}
-		})();
-		(async (e) => {
-			if ($global_account) {
-				let { data, error } = await supabase.from('posts').select('*').eq('isExclusive', 'true');
-				hasPrivateBlogs = null;
+			if (hasAccount) {
+				let { data, error } = await supabase.from('posts').select('*');
+				hasBlogs = null;
 				if (!error || data) {
-					hasPrivateBlogs = true;
-					privateBlogs = data;
+					hasBlogs = true;
+					blogs = data;
+				}
+			} else {
+				let { data, error } = await supabase.from('posts').select('*').eq('isExclusive', 'false');
+				hasBlogs = null;
+				if (!error || data) {
+					hasBlogs = true;
+					blogs = data;
 				}
 			}
 		})();
@@ -38,54 +44,26 @@
 </svelte:head>
 
 <main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
-	<div class="container white-text">
-		<h2>See what's new</h2>
-		<div class="container1">
-			<div class="row">
-				<div class="col s12 disabled" style="margin-bottom: 10em;">
-					<h4>Exclusive Posts</h4>
-					{#if $global_account}
-						<div class="container1">
-							{#if hasPrivateBlogs == null}
-								<div class="col s12">
-									<div class="progress transparent">
-										<div class="indeterminate blue darken-4" />
-									</div>
-									<p>Searching for public posts</p>
-								</div>
-							{:else if hasPrivateBlogs}
-								{#each privateBlogs as blog, index}
-									<Post_BlogCard {...blog} {index} />
-								{/each}
-							{:else}
-								<h5>Seems like its empty</h5>
-							{/if}
+	<div class="container text-white">
+		<h3 class="display-3">See what's new</h3>
+
+		<div class=" mt-5">
+			{#if hasBlogs == null}
+				<div class="spinner-border text-info" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+				<p>Fetching posts</p>
+			{:else if hasBlogs}
+				<div class="row gy-3 gx-3">
+					{#each blogs as blogs, index}
+						<div class="col-sm-12 col-md-6 ">
+							<PostBlogCard {...blogs} {index} />
 						</div>
-					{:else}
-						<p>Log in to enjoy exclusive content</p>
-						<a href="/account" class="btn waves-effect waves-light blue darken-4">Go to Accounts</a>
-					{/if}
+					{/each}
 				</div>
-				<div class="col s12" style="margin-bottom: 10em;">
-					<h4>Public Posts</h4>
-					<div class="container1">
-						{#if hasPublicBlogs == null}
-							<div class="col s12">
-								<div class="progress transparent">
-									<div class="indeterminate blue darken-4" />
-								</div>
-								<p>Searching for public posts</p>
-							</div>
-						{:else if hasPublicBlogs}
-							{#each publicBlogs as blog, index}
-								<Post_BlogCard {...blog} {index} />
-							{/each}
-						{:else}
-							<h5>Seems like its empty</h5>
-						{/if}
-					</div>
-				</div>
-			</div>
+			{:else}
+				<h5>Seems like its empty</h5>
+			{/if}
 		</div>
 	</div>
 </main>

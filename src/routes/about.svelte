@@ -4,7 +4,7 @@
 </script>
 
 <main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
-	<div class="container white-text" style="margin-top: 10em; margin-bottom: 100px">
+	<!-- <div class="container white-text" style="margin-top: 10em; margin-bottom: 100px">
 		<h2>Hi!</h2>
 		<p>
 			The website is a project by BSCS3A students from University of Caloocan City - Congress Campus
@@ -50,6 +50,155 @@
 				<p>Server Hosting and Maintenance</p>
 			</div>
 		</div>
+	</div> -->
+	<div class="container text-white mb-5">
+		<h2 class="display-3">Hi!</h2>
+		<p>
+			The website is a project by BSCS3A students from University of Caloocan City - Congress Campus
+			to fulfill the requirement on Advanced Web Systems and is created solely for academic purposes
+			only.
+		</p>
+	</div>
+	<div class="container text-white mb-5">
+		<h2 class="display-3">What made this site?</h2>
+		<p><b>AbieG-vercel.app</b> is powered by SvelteKit</p>
+		<p>Hosted in Vercel</p>
+		<p>And supported by Supabase</p>
+	</div>
+	<div class="container text-white">
+		<h2 class="display-3 mb-5">Meet the creators</h2>
+		<div
+			id="aboutUsCarouselControls"
+			class="carousel slide"
+			data-bs-ride="carousel"
+			data-bs-interval="3000"
+		>
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<div class="row">
+						<div class="col-sm-12 d-flex flex-column justify-content-center align-items-center">
+							<img
+								src="https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/gerald.jpg"
+								alt=""
+								width="200"
+								height="200"
+								style="border-radius: 100%;"
+							/>
+							<h3 class="mt-5 display-6">Gerald Chavez</h3>
+							<p>Lead Developer, Lead Designer, & Project Manager</p>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="row">
+						<div class="col-sm-12 d-flex flex-column justify-content-center align-items-center">
+							<img
+								src="https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/gab.png"
+								alt=""
+								width="200"
+								height="200"
+								style="border-radius: 100%;"
+							/>
+							<h3 class="mt-5 display-6">Gabrielle Napoto</h3>
+							<p>Designer, Content Manager, & Abie G</p>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="row">
+						<div class="col-sm-12 d-flex flex-column justify-content-center align-items-center">
+							<img
+								src="https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/trizh.jpg"
+								alt=""
+								width="200"
+								height="200"
+								style="border-radius: 100%;"
+							/>
+							<h3 class="mt-5 display-6">Trizhalyn Maglangit</h3>
+							<p>Designer & Content Manager</p>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="row">
+						<div class="col-sm-12 d-flex flex-column justify-content-center align-items-center">
+							<img
+								src="https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/miks.jpg"
+								alt=""
+								width="200"
+								height="200"
+								style="border-radius: 100%;"
+							/>
+							<h3 class="mt-5 display-6">Mikkie Gregorio</h3>
+							<p>Designer & Content Manager</p>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="row">
+						<div class="col-sm-12 d-flex flex-column justify-content-center align-items-center">
+							<img
+								src="https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/kevin.jpg"
+								alt=""
+								width="200"
+								height="200"
+								style="border-radius: 100%;"
+							/>
+							<h3 class="mt-5 display-6">Kevin Corpin</h3>
+							<p>Quality Assurance</p>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="row">
+						<div class="col-sm-12 d-flex flex-column justify-content-center align-items-center">
+							<img
+								src="https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/carlo.jpg"
+								alt=""
+								width="200"
+								height="200"
+								style="border-radius: 100%;"
+							/>
+							<h3 class="mt-5 display-6">Carlo Diaz</h3>
+							<p>Quality Assurance</p>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="row">
+						<div class="col-sm-12 d-flex flex-column justify-content-center align-items-center">
+							<img
+								src="https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/edz.jpg"
+								alt=""
+								width="200"
+								height="200"
+								style="border-radius: 100%;"
+							/>
+							<h3 class="mt-5 display-6">Edriane Barcita</h3>
+							<p>Server Maintenance and Management</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button
+				class="carousel-control-prev"
+				type="button"
+				data-bs-target="#aboutUsCarouselControls"
+				data-bs-slide="prev"
+			>
+				<span class="carousel-control-prev-icon" aria-hidden="true" />
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button
+				class="carousel-control-next"
+				type="button"
+				data-bs-target="#aboutUsCarouselControls"
+				data-bs-slide="next"
+			>
+				<span class="carousel-control-next-icon" aria-hidden="true" />
+				<span class="visually-hidden">Next</span>
+			</button>
+		</div>
 	</div>
 </main>
 <div class="scroller" transition:fade={{ duration: 500 }}>
@@ -63,90 +212,8 @@
 		margin-top: 120px;
 		z-index: 3;
 	}
-
-	.devCard {
-		cursor: default;
-		position: relative;
-		margin-bottom: 10em;
-		transition: 200ms ease all;
-	}
-	.devCard h5 {
-		font-family: 'Thunder Light';
-		font-size: 4em;
-		margin: 0;
-		text-align: center;
-	}
-	.devCard p {
-		font-family: 'Thunder Bold';
-		font-size: 1.5em;
-		margin: 0;
-		text-align: center;
-	}
-	.devCard::before {
-		content: '';
-		opacity: 0;
-		background: black;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		/* border-radius: 100%; */
-		width: 50vw;
-		height: 350px;
-		z-index: -1;
-		transition: 200ms ease all;
-		border-radius: 10px;
-	}
-	.devCard:hover::before {
-		opacity: 0.5;
-	}
-	@media screen and (max-width: 1000px) {
-		.devCard::before {
-			width: 100vw;
-		}
-	}
-
-	.devCard_gerald::before {
-		background: url('https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/gerald.jpg');
-		background-position: center;
-		background-size: cover;
-		background-repeat: no-repeat;
-	}
-	.devCard_gab::before {
-		background: url('https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/gab.png');
-		background-position: center;
-		background-size: cover;
-		background-repeat: no-repeat;
-	}
-	.devCard_trizh::before {
-		background: url('https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/trizh.jpg');
-		background-position: center;
-		background-size: cover;
-		background-repeat: no-repeat;
-	}
-	.devCard_miks::before {
-		background: url('https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/miks.jpg');
-		background-position: center;
-		background-size: cover;
-		background-repeat: no-repeat;
-	}
-	.devCard_carlo::before {
-		background: url('https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/carlo.jpg');
-		background-position: center;
-		background-size: cover;
-		background-repeat: no-repeat;
-	}
-	.devCard_kevin::before {
-		background: url('https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/kevin.jpg');
-		background-position: center;
-		background-size: cover;
-		background-repeat: no-repeat;
-	}
-	.devCard_edz::before {
-		background: url('https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/edz.jpg');
-		background-position: center;
-		background-size: cover;
-		background-repeat: no-repeat;
+	img {
+		object-fit: cover;
 	}
 
 	.scroller {

@@ -1,17 +1,24 @@
 <script>
 	import { fly, fade, scale, blur } from 'svelte/transition';
 	import { onMount } from 'svelte';
-	import anime from 'animejs';
+	import IntersectionObserver from 'svelte-intersection-observer';
 
 	let windowScrollY, loading, mainContainer, floatingImage;
 
-	console.log(windowScrollY);
+	// console.log(windowScrollY);
 
-	onMount((e) => {
-		window.onscroll = (e) => {
-			console.log(windowScrollY);
-		};
-	});
+	// onMount((e) => {
+	// 	window.onscroll = (e) => {
+	// 		console.log(windowScrollY);
+	// 	};
+	// });
+
+	let hero1;
+	let hero2;
+	let hero3;
+	let isHero1Intersecting;
+	let isHero2Intersecting;
+	let isHero3Intersecting;
 </script>
 
 <svelte:window bind:scrollY={windowScrollY} />
@@ -23,7 +30,7 @@
 <p class="scrollDown" />
 
 <!-- <div class="background" /> -->
-<main bind:this={mainContainer}>
+<main bind:this={mainContainer} class="hero" style="overflow-x: hidden;">
 	<div
 		class="floatingImage"
 		style="
@@ -33,12 +40,6 @@
 	>
 		<img bind:this={floatingImage} src="./hero.jpg" alt="" />
 	</div>
-	<img
-		class="logo"
-		src="https://sgocnrgwrtdruxnxpxyl.supabase.in/storage/v1/object/public/developer-avatars/Logo1@1x.png"
-		alt=""
-		transition:fade|local={{ delay: 200, duration: 200 }}
-	/>
 	<div class="brand" style="transform: translateY(-{Math.min((windowScrollY / 20) * 5, 300)}%);">
 		<div class="brand__letterContainer">
 			<span class="brand__lc_letter">A</span>
@@ -88,7 +89,7 @@
 	<div class="content">
 		<p>Register and get the best out of it</p>
 		<!-- <p>{height}</p> -->
-		<h4 class="textEffectContainer">Join us with Abie G to VIRTUALIZE the world</h4>
+		<h4 class="textEffectContainer display-6">Join us with Abie G to VIRTUALIZE the world</h4>
 		<a href="/account">
 			<button class="joinbutton"> Register Now </button>
 		</a>
@@ -96,58 +97,63 @@
 	<!-- <div bind:this={rec1} class="brand__candy_rec1" />
 	<div bind:this={rec2} class="brand__candy_rec2" /> -->
 </main>
-
-<main class="celebration white-text  valign-wrapper live">
-	<div class="container center-align">
-		<img src="./illustrations/undraw_Online_party_re_7t6g.svg" width="350" alt="" />
-		<div class="row ">
-			<div class="col s12 center-align ">
-				<h2 style="margin-bottom: 2em;">ABIE G WEBSITE IS NOW LIVE!!!</h2>
-			</div>
-			<div class="col s12 ">
-				<p class="flow-text">
-					In celebration for hitting the two-million [!!!] follower mark on each of her social media
-					accounts, AbieG formally welcomes you (yes, you!) to her namesake website’s ribbon-cutting
-					ceremony. Fancy.
-				</p>
-			</div>
+<IntersectionObserver threshold={0.2} element={hero1} bind:intersecting={isHero1Intersecting}>
+	<main
+		bind:this={hero1}
+		style={isHero1Intersecting
+			? 'transform: translateX(0); opacity: 1'
+			: 'transform: translateX(-10%); opacity: 0;'}
+		class="d-flex align-items-center text-white my-5 py-5"
+	>
+		<div class="container text-center">
+			<img class="mb-5" src="./illustrations/undraw_Online_party_re_7t6g.svg" width="350" alt="" />
+			<h1 class="display-3">ABIE G WEBSITE IS NOW LIVE!!!</h1>
+			<p>
+				In celebration for hitting the two-million [!!!] follower mark on each of her social media
+				accounts, AbieG formally welcomes you (yes, you!) to her namesake website’s ribbon-cutting
+				ceremony. Fancy.
+			</p>
 		</div>
-	</div>
-</main>
-<main class="celebration white-text  valign-wrapper ">
-	<div class="container center-align">
-		<img src="./illustrations/undraw_community_8nwl.svg" width="350" alt="" />
-		<div class="row ">
-			<div class="col s12 center-align ">
-				<h2 style="margin-bottom: 2em;">Abie G Community Moderators</h2>
-			</div>
-			<div class="col s12 ">
-				<p class="flow-text">
-					To ensure a safe space for the community members, this site is regularly kept in check by
-					the moderators. Inappropriate conducts are strictly discouraged and violation to community
-					rules may result to account suspension and/or removal.
-				</p>
-			</div>
+	</main>
+</IntersectionObserver>
+<IntersectionObserver threshold={0.2} element={hero2} bind:intersecting={isHero2Intersecting}>
+	<main
+		bind:this={hero2}
+		style={isHero2Intersecting
+			? 'transform: translateX(0); opacity: 1'
+			: 'transform: translateX(10%); opacity: 0;'}
+		class="d-flex align-items-center text-white  my-5 py-5"
+	>
+		<div class="container text-center">
+			<img class="mb-5" src="./illustrations/undraw_community_8nwl.svg" width="350" alt="" />
+			<h1 class="display-3">Abie G Community Moderators</h1>
+			<p>
+				To ensure a safe space for the community members, this site is regularly kept in check by
+				the moderators. Inappropriate conducts are strictly discouraged and violation to community
+				rules may result to account suspension and/or removal.
+			</p>
 		</div>
-	</div>
-</main>
-<main class="celebration valign-wrapper white-text ">
-	<div class="container center-align">
-		<img class="center-align" src="./illustrations/undraw_begin_chat_c6pj.svg" alt="" width="350" />
-		<div class="row ">
-			<div class="col s12 center-align">
-				<h2 style="margin-bottom: 2em;">Connect with Abie G with exclusive content</h2>
-			</div>
-			<div class="col s12 ">
-				<p class="flow-text">
-					This site takes BabieGs to a much more intimate interaction with AbieG herself as she
-					shares with them glimpses of her everyday life, ambitions, and aspirations as well as
-					site-exclusive giveaways and surprises.
-				</p>
-			</div>
+	</main>
+</IntersectionObserver>
+<IntersectionObserver threshold={0.2} element={hero3} bind:intersecting={isHero3Intersecting}>
+	<main
+		bind:this={hero3}
+		style={isHero3Intersecting
+			? 'transform: translateX(0); opacity: 1'
+			: 'transform: translateX(-10%); opacity: 0;'}
+		class="d-flex align-items-center text-white my-5 py-5"
+	>
+		<div class="container text-center">
+			<img class="mb-5" src="./illustrations/undraw_begin_chat_c6pj.svg" width="350" alt="" />
+			<h1 class="display-3">Connect with Abie G with exclusive content</h1>
+			<p>
+				This site takes BabieGs to a much more intimate interaction with AbieG herself as she shares
+				with them glimpses of her everyday life, ambitions, and aspirations as well as
+				site-exclusive giveaways and surprises.
+			</p>
 		</div>
-	</div>
-</main>
+	</main>
+</IntersectionObserver>
 
 <!-- for maintenance -->
 <!-- <main style="display: flex; align-items:center;">
@@ -213,11 +219,14 @@
 		z-index: -1;
 	}
 
-	main {
+	.hero {
 		/* margin: 0; */
 		min-height: 100vh;
 		overflow: hidden;
 		z-index: 3;
+	}
+	main {
+		transition: 500ms ease all;
 	}
 	main * {
 		/* margin: 0; */
@@ -228,6 +237,8 @@
 		bottom: 25%;
 		left: 25px;
 		opacity: 0.4;
+		width: 100%;
+		overflow: hidden;
 	}
 	.brand2 {
 		opacity: 0.3;

@@ -40,7 +40,7 @@
 
 	onMount((e) => {
 		if (!$global_mod_account) {
-			if (localStorage.getItem('data_mod') != '') {
+			if (localStorage.getItem('data_mod') !== null) {
 				global_mod_account.set(JSON.parse(localStorage.getItem('data_mod')));
 				location.href = './admin/dashboard';
 			}
@@ -48,6 +48,9 @@
 	});
 </script>
 
+<svele:head>
+	<title>Moderator Sign In | Abie G</title>
+</svele:head>
 <SvelteToast option={{ duration: 1000 }} />
 
 <main class="text-white" in:fly={{ y: -20, duration: 500 }} out:fly={{ y: 20, duration: 500 }}>

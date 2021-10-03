@@ -59,7 +59,7 @@
 	};
 
 	onMount((e) => {
-		if (localStorage.getItem('data_mod') === '') {
+		if (localStorage.getItem('data_mod') === null) {
 			goto('/admin');
 		} else {
 			global_mod_account.set(JSON.parse(localStorage.getItem('data_mod')));
@@ -85,6 +85,9 @@
 	});
 </script>
 
+<svele:head>
+	<title>Dashboard | Abie G</title>
+</svele:head>
 <SvelteToast options={{ duration: 1000 }} />
 <main
 	style="margin-bottom: 10em;"
@@ -93,7 +96,8 @@
 >
 	<div class="container text-white">
 		<p class="display-3">Moderator Dashboard</p>
-		<div class="btn-group mt-5" role="group" aria-label="Basic example">
+
+		<div class="btn-group mt-3" role="group" aria-label="Basic example">
 			<button
 				on:click={(e) => {
 					tabActive = 1;

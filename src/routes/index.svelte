@@ -21,6 +21,9 @@
 	let isHero3Intersecting;
 </script>
 
+<svele:head>
+	<title>Abie G</title>
+</svele:head>
 <svelte:window bind:scrollY={windowScrollY} />
 <!-- <svelte:body bind:offsetHeight={documentHeight} /> -->
 

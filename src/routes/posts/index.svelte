@@ -45,9 +45,9 @@
 	});
 </script>
 
-<svelte:head>
-	<title>Abie G | Posts</title>
-</svelte:head>
+<svele:head>
+	<title>Posts | Abie G</title>
+</svele:head>
 
 <main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
 	<div class="container text-white">

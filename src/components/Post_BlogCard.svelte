@@ -30,4 +30,12 @@
 	img {
 		object-fit: cover;
 	}
+	.card {
+		transition: 200ms ease all;
+		box-shadow: rgba(0, 0, 0, 0.5) 0 0 10px;
+	}
+	.card:hover {
+		transform: translateY(-5px);
+		box-shadow: rgba(0, 0, 0, 0.25) 0 10px 20px;
+	}
 </style>

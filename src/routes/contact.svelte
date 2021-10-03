@@ -3,6 +3,10 @@
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';
 </script>
 
+<svele:head>
+	<title>Connect With Us | Abie G</title>
+</svele:head>
+
 <main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
 	<div class="container text-white">
 		<p class="display-3">Connect with us</p>

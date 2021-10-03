@@ -107,6 +107,10 @@
 	});
 </script>
 
+<svele:head>
+	<title>Accounts | Abie G</title>
+</svele:head>
+
 <main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
 	<SvelteToast options={{ duration: 1000 }} />
 	<div

@@ -54,7 +54,7 @@
 	{/if}
 </svelte:head>
 
-<div class="imgContainer" bind:this={image}>
+<div class="imgContainer" bind:this={image} in:fly={{ y: -20, duration: 500 }}>
 	{#if blogData}
 		<img src={blogData.header_img} alt="" />
 	{/if}

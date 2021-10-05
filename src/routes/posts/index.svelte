@@ -2,21 +2,17 @@
 	import { fly, fade, scale, blur } from 'svelte/transition';
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';
 
-	import { supabase, global_account, global_posts } from '../../global';
+	import { supabase, global_account, global_account_data } from '../../global';
 	import Post_BlogCard from '../../components/Post_BlogCard.svelte';
 	import { onMount } from 'svelte';
 	import PostBlogCard from '../../components/Post_BlogCard.svelte';
 
 	let hasAccount = false;
-	let privateBlogs;
-	let publicBlogs;
-	let hasPrivateBlogs = null;
-	let hasPublicBlogs = null;
 	let blogs;
 	let hasBlogs = null;
 
-	onMount((e) => {
-		if (localStorage.getItem('data') != '') {
+	onMount(async (e) => {
+		if ($global_account && $global_account_data) {
 			hasAccount = true;
 		}
 		(async (e) => {

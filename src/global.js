@@ -12,6 +12,7 @@ export const supabase = createClient(supabaseURL, SUPABASE_KEY)
 // global objects
 export const global_hasAccount = writable(false)
 export const global_account = writable();
+export const global_account_data = writable();
 export const global_posts = writable()
 export const global_mod_account = writable()
 export const edit_selectedID = writable('')

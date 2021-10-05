@@ -1,26 +1,29 @@
 <script>
 	import { fly, fade, slide } from 'svelte/transition';
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';
-	// import dayjs from 'dayjs';
-	import { supabase, global_account, global_hasAccount } from '../global';
+	import dayjs from 'dayjs';
+	import { supabase, global_account, global_hasAccount, global_account_data } from '../global';
 	import { onMount } from 'svelte';
 	import { toast, SvelteToast } from '@zerodevx/svelte-toast';
 
 	let isRegister = false;
-	let birthdate;
+	let isBirthdateMatched = true;
 	let confirmLogout = false;
 	let login_email;
 	let login_password;
-	let reg_email;
-	let reg_password;
-	let reg_givenName;
-	let reg_familyName;
-	let reg_gender;
-	let reg_address;
+	let reg_email = '';
+	let reg_password = '';
+	let reg_givenName = '';
+	let reg_birthdate = '';
+	let reg_familyName = '';
+	let reg_gender = 'Male';
+	let reg_address = '';
+	let verificationCode = '';
 
-	const flatpickrOptions = {
-		enableTime: true,
-		onChange: (selectedDates, dateStr, instance) => {}
+	let birthdateMask = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+
+	const changeBirthdate = (e) => {
+		birthdateMask.test(reg_birthdate) ? (isBirthdateMatched = true) : (isBirthdateMatched = false);
 	};
 
 	const toggleCards = (e) => {
@@ -28,64 +31,74 @@
 	};
 
 	const login_emailPass = async (e) => {
-		const { data, error } = await supabase
-			.from('users')
-			.select('*')
-			.eq('email', login_email)
-			.eq('password', login_password);
-		if (data.length > 0) {
-			delete data[0].password;
-			global_account.set(data[0]);
-			localStorage.setItem('data', JSON.stringify(data[0]));
-			toast.push(`Hello, ${$global_account.given_name} ${$global_account.family_name}`);
-			// M.toast({ html: `Hello, ${$global_account.given_name} ${$global_account.family_name}` });
+		const { user, error } = await supabase.auth.signIn({
+			email: login_email,
+			password: login_password
+		});
+		if (!error) {
+			let { data: users, thiserror } = await supabase.from('users').select('*').eq('id', user.id);
+			if (!thiserror) {
+				toast.push(`Hello ${user.email}`);
+				global_account.set(user);
+				global_account_data.set(users[0]);
+			}
 		} else {
-			toast.push('Email or Password incorrect');
-			// M.toast({ html: `Email or Password incorrect.` });
-		}
-		if (error) {
-			toast.push('Email or Password incorrect');
+			toast.push(error.message);
 		}
 	};
 
 	const registerUser = async (e) => {
-		if (reg_email != '') {
-			const { data, error } = await supabase.from('users').insert([
+		if (
+			reg_email != '' &&
+			reg_password != '' &&
+			reg_givenName != '' &&
+			reg_familyName != '' &&
+			reg_gender != '' &&
+			isBirthdateMatched
+		) {
+			let { user, error } = await supabase.auth.signUp({
+				email: reg_email,
+				password: reg_password
+			});
+			let { data: users, thiserror } = await supabase.from('users').insert([
 				{
+					id: user.id,
 					given_name: reg_givenName,
 					family_name: reg_familyName,
-					email: reg_email,
-					password: reg_password,
-					// birthdate: dayjs($birthdate.selected).format('YYYY-MM-DD'),
+					birthdate: reg_birthdate,
 					gender: reg_gender,
 					shipping_address: reg_address
 				}
 			]);
-
-			if (error) {
-				// M.toast({ html: 'Something went wrong. Try again' });
+			isRegister = false;
+			if (!error) {
+				console.log(user);
+				if (!thiserror) {
+					login_email = reg_email;
+					isRegister = false;
+					reg_gender = null;
+					reg_givenName = null;
+					reg_familyName = null;
+					reg_birthdate = null;
+					reg_address = null;
+					toast.push('You are now registered');
+					toast.push('Please check your mail to complete your verification process verify');
+				} else {
+					console.log(thiserror);
+				}
 			} else {
-				login_email = reg_email;
-				isRegister = false;
-				reg_gender = null;
-				reg_givenName = null;
-				reg_familyName = null;
-				reg_password = null;
-				reg_email = null;
-				// $birthdate.set(null);
-				// M.toast({ html: 'Registration Successful, please login ' });
+				console.log(error);
 			}
-		} else {
-			// M.toast({ html: 'Please enter all required fields' });
 		}
 	};
 
-	const logout = (e) => {
-		login_email = '';
-		login_password = '';
-		global_account.set(null);
-		localStorage.setItem('data', '');
-		confirmLogout = false;
+	const logout = async (e) => {
+		const { error } = await supabase.auth.signOut();
+		if (!error) {
+			global_account.set(null);
+			global_account_data.set(null);
+			toast.push('You have been logged out');
+		}
 	};
 	const logoutConfirm = (e) => {
 		if (confirmLogout) {
@@ -95,14 +108,14 @@
 		}
 	};
 
-	onMount((e) => {
-		let data = localStorage.getItem('data');
-		if (data) {
-			global_account.set(JSON.parse(data));
-			global_hasAccount.set(true);
-		} else {
-			global_account.set(null);
-			global_hasAccount.set(false);
+	onMount(async (e) => {
+		let thisUser = await supabase.auth.user();
+		if (thisUser) {
+			let { data: users, error } = await supabase.from('users').select('*').eq('id', thisUser.id);
+			if (!error) {
+				global_account.set(thisUser);
+				global_account_data.set(users[0]);
+			}
 		}
 	});
 </script>
@@ -111,8 +124,8 @@
 	<title>Accounts | Abie G</title>
 </svele:head>
 
+<SvelteToast options={{ duration: 4000 }} />
 <main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
-	<SvelteToast options={{ duration: 1000 }} />
 	<div
 		class="container text-white"
 		style="border-radius:10px"
@@ -236,10 +249,13 @@
 								<div class="form-floating mb-3 ">
 									<input
 										type="text"
-										class="form-control bg-transparent text-white"
+										class={isBirthdateMatched
+											? 'form-control bg-transparent text-white'
+											: 'form-control bg-transparent text-white border-danger'}
 										id="reg_birthdate"
 										placeholder="Birthdate"
-										bind:value={birthdate}
+										bind:value={reg_birthdate}
+										on:input={changeBirthdate}
 									/>
 									<label for="reg_birthdate">Birthdate</label>
 								</div>
@@ -249,31 +265,34 @@
 								<div><h5>Gender</h5></div>
 								<div class="form-check">
 									<input
-										bind:group={reg_gender}
+										value="Male"
 										class="form-check-input"
 										type="radio"
 										name="reg_gender"
 										id="reg_gender1"
+										bind:group={reg_gender}
 									/>
 									<label class="form-check-label" for="reg_gender1"> Male </label>
 								</div>
 								<div class="form-check">
 									<input
-										bind:group={reg_gender}
+										value="Female"
 										class="form-check-input"
 										type="radio"
 										name="reg_gender"
 										id="reg_gender2"
+										bind:group={reg_gender}
 									/>
 									<label class="form-check-label" for="reg_gender2"> Female </label>
 								</div>
 								<div class="form-check">
 									<input
-										bind:group={reg_gender}
+										value="Non-Binary"
 										class="form-check-input"
 										type="radio"
 										name="reg_gender"
 										id="reg_gender3"
+										bind:group={reg_gender}
 									/>
 									<label class="form-check-label" for="reg_gender3"> Non-binary </label>
 								</div>
@@ -286,7 +305,7 @@
 				</div>
 			{/if}
 		{/if}
-		{#if $global_account}
+		{#if $global_account_data && $global_account.aud === 'authenticated'}
 			<div class="row mt-5" in:fly|local={{ y: -20, duration: 500 }}>
 				<table class="table text-white">
 					<tbody>
@@ -296,7 +315,7 @@
 						</tr>
 						<tr>
 							<td><h6>Account Holder</h6></td>
-							<td>{$global_account.given_name} {$global_account.family_name}</td>
+							<td>{$global_account_data.given_name} {$global_account_data.family_name}</td>
 						</tr>
 						<tr>
 							<td><h6>Account Email Address</h6></td>
@@ -304,15 +323,15 @@
 						</tr>
 						<tr>
 							<td><h6>Birthdate</h6></td>
-							<td>{$global_account.birthdate}</td>
+							<td>{$global_account_data.birthdate}</td>
 						</tr>
 						<tr>
 							<td><h6>Gender</h6></td>
-							<td>{$global_account.gender.toUpperCase()}</td>
+							<td>{$global_account_data.gender}</td>
 						</tr>
 						<tr>
 							<td><h6>Shipping Address</h6></td>
-							<td>{$global_account.shipping_address}</td>
+							<td>{$global_account_data.shipping_address}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -339,27 +358,6 @@
 							No
 						</button>
 					</div>
-					<!-- <div class="col s2 offset-s8">
-							<button
-								on:click={logout}
-								in:fly|local={{ x: 20, duration: 500, delay: 400 }}
-								class="btn btn-large waves-effect waves-light red lighten-1"
-							>
-								Yes
-							</button>
-						</div>
-						<div class="col s2 ">
-							<button
-								on:click={logoutConfirm}
-								in:fly|local={{ x: 20, duration: 500, delay: 200 }}
-								class="btn btn-large waves-effect waves-light blue lighten-1"
-							>
-								No
-							</button>
-						</div>
-						<div class="col s12">
-							<h4 in:fly|local={{ x: 20, duration: 500 }}>Do you really want to logout?</h4>
-						</div> -->
 				{/if}
 			</div>
 		{/if}

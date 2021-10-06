@@ -91,8 +91,8 @@
 <SvelteToast options={{ duration: 1000 }} />
 <main
 	style="margin-bottom: 10em;"
-	in:fly={{ y: -20, duration: 500 }}
-	out:fly={{ y: 20, duration: 500 }}
+	in:fly={{ y: -40, duration: 500, delay: 500 }}
+	out:fly={{ y: 40, duration: 500 }}
 >
 	<div class="container text-white">
 		<p class="display-3">Moderator Dashboard</p>

@@ -11,4 +11,3 @@
 <main bind:this={mainContainer} />
 <slot />
 <Footer />
-<!-- <BackgroundBlob /> -->

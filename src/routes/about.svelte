@@ -7,7 +7,7 @@
 	<title>About Us | Abie G</title>
 </svele:head>
 
-<main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
+<main in:fly={{ y: -40, duration: 500 }} out:fly={{ y: 40, duration: 500 }}>
 	<!-- <div class="container white-text" style="margin-top: 10em; margin-bottom: 100px">
 		<h2>Hi!</h2>
 		<p>
@@ -204,10 +204,12 @@
 			</button>
 		</div>
 	</div>
+	<div class="scroller" transition:fade={{ duration: 500 }}>
+		<MarqueeTextWidget duration={10}
+			>WHO MADE THIS SITE? &nbsp; WHO MADE THIS SITE? &nbsp; WHO MADE THIS SITE? &nbsp;</MarqueeTextWidget
+		>
+	</div>
 </main>
-<div class="scroller" transition:fade={{ duration: 500 }}>
-	<MarqueeTextWidget duration={10}>WHO MADE THIS SITE? &nbsp;</MarqueeTextWidget>
-</div>
 
 <style>
 	main {
@@ -221,14 +223,15 @@
 	}
 
 	.scroller {
-		position: fixed;
-		bottom: -7%;
-		left: -10%;
+		width: 100vw;
+		position: absolute;
+		top: 0%;
+		left: 0%;
 		color: white;
-		opacity: 0.2;
-		font-size: 10rem;
+		opacity: 0.1;
+		font-size: 5rem;
 		font-family: 'Thunder Bold';
 		user-select: none;
-		z-index: 1;
+		z-index: -10;
 	}
 </style>

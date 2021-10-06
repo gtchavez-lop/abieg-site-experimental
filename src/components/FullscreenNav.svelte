@@ -25,8 +25,11 @@
 	<a href="/" class="homeButton" on:click={toggleNavOff}> ABIE G </a>
 
 	<div class={isActivated ? 'button button-activated' : 'button'} on:click={toggleNav}>
-		<i class={!isActivated ? 'bi bi-list icon_activated' : 'bi bi-list'} style="font-size: 3em;" />
-		<i class={isActivated ? 'bi bi-x icon_activated' : 'bi bi-list'} style="font-size: 3em;" />
+		{#if isActivated}
+			<i class="bi bi-x" style="font-size: 2em;" />
+		{:else}
+			<i class="bi bi-list" style="font-size: 2em;" />
+		{/if}
 	</div>
 </div>
 
@@ -128,7 +131,6 @@
 	.homeButton {
 		position: relative;
 		text-align: right;
-		width: 75px;
 		height: 75px;
 		display: flex;
 		justify-content: center;
@@ -171,19 +173,10 @@
 		align-items: center;
 		filter: invert(1);
 		user-select: none;
-		transform: rotateX(0deg);
+		transform: rotateZ(0deg);
 	}
 	.button-activated {
-		transform: rotateX(-180deg);
-	}
-	.button .bi {
-		position: absolute;
-		opacity: 0;
-		margin: 0;
-		padding: 0;
-	}
-	.button .icon_activated {
-		opacity: 1;
+		transform: rotateZ(-180deg);
 	}
 
 	.menu {

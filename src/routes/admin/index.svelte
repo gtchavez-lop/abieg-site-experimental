@@ -53,7 +53,11 @@
 </svele:head>
 <SvelteToast option={{ duration: 1000 }} />
 
-<main class="text-white" in:fly={{ y: -20, duration: 500 }} out:fly={{ y: 20, duration: 500 }}>
+<main
+	class="text-white"
+	in:fly={{ y: -40, duration: 500, delay: 500 }}
+	out:fly={{ y: 40, duration: 500 }}
+>
 	<div class="container">
 		<p class="display-3">Moderator Account</p>
 

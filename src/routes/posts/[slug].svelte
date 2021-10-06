@@ -11,7 +11,6 @@
 	import { onMount } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 	import { global_posts, supabase } from '../../global';
-	import { Parallax, ParallaxLayer } from 'svelte-parallax';
 
 	export let slug;
 	export let blogData;
@@ -54,16 +53,31 @@
 	{/if}
 </svelte:head>
 
-<div class="imgContainer" bind:this={image} in:fly={{ y: -20, duration: 500 }}>
+<div
+	class="imgContainer"
+	bind:this={image}
+	in:fly={{ y: -40, duration: 500 }}
+	out:fly={{ y: -40, duration: 500 }}
+>
 	{#if blogData}
 		<img src={blogData.header_img} alt="" />
+
+		{#if blogData.isExclusive}
+			<span
+				in:fly={{ x: 20, y: 20, duration: 500, delay: 500 }}
+				class="exlusiveContent text-white shadow-lg"
+				><p in:fly={{ x: 10, y: 10, duration: 500, delay: 700 }}>EXCLUSIVE</p></span
+			>
+		{/if}
 	{/if}
 </div>
-<main style="margin-top: calc(50vh + 2em);">
+<main out:fly={{ y: -40, duration: 500 }} class="mb-5">
 	<div class="container text-white">
-		<a href="/posts" class="btn btn-primary bg-secondary mb-2">
-			<i class="bi bi-x me-3" />Close Article
-		</a>
+		<div class="d-grid">
+			<a href="/posts" class="btn btn-primary bg-secondary mb-2 border-secondary">
+				<i class="bi bi-x me-3" />Close Article
+			</a>
+		</div>
 		<div class="row">
 			<div class="col-12">
 				{#if blogData}
@@ -80,36 +94,13 @@
 	</div>
 </main>
 
-<!-- <main id="top" in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
-	<div class="imgContainer" bind:this={image}>
-		{#if blogData}
-			<img src={blogData.header_img} alt="" />
-		{/if}
-	</div>
-	<div class="flex ">
-		<div class="container blue darken-4 white-text" style="padding: 1em; border-radius: 10px;">
-			{#if blogData}
-				<h3>{blogData.title}</h3>
-				<p>by: {blogData.author}</p>
-			{/if}
-		</div>
-	</div>
-	<div class="container backbutton">
-		<a class="btn-floating btn-large waves-effect waves-light  blue lighten-2" href="/posts"
-			><i class="material-icons">arrow_back</i></a
-		>
-	</div>
-	<div class="container content">
-		{#if blogData}
-			<p class="flow-text white-text">{@html blogData.content}</p>
-		{/if}
-	</div>
-</main> -->
-<style>
+<style lang="scss">
 	main {
 		position: relative;
 		min-height: 100vh;
+		margin-top: calc(50vh + 2em);
 		z-index: 3;
+		animation: slide 500ms ease-out 200ms;
 	}
 	.imgContainer {
 		position: fixed;
@@ -123,12 +114,29 @@
 		perspective: 1px;
 		opacity: 1;
 		transition: 500ms ease all;
+		overflow: hidden;
+		img {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center;
+		}
 	}
-	img {
+	.exlusiveContent {
 		position: absolute;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: center;
+		background: #d63384;
+		bottom: 0;
+		right: 0;
+		height: 100px;
+		width: 300px;
+		font-size: 1.7em;
+		border-top-left-radius: 20px;
+		p {
+			position: absolute;
+			bottom: 10px;
+			right: 40px;
+			margin: 0;
+		}
 	}
 </style>

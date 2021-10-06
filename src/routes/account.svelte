@@ -56,6 +56,7 @@
 			reg_gender != '' &&
 			isBirthdateMatched
 		) {
+			isRegister = false;
 			let { user, error } = await supabase.auth.signUp({
 				email: reg_email,
 				password: reg_password
@@ -70,7 +71,6 @@
 					shipping_address: reg_address
 				}
 			]);
-			isRegister = false;
 			if (!error) {
 				console.log(user);
 				if (!thiserror) {
@@ -125,12 +125,8 @@
 </svele:head>
 
 <SvelteToast options={{ duration: 4000 }} />
-<main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
-	<div
-		class="container text-white"
-		style="border-radius:10px"
-		transition:slide|local={{ duration: 500 }}
-	>
+<main in:fly={{ y: -40, duration: 500, delay: 500 }} out:fly={{ y: 40, duration: 500 }}>
+	<div class="container text-white" style="border-radius:10px">
 		<p class="display-3">Your Account</p>
 		{#if !$global_account}
 			<div class="row" style="min-height: 50vh;" in:fly|local={{ y: -40, duration: 500 }}>
@@ -362,15 +358,14 @@
 			</div>
 		{/if}
 	</div>
+	<div class="scroller" transition:fade={{ duration: 500 }}>
+		<MarqueeTextWidget duration={15}
+			>BE ACTIVE WITH ABIE G &nbsp;BE ACTIVE WITH ABIE G &nbsp;BE ACTIVE WITH ABIE G &nbsp;</MarqueeTextWidget
+		>
+	</div>
 </main>
 
-<div class="scroller" transition:fade={{ duration: 500 }}>
-	<MarqueeTextWidget duration={15}
-		>BE ACTIVE WITH ABIE G &nbsp;BE ACTIVE WITH ABIE G &nbsp;BE ACTIVE WITH ABIE G &nbsp;</MarqueeTextWidget
-	>
-</div>
-
-<style>
+<style lang="scss">
 	main {
 		position: relative;
 		min-height: 100vh;
@@ -384,15 +379,15 @@
 		border-radius: 10px;
 	} */
 	.scroller {
-		width: 120%;
-		position: fixed;
-		bottom: -7%;
-		left: -10%;
+		width: 100vw;
+		position: absolute;
+		top: 0%;
+		left: 0%;
 		color: white;
-		opacity: 0.2;
-		font-size: 10rem;
+		opacity: 0.1;
+		font-size: 5rem;
 		font-family: 'Thunder Bold';
 		user-select: none;
-		z-index: 1;
+		z-index: -10;
 	}
 </style>

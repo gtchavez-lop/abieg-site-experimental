@@ -1,5 +1,6 @@
 <script>
 	import { toast, SvelteToast } from '@zerodevx/svelte-toast';
+	import dayjs from 'dayjs';
 
 	import { fly, fade, scale, slide } from 'svelte/transition';
 	import { supabase } from '../global';
@@ -150,7 +151,13 @@
 								<tr>
 									<td><h5>Created at</h5></td>
 									<td>
-										<h6>{blog.created_at}</h6>
+										<h6>{dayjs(blog.created_at).format('MM-DD-YYYY @HH:MM')}</h6>
+									</td>
+								</tr>
+								<tr>
+									<td><h5>Updated at</h5></td>
+									<td>
+										<h6>{dayjs(blog.updated_at).format('MM-DD-YYYY @HH:MM')}</h6>
 									</td>
 								</tr>
 								<tr>
@@ -193,7 +200,7 @@
 							<textarea
 								class="form-control bg-transparent text-white"
 								id="blog_content"
-								style="height: 100px"
+								style="height: 300px"
 								bind:value={new_blogContent}
 							/>
 							<label for="blog_content">New Blog Content</label>

@@ -12,7 +12,7 @@
 	let hasBlogs = null;
 
 	onMount(async (e) => {
-		if ($global_account && $global_account_data) {
+		if (await supabase.auth.user()) {
 			hasAccount = true;
 		}
 		(async (e) => {
@@ -45,7 +45,7 @@
 	<title>Posts | Abie G</title>
 </svele:head>
 
-<main in:fly={{ y: -40, duration: 500, delay: 750 }} out:fade={{ duration: 250 }}>
+<main in:fly={{ y: -40, duration: 500, delay: 500 }} out:fly={{ y: 40, duration: 500 }}>
 	<div class="container text-white">
 		<h3 class="display-3">See what's new</h3>
 
@@ -56,6 +56,9 @@
 				</div>
 				<p>Fetching posts</p>
 			{:else if hasBlogs}
+				{#if !hasAccount}
+					<h4 class="my-5">Sign in to view exclusive content</h4>
+				{/if}
 				<div class="row gy-3 gx-3">
 					{#each blogs as blogs, index}
 						<div class="col-sm-12 col-md-6 ">
@@ -68,12 +71,12 @@
 			{/if}
 		</div>
 	</div>
+	<div class="scroller" transition:fade={{ duration: 500 }}>
+		<MarqueeTextWidget duration={15}
+			>SEE WHAT'S GOING ON &nbsp; SEE WHAT'S GOING ON &nbsp; SEE WHAT'S GOING ON &nbsp;</MarqueeTextWidget
+		>
+	</div>
 </main>
-<div class="scroller" transition:fade={{ duration: 500 }}>
-	<MarqueeTextWidget duration={15}
-		>SEE WHAT'S GOING ON &nbsp; SEE WHAT'S GOING ON &nbsp; SEE WHAT'S GOING ON &nbsp;</MarqueeTextWidget
-	>
-</div>
 
 <style>
 	main {
@@ -83,14 +86,15 @@
 		z-index: 3;
 	}
 	.scroller {
-		position: fixed;
-		bottom: -7%;
-		left: -10%;
+		width: 100vw;
+		position: absolute;
+		top: 0%;
+		left: 0%;
 		color: white;
-		opacity: 0.2;
-		font-size: 10rem;
+		opacity: 0.1;
+		font-size: 5rem;
 		font-family: 'Thunder Bold';
 		user-select: none;
-		z-index: 1;
+		z-index: -10;
 	}
 </style>

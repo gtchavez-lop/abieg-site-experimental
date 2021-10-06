@@ -33,7 +33,7 @@
 <p class="scrollDown" />
 
 <!-- <div class="background" /> -->
-<main bind:this={mainContainer} class="hero" style="overflow-x: hidden;">
+<main bind:this={mainContainer} transition:fade class="hero" style="overflow-x: hidden;">
 	<div
 		class="floatingImage"
 		style="
@@ -166,11 +166,10 @@
 	</div>
 </main> -->
 
-<svelte:head>
+<!-- <svelte:head>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-</svelte:head>
-
+</svelte:head> -->
 <style>
 	.loading {
 		position: fixed;
@@ -212,14 +211,6 @@
 		background: #f88dad;
 		border: #f88dad solid 0.2rem;
 		transform: scale(1.1);
-	}
-	.logo {
-		position: fixed;
-		opacity: 0.1;
-		width: 1000px;
-		top: calc(7 0% - 500px);
-		right: calc(5% - 300px);
-		z-index: -1;
 	}
 
 	.hero {

@@ -63,22 +63,24 @@
 		<img src={blogData.header_img} alt="" />
 
 		{#if blogData.isExclusive}
-			<span
-				in:fly={{ x: 20, y: 20, duration: 500, delay: 500 }}
-				class="exlusiveContent text-white shadow-lg"
-				><p in:fly={{ x: 10, y: 10, duration: 500, delay: 700 }}>EXCLUSIVE</p></span
-			>
+			<h6 class="exlusiveContent text-white " in:fly={{ x: 20, y: 20, duration: 500, delay: 500 }}>
+				<span in:fly={{ x: 10, y: 10, duration: 500, delay: 700 }}>EXCLUSIVE</span>
+			</h6>
 		{/if}
 	{/if}
 </div>
-<main out:fly={{ y: -40, duration: 500 }} class="mb-5">
-	<div class="container text-white">
-		<div class="d-grid">
-			<a href="/posts" class="btn btn-primary bg-secondary mb-2 border-secondary">
-				<i class="bi bi-x me-3" />Close Article
-			</a>
-		</div>
+<main out:fly={{ y: -60, duration: 500 }} class="mb-5">
+	<div in:fly={{ y: -20, duration: 500, delay: 500 }} class="container text-white">
 		<div class="row">
+			<div class="col-sm-12 col-md-8" />
+			<div class="col-sm-12 col-md-4 d-flex justify-content-end">
+				<a href="/posts" class="btn btn-lg text-white bg-secondary ">
+					<i class="bi bi-x me-3" style="font-size: 1.1em;" />
+					<span>Close Article</span>
+				</a>
+			</div>
+		</div>
+		<div class="row mt-3">
 			<div class="col-12">
 				{#if blogData}
 					<h3 class="display-1">{blogData.title}</h3>
@@ -128,14 +130,18 @@
 		background: #d63384;
 		bottom: 0;
 		right: 0;
-		height: 100px;
-		width: 300px;
+		min-height: 50px;
+		min-width: 200px;
+		height: 20%;
+		width: 30%;
 		font-size: 1.7em;
+		margin: 0;
 		border-top-left-radius: 20px;
-		p {
+		box-shadow: rgba(0, 0, 0, 0.5) 0 0 20px;
+		span {
 			position: absolute;
-			bottom: 10px;
-			right: 40px;
+			bottom: 10%;
+			right: 10%;
 			margin: 0;
 		}
 	}

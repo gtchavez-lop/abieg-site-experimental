@@ -59,9 +59,9 @@
 				{#if !hasAccount}
 					<h4 class="my-5">Sign in to view exclusive content</h4>
 				{/if}
-				<div class="row gy-3 gx-3">
+				<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gx-3 gy-3">
 					{#each blogs as blogs, index}
-						<div class="col-sm-12 col-md-6 ">
+						<div class="col">
 							<PostBlogCard {...blogs} {index} />
 						</div>
 					{/each}

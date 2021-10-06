@@ -43,13 +43,13 @@
 		user-select: none;
 	}
 	.card:hover {
-		transform: translateY(-5px);
+		transform: translateY(-3px);
 		box-shadow: rgba(0, 0, 0, 0.25) 0 10px 20px;
 	}
 	.exclusiveBadge {
 		position: absolute;
 		right: 0;
-		width: 35%;
+		width: 200px;
 		border-bottom-left-radius: 20px;
 		height: 50px;
 		/* transform: rotate(-10deg); */

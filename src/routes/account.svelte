@@ -301,61 +301,83 @@
 				</div>
 			{/if}
 		{/if}
+
+		<!-- account details -->
 		{#if $global_account_data && $global_account.aud === 'authenticated'}
 			<div class="row mt-5" in:fly|local={{ y: -20, duration: 500 }}>
-				<table class="table text-white">
-					<tbody>
-						<tr>
-							<td><h6>Account ID</h6></td>
-							<td>{$global_account.id.toUpperCase()}</td>
-						</tr>
-						<tr>
-							<td><h6>Account Holder</h6></td>
-							<td>{$global_account_data.given_name} {$global_account_data.family_name}</td>
-						</tr>
-						<tr>
-							<td><h6>Account Email Address</h6></td>
-							<td>{$global_account.email}</td>
-						</tr>
-						<tr>
-							<td><h6>Birthdate</h6></td>
-							<td>{$global_account_data.birthdate}</td>
-						</tr>
-						<tr>
-							<td><h6>Gender</h6></td>
-							<td>{$global_account_data.gender}</td>
-						</tr>
-						<tr>
-							<td><h6>Shipping Address</h6></td>
-							<td>{$global_account_data.shipping_address}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="row mt-5" in:fly|local={{ y: -20, duration: 500, delay: 200 }}>
-				{#if !confirmLogout}
-					<button
-						in:fly|local={{ x: 20, duration: 500 }}
-						class="btn btn-danger"
-						on:click={logoutConfirm}
-					>
-						Log out
-					</button>
-				{:else}
-					<h4 in:fly|local={{ x: -20, duration: 500 }}>Do you really want to log out</h4>
-					<div
-						class="d-flex justtify-content-center"
-						in:fly|local={{ x: -20, duration: 500, delay: 100 }}
-					>
-						<button on:click={logout} class="btn btn-danger me-4" style="min-width: 150px;">
-							Yes
-						</button>
-						<button on:click={logoutConfirm} class="btn btn-primary" style="min-width: 150px;">
-							No
-						</button>
+				<div class="col-12 text-center mb-5">
+					<img
+						src="https://ui-avatars.com/api/?name={$global_account_data.given_name}+{$global_account_data.family_name}&background=F7749C&color=fff"
+						alt="User Avatar"
+						width="150"
+						style="border-radius: 100%;"
+					/>
+					<p class="display-6 mt-2 mb-0">
+						{$global_account_data.given_name}
+						{$global_account_data.family_name}
+					</p>
+					<p class="mb-0 mt-2">
+						{$global_account.email}
+					</p>
+					<p class="text-muted mt-0">
+						{$global_account.id.toUpperCase()}
+					</p>
+				</div>
+				<div class="col-12 col-sm-6 text-center">
+					<p class="lead">
+						<span class="text-muted me-3"> Birthdate </span>
+						{dayjs($global_account_data.birthdate).format('MMMM D YYYY')}
+					</p>
+				</div>
+				<div class="col-12 col-sm-6 text-center">
+					<p class="lead">
+						<span class="text-muted me-3"> Gender </span>
+						{$global_account_data.gender}
+					</p>
+				</div>
+				<div class="col-12 text-center">
+					<p class="lead text-muted mb-0 mt-4">Shipping Address</p>
+					<p class="lead mt-0">
+						{$global_account_data.shipping_address}
+					</p>
+				</div>
+				<div class="col-12 mt-5">
+					<div class="d-grid">
+						{#if !confirmLogout}
+							<div class="d-flex justify-content-around" transition:slide|local={{ duration: 500 }}>
+								<button
+									class="btn btn-danger"
+									on:click={logoutConfirm}
+									style="min-width: 150px; width: 50%"
+								>
+									Log out
+								</button>
+							</div>
+						{:else}
+							<div class="d-flex justify-content-center" transition:slide|local={{ duration: 500 }}>
+								<button
+									style="min-width: 200px; width: 30%"
+									on:click={logout}
+									class="btn btn-danger me-2"
+								>
+									Yes
+								</button>
+								<button
+									style="min-width: 200px; width: 30%"
+									on:click={logoutConfirm}
+									class="btn btn-primary ms-2"
+								>
+									No
+								</button>
+							</div>
+							<h4 transition:slide|local={{ duration: 500 }} class="text-center">
+								Do you really want to log out
+							</h4>
+						{/if}
 					</div>
-				{/if}
+				</div>
 			</div>
+			<div class=" mt-5" in:fly|local={{ y: -20, duration: 500, delay: 200 }} />
 		{/if}
 	</div>
 	<div class="scroller" transition:fade={{ duration: 500 }}>

@@ -150,6 +150,15 @@
 								<label for="story_author">The Author</label>
 							</div>
 						</div> -->
+						<div class="col-12 mb-1">
+							<img
+								style="width: 100%; height: 250px; object-fit: cover;"
+								src={blog_imageURI != ''
+									? blog_imageURI
+									: 'https://via.placeholder.com/1500?text=This+is+a+placeholder+image'}
+								alt="..."
+							/>
+						</div>
 						<div class="col-12">
 							<div class="form-floating mb-3">
 								<input
@@ -217,13 +226,18 @@
 								</div>
 							{:else}
 								<div class="col-12">
-									<h5>Available Stories</h5>
-									<div class="accordion bg-transparent">
+									<div class="mt-5 row row-cols-1 row-cols-md-2 g-3">
 										{#each blogs as blog, index}
 											<AdminPostCard {blog} {index} />
 											<!-- <p>{blog.title}</p> -->
 										{/each}
 									</div>
+
+									<!-- <div class="accordion bg-transparent">
+										{#each blogs as blog, index}
+											<AdminPostCard {blog} {index} />
+										{/each}
+									</div> -->
 								</div>
 							{/if}
 						</div>

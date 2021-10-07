@@ -30,7 +30,6 @@
 <div class="loading" bind:this={loading}>
 	<div class="loadingBar" />
 </div>
-<p class="scrollDown" />
 
 <!-- <div class="background" /> -->
 <main bind:this={mainContainer} transition:fade class="hero" style="overflow-x: hidden;">
@@ -90,6 +89,7 @@
 	</div>
 
 	<div class="content">
+		<div class="mouse" />
 		<p>Register and get the best out of it</p>
 		<!-- <p>{height}</p> -->
 		<h4 class="textEffectContainer display-6">Join us with Abie G to VIRTUALIZE the world</h4>
@@ -170,7 +170,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 </svelte:head> -->
-<style>
+<style lang="scss">
 	.loading {
 		position: fixed;
 	}
@@ -277,33 +277,39 @@
 		color: white;
 		text-align: right;
 	}
-	.scrollDown {
-		position: fixed;
-		top: 50%;
-		right: 5%;
-		width: 5px;
-		height: 5px;
-		border: white 10px solid;
+
+	.mouse {
+		position: absolute;
+		right: 0;
+		top: -100px;
+		width: 40px;
+		height: 65px;
 		border-radius: 100px;
-		animation: scrolldown 1s ease infinite;
-		z-index: 3;
-	}
-	@keyframes scrolldown {
-		0% {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		20% {
-			opacity: 1;
-			/* transform: rotate(-45deg) translate(10px, -10px); */
-		}
-		60% {
-			opacity: 1;
-			/* transform: rotate(-45deg) translate(10px, -10px); */
-		}
-		100% {
-			opacity: 0;
-			transform: translateY(-20px);
+		border: solid white 3px;
+		&::before {
+			content: '';
+			position: absolute;
+			width: 5px;
+			height: 5px;
+			top: 0;
+			left: 50%;
+			background: white;
+			border-radius: 100px;
+			transform: translateX(-50%);
+			animation: scrolldown 2s infinite;
+			@keyframes scrolldown {
+				0% {
+					transform: translateX(-50%) translateY(10px);
+					opacity: 0;
+				}
+				50% {
+					opacity: 1;
+				}
+				100% {
+					transform: translateX(-50%) translateY(30px);
+					opacity: 0;
+				}
+			}
 		}
 	}
 	@media screen and (max-width: 800px) {

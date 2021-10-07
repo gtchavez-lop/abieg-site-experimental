@@ -2,16 +2,9 @@
 	import { fly, fade, scale, blur } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import IntersectionObserver from 'svelte-intersection-observer';
+	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 
 	let windowScrollY, loading, mainContainer, floatingImage;
-
-	// console.log(windowScrollY);
-
-	// onMount((e) => {
-	// 	window.onscroll = (e) => {
-	// 		console.log(windowScrollY);
-	// 	};
-	// });
 
 	let hero1;
 	let hero2;
@@ -106,16 +99,36 @@
 		style={isHero1Intersecting
 			? 'transform: translateX(0); opacity: 1'
 			: 'transform: translateX(-10%); opacity: 0;'}
-		class="d-flex align-items-center text-white my-5 py-5"
+		class="d-flex align-items-center text-white my-5"
 	>
-		<div class="container text-center">
-			<img class="mb-5" src="./illustrations/undraw_Online_party_re_7t6g.svg" width="350" alt="" />
-			<h1 class="display-3">ABIE G WEBSITE IS NOW LIVE!!!</h1>
-			<p>
-				In celebration for hitting the two-million [!!!] follower mark on each of her social media
-				accounts, AbieG formally welcomes you (yes, you!) to her namesake website’s ribbon-cutting
-				ceremony. Fancy.
-			</p>
+		<div class="container">
+			<div class="row row-cols-1 row-cols-lg-2">
+				<div class="col justify-content-center mt-5 d-flex d-lg-none">
+					<img
+						class="mb-5 img-fluid"
+						style="max-height: 350px;"
+						src="./illustrations/watermelon/watermelon-pack-illustration-19.svg"
+						alt=""
+					/>
+				</div>
+				<div class="col d-flex flex-column justify-content-center text-center text-lg-end">
+					<h1 class="display-3">ABIE G WEBSITE IS NOW LIVE!!!</h1>
+					<p>
+						In celebration for hitting the two-million [!!!] follower mark on each of her social
+						media accounts, AbieG formally welcomes you (yes, you!) to her namesake website’s
+						ribbon-cutting ceremony. Fancy.
+					</p>
+					<a href="/account" class="mt-5 btn btn-outline-primary ">Register Now</a>
+				</div>
+				<div class="col justify-content-center mt-5 d-none d-lg-flex">
+					<img
+						class="mb-5"
+						src="./illustrations/watermelon/watermelon-pack-illustration-19.svg"
+						style="max-height: 350px;"
+						alt=""
+					/>
+				</div>
+			</div>
 		</div>
 	</main>
 </IntersectionObserver>
@@ -125,16 +138,36 @@
 		style={isHero2Intersecting
 			? 'transform: translateX(0); opacity: 1'
 			: 'transform: translateX(10%); opacity: 0;'}
-		class="d-flex align-items-center text-white  my-5 py-5"
+		class="d-flex align-items-center text-white my-5"
 	>
-		<div class="container text-center">
-			<img class="mb-5" src="./illustrations/undraw_community_8nwl.svg" width="350" alt="" />
-			<h1 class="display-3">Abie G Community Moderators</h1>
-			<p>
-				To ensure a safe space for the community members, this site is regularly kept in check by
-				the moderators. Inappropriate conducts are strictly discouraged and violation to community
-				rules may result to account suspension and/or removal.
-			</p>
+		<div class="container">
+			<div class="row row-cols-1 row-cols-lg-2">
+				<div class="col justify-content-center mt-5 d-none d-lg-flex">
+					<img
+						class="mb-5"
+						src="./illustrations/watermelon/watermelon-pack-illustration-05.svg"
+						style="max-height: 350px;"
+						alt=""
+					/>
+				</div>
+				<div class="col justify-content-center mt-5 d-flex d-lg-none">
+					<img
+						class="mb-5"
+						src="./illustrations/watermelon/watermelon-pack-illustration-05.svg"
+						style="max-height: 350px;"
+						alt=""
+					/>
+				</div>
+				<div class="col d-flex flex-column justify-content-center text-center text-lg-start">
+					<h1 class="display-3">Abie G Community Moderators</h1>
+					<p>
+						To ensure a safe space for the community members, this site is regularly kept in check
+						by the moderators. Inappropriate conducts are strictly discouraged and violation to
+						community rules may result to account suspension and/or removal.
+					</p>
+					<p>Just be active and you might be our next moderator</p>
+				</div>
+			</div>
 		</div>
 	</main>
 </IntersectionObserver>
@@ -144,16 +177,35 @@
 		style={isHero3Intersecting
 			? 'transform: translateX(0); opacity: 1'
 			: 'transform: translateX(-10%); opacity: 0;'}
-		class="d-flex align-items-center text-white my-5 py-5"
+		class="d-flex align-items-center text-white my-5"
 	>
-		<div class="container text-center">
-			<img class="mb-5" src="./illustrations/undraw_begin_chat_c6pj.svg" width="350" alt="" />
-			<h1 class="display-3">Connect with Abie G with exclusive content</h1>
-			<p>
-				This site takes BabieGs to a much more intimate interaction with AbieG herself as she shares
-				with them glimpses of her everyday life, ambitions, and aspirations as well as
-				site-exclusive giveaways and surprises.
-			</p>
+		<div class="container">
+			<div class="row row-cols-1 row-cols-lg-2">
+				<div class="col justify-content-center mt-5 d-flex d-lg-none">
+					<img
+						class="mb-5"
+						src="./illustrations/watermelon/watermelon-pack-illustration-20.svg"
+						style="max-height: 350px;"
+						alt=""
+					/>
+				</div>
+				<div class="col d-flex flex-column justify-content-center text-center text-lg-end">
+					<h1 class="display-3">Connect with Abie G with exclusive content</h1>
+					<p>
+						This site takes BabieGs to a much more intimate interaction with AbieG herself as she
+						shares with them glimpses of her everyday life, ambitions, and aspirations as well as
+						site-exclusive giveaways and surprises.
+					</p>
+				</div>
+				<div class="col justify-content-center mt-5 d-none d-lg-flex">
+					<img
+						class="mb-5"
+						src="./illustrations/watermelon/watermelon-pack-illustration-20.svg"
+						style="max-height: 350px;"
+						alt=""
+					/>
+				</div>
+			</div>
 		</div>
 	</main>
 </IntersectionObserver>
@@ -221,6 +273,7 @@
 	}
 	main {
 		transition: 500ms ease all;
+		min-height: 70vh;
 	}
 	main * {
 		/* margin: 0; */

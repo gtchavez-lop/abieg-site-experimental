@@ -226,7 +226,7 @@
 								</div>
 							{:else}
 								<div class="col-12">
-									<div class="mt-5 row row-cols-1 row-cols-md-2 g-3">
+									<div class="mt-1 row row-cols-1 row-cols-md-2 g-3">
 										{#each blogs as blog, index}
 											<AdminPostCard {blog} {index} />
 											<!-- <p>{blog.title}</p> -->

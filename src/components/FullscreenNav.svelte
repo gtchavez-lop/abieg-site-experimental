@@ -1,17 +1,18 @@
 <script>
-	import { onMount } from 'svelte';
-
-	import { global_hasAccount } from '../global';
-	import Marquee from 'svelte-marquee';
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';
 
+	let lastScroll = 0;
+	let scrollY;
+	let nav;
 	let isActivated = false;
 
 	const toggleNav = (e) => {
 		if (isActivated) {
 			isActivated = false;
+			nav.style.background = 'rgba(0, 0, 0, 0.2)';
 		} else {
 			isActivated = true;
+			nav.style.background = 'rgba(0, 0, 0, 0)';
 		}
 	};
 	const toggleNavOff = (e) => {
@@ -19,9 +20,19 @@
 			isActivated = false;
 		}
 	};
+	const hideNav = (e) => {
+		if (lastScroll < scrollY) {
+			nav.style.transform = 'translateY(-75px)';
+		} else {
+			nav.style.transform = 'translateY(0px)';
+		}
+		lastScroll = scrollY;
+	};
 </script>
 
-<div class="menucontainer">
+<svelte:window bind:scrollY on:scroll={hideNav} />
+
+<div bind:this={nav} class="menucontainer">
 	<a href="/" class="homeButton" on:click={toggleNavOff}> ABIE G </a>
 
 	<div class={isActivated ? 'button button-activated' : 'button'} on:click={toggleNav}>
@@ -119,12 +130,13 @@
 		position: fixed;
 		top: 0;
 		width: 100%;
-		height: 100px;
-		/* background: black; */
+		height: 75px;
+		background: rgba(0, 0, 0, 0.2);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		transform-style: preserve-3d;
+		transition: 200ms ease all;
 
 		z-index: 999;
 	}
@@ -171,12 +183,14 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		filter: invert(1);
 		user-select: none;
 		transform: rotateZ(0deg);
 	}
 	.button-activated {
 		transform: rotateZ(-180deg);
+	}
+	.button i {
+		color: white;
 	}
 
 	.menu {
@@ -318,6 +332,7 @@
 		height: 50px;
 		cursor: pointer;
 		transition: 200ms ease all;
+		/* color: #212529; */
 	}
 	.menu__socials span:hover {
 		transform: scale(1.2);
@@ -325,6 +340,9 @@
 	.menu__socials span:active {
 		transition: none;
 		transform: scale(0.8);
+	}
+	.bi {
+		color: #96c9dc;
 	}
 
 	@media screen and (max-width: 800px) {

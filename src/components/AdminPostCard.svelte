@@ -14,13 +14,6 @@
 	let new_blogContent = blog.content;
 	let isContentRevealed = false;
 
-	let toggle_edit_photo = (e) => {
-		if (isDeleting) {
-			isDeleting = false;
-		} else {
-			isDeleting = true;
-		}
-	};
 	let confirmDelete = (e) => {
 		if (isDeleting) {
 			isDeleting = false;

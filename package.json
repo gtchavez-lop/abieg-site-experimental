@@ -27,6 +27,7 @@
   "type": "module",
   "dependencies": {
     "@imask/svelte": "^6.2.2",
+    "@lottiefiles/svelte-lottie-player": "^0.2.0",
     "@supabase/supabase-js": "^1.22.6",
     "animejs": "^3.2.1",
     "crypto-js": "^4.1.1",

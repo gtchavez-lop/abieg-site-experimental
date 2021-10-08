@@ -107,7 +107,7 @@
 	.imgContainer {
 		position: fixed;
 		top: 0;
-		width: 100vw;
+		width: 100%;
 		height: 50vh;
 		display: flex;
 		justify-content: center;
@@ -117,6 +117,8 @@
 		opacity: 1;
 		transition: 500ms ease all;
 		overflow: hidden;
+		border-bottom-left-radius: 20px;
+		border-bottom-right-radius: 20px;
 		img {
 			position: absolute;
 			width: 100%;

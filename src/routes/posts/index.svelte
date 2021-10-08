@@ -45,7 +45,11 @@
 	<title>Posts | Abie G</title>
 </svele:head>
 
-<main in:fly={{ y: -40, duration: 500, delay: 500 }} out:fly={{ y: 40, duration: 500 }}>
+<main
+	class="mb-5"
+	in:fly={{ y: -40, duration: 500, delay: 500 }}
+	out:fly={{ y: 40, duration: 500 }}
+>
 	<div class="container text-white">
 		<h3 class="display-3">See what's new</h3>
 
@@ -59,9 +63,9 @@
 				{#if !hasAccount}
 					<h4 class="my-5">Sign in to view exclusive content</h4>
 				{/if}
-				<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gx-3 gy-3">
+				<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gx-3 gy-3 ">
 					{#each blogs as blogs, index}
-						<div class="col">
+						<div class="col d-flex justify-content-center">
 							<PostBlogCard {...blogs} {index} />
 						</div>
 					{/each}

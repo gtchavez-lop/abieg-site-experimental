@@ -93,6 +93,7 @@
 	<!-- <div bind:this={rec1} class="brand__candy_rec1" />
 	<div bind:this={rec2} class="brand__candy_rec2" /> -->
 </main>
+
 <IntersectionObserver threshold={0.2} element={hero1} bind:intersecting={isHero1Intersecting}>
 	<main
 		bind:this={hero1}
@@ -211,17 +212,13 @@
 </IntersectionObserver>
 
 <!-- for maintenance -->
+
 <!-- <main style="display: flex; align-items:center;">
 	<div class="container white-text">
 		<h1>Sorry, we are fixing or updating something</h1>
 		<p>Please come back in some time</p>
 	</div>
 </main> -->
-
-<!-- <svelte:head>
-	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-</svelte:head> -->
 <style lang="scss">
 	.loading {
 		position: fixed;
@@ -235,15 +232,15 @@
 		justify-content: center;
 		align-items: center;
 		transition: 200ms ease opacity;
-	}
-	.floatingImage img {
-		width: 100%;
-		height: 100%;
+		img {
+			width: 100%;
+			height: 100%;
 
-		opacity: 0.5;
-		object-fit: cover;
-		clip-path: polygon(5% 0%, 100% 0%, 100% 100%, 5% 100%);
-		transition: 500ms ease all;
+			opacity: 0.5;
+			object-fit: cover;
+			clip-path: polygon(5% 0%, 100% 0%, 100% 100%, 5% 100%);
+			transition: 500ms ease all;
+		}
 	}
 	.joinbutton {
 		padding: 1em;
@@ -257,12 +254,12 @@
 		cursor: pointer;
 		font-weight: 700;
 		transition: 200ms ease all;
-	}
-	.joinbutton:hover {
-		color: white;
-		background: #f88dad;
-		border: #f88dad solid 0.2rem;
-		transform: scale(1.1);
+		&:hover {
+			color: white;
+			background: #f88dad;
+			border: #f88dad solid 0.2rem;
+			transform: scale(1.1);
+		}
 	}
 
 	.hero {
@@ -274,9 +271,8 @@
 	main {
 		transition: 500ms ease all;
 		min-height: 70vh;
-	}
-	main * {
-		/* margin: 0; */
+		perspective: 1000px;
+		perspective-origin: center center;
 		user-select: none;
 	}
 	.brand {
@@ -302,24 +298,24 @@
 		display: flex;
 		/* justify-content: flex-start; */
 		/* align-items: center; */
+		.brand__lc_letter {
+			font-weight: 600;
+			font-family: 'Montserrat', sans-serif;
+			font-size: 8rem;
+			width: 125px;
+			height: 125px;
+			opacity: 0.5;
+			color: transparent;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			color: transparent;
+			-webkit-text-stroke-width: 1px;
+			-webkit-text-stroke-color: white;
+			transition: opacity 200ms ease;
+		}
 	}
 
-	.brand__letterContainer .brand__lc_letter {
-		font-weight: 600;
-		font-family: 'Montserrat', sans-serif;
-		font-size: 8rem;
-		width: 125px;
-		height: 125px;
-		opacity: 0.5;
-		color: transparent;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: transparent;
-		-webkit-text-stroke-width: 1px;
-		-webkit-text-stroke-color: white;
-		transition: opacity 200ms ease;
-	}
 	.letter-g {
 		margin-left: 25px;
 	}

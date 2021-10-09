@@ -54,7 +54,8 @@
 			reg_givenName != '' &&
 			reg_familyName != '' &&
 			reg_gender != '' &&
-			isBirthdateMatched
+			isBirthdateMatched &&
+			dayjs().diff(reg_birthdate, 'year') > 18
 		) {
 			isRegister = false;
 			let { user, error } = await supabase.auth.signUp({
@@ -89,6 +90,9 @@
 			} else {
 				console.log(error);
 			}
+		}
+		if (dayjs().diff(reg_birthdate, 'year') < 18) {
+			toast.push('You should be at least 18 years old to register');
 		}
 	};
 
@@ -129,11 +133,11 @@
 	<div class="container text-white" style="border-radius:10px">
 		<p class="display-3">Your Account</p>
 		{#if !$global_account}
-			<div class="row" style="min-height: 50vh;" in:fly|local={{ y: -40, duration: 500 }}>
+			<div class="row " style="min-height: 50vh;" in:fly|local={{ y: -40, duration: 500 }}>
 				<div class="col-md-6 d-flex justify-content-center align-items-center mt-md-5">
 					<img
 						class="mx-auto"
-						src="./illustrations/undraw_profile_image_re_ic2f.svg"
+						src="./illustrations/watermelon/watermelon-pack-illustration-08.svg"
 						width="250"
 						alt=""
 					/>

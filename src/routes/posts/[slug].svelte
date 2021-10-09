@@ -15,6 +15,7 @@
 	export let slug;
 	export let blogData;
 
+	let title;
 	let image;
 
 	onMount(async (e) => {
@@ -22,7 +23,7 @@
 
 		if (!error || data.length > 0) {
 			blogData = data[0];
-
+			title = data[0].title;
 			// console.log(blogData);
 		}
 
@@ -48,9 +49,7 @@
 </script>
 
 <svelte:head>
-	{#if blogData}
-		<title>ABIE G | {blogData.title}</title>
-	{/if}
+	<title>ABIE G | {title}</title>
 </svelte:head>
 
 <div

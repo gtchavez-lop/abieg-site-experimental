@@ -9,10 +9,12 @@
 	const toggleNav = (e) => {
 		if (isActivated) {
 			isActivated = false;
-			nav.style.background = 'rgba(0, 0, 0, 0.2)';
+			setTimeout(() => {
+				nav.style.background = 'linear-gradient(180deg, rgba(0, 0, 0, 0.2), transparent)';
+			}, 200);
 		} else {
 			isActivated = true;
-			nav.style.background = 'rgba(0, 0, 0, 0)';
+			nav.style.background = 'linear-gradient(0deg, rgba(0, 0, 0, 0), transparent)';
 		}
 	};
 	const toggleNavOff = (e) => {
@@ -32,16 +34,20 @@
 
 <svelte:window bind:scrollY on:scroll={hideNav} />
 
-<div bind:this={nav} class="menucontainer">
+<div bind:this={nav} class="navContainer">
 	<a href="/" class="homeButton" on:click={toggleNavOff}> ABIE G </a>
+	<div class={isActivated ? 'menuToggler menuToggler__active' : 'menuToggler'} on:click={toggleNav}>
+		<i class="bi bi-x-circle {isActivated ? '' : 'menuToggler__active-icon'}" />
+		<i class="bi bi-list {isActivated ? 'menuToggler__active-icon' : ''}" />
+	</div>
 
-	<div class={isActivated ? 'button button-activated' : 'button'} on:click={toggleNav}>
+	<!-- <div class={isActivated ? 'button button-activated' : 'button'} on:click={toggleNav}>
 		{#if isActivated}
 			<i class="bi bi-x" style="font-size: 2em;" />
 		{:else}
 			<i class="bi bi-list" style="font-size: 2em;" />
 		{/if}
-	</div>
+	</div> -->
 </div>
 
 <div class={isActivated ? 'menu menu-activated' : 'menu'}>
@@ -125,20 +131,48 @@
 	</div>
 </div>
 
-<style>
-	.menucontainer {
+<style lang="scss">
+	.navContainer {
 		position: fixed;
 		top: 0;
 		width: 100%;
-		height: 75px;
-		background: rgba(0, 0, 0, 0.2);
+		height: 100px;
+		background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), transparent);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		transform-style: preserve-3d;
 		transition: 200ms ease all;
 
 		z-index: 999;
+		.menuToggler {
+			width: 100px;
+			height: 100px;
+			transition: 500ms ease all;
+			transform-style: preserve-3d;
+			margin-right: 50px;
+			cursor: pointer;
+			.menuToggler__active-icon {
+				opacity: 0;
+			}
+			.bi {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				color: white;
+				transition: 500ms ease all;
+				font-size: 2.5em;
+			}
+			.bi-list {
+				transform: translateX(-50%) translateY(-50%) translateZ(30px);
+			}
+			.bi-x-circle {
+				transform: translateX(-50%) translateY(-50%) translateZ(-30px);
+			}
+		}
+
+		.menuToggler__active {
+			transform: rotateY(-0.5turn) rotateX(0.5turn);
+		}
 	}
 	.homeButton {
 		position: relative;
@@ -151,46 +185,23 @@
 		user-select: none;
 		font-size: 1.5em;
 		margin-left: 2em;
-	}
-	.homeButton::after {
-		position: absolute;
-		content: 'ABIE G';
-		color: white;
-		opacity: 0;
-		width: 150%;
-		top: 50%;
-		transform: translateY(-50%);
-		left: -5%;
-		font-size: 1.5em;
-		transition: 200ms ease all;
-		z-index: -1;
-	}
-	.homeButton:hover::after {
-		left: 0%;
-		opacity: 0.2;
-	}
-	.button {
-		position: relative;
-		width: 80px;
-		height: 80px;
-		margin-right: 20px;
-		margin-left: 10px;
-		/* background: #00212b; */
-		border-radius: 100px;
-		cursor: pointer;
-		z-index: 99;
-		transition: 200ms ease all;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		user-select: none;
-		transform: rotateZ(0deg);
-	}
-	.button-activated {
-		transform: rotateZ(-180deg);
-	}
-	.button i {
-		color: white;
+		&::after {
+			position: absolute;
+			content: 'ABIE G';
+			color: white;
+			opacity: 0;
+			width: 150%;
+			top: 50%;
+			transform: translateY(-50%);
+			left: -5%;
+			font-size: 1.5em;
+			transition: 200ms ease all;
+			z-index: -1;
+		}
+		&:hover::after {
+			left: 0%;
+			opacity: 0.2;
+		}
 	}
 
 	.menu {
@@ -215,32 +226,31 @@
 		opacity: 1;
 		transform: translateX(0%);
 		transition: 500ms cubic-bezier(0, 0.98, 0, 0.98) all;
-		/* clip-path: circle(100vh at calc(100% - 50px) 50px); */
-	}
-	.menu-activated::before {
-		content: '';
-		position: absolute;
-		right: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		border: solid white 5em;
-		border-bottom: solid transparent 0;
-		border-right: solid transparent 0;
-		border-top: solid transparent 0;
-		animation: glow 1s cubic-bezier(0.23, 0.93, 0, 1);
-		opacity: 0;
-		/* z-index: -1; */
-	}
-	@keyframes glow {
-		0% {
-			opacity: 1;
-		}
-		10% {
-			opacity: 0.5;
-		}
-		100% {
+		&::before {
+			content: '';
+			position: absolute;
+			right: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			border: solid white 5em;
+			border-bottom: solid transparent 0;
+			border-right: solid transparent 0;
+			border-top: solid transparent 0;
+			animation: glow 1s cubic-bezier(0.23, 0.93, 0, 1);
 			opacity: 0;
+
+			@keyframes glow {
+				0% {
+					opacity: 1;
+				}
+				10% {
+					opacity: 0.5;
+				}
+				100% {
+					opacity: 0;
+				}
+			}
 		}
 	}
 	@media screen and (max-width: 800px) {
@@ -280,30 +290,30 @@
 		transition: 200ms ease all;
 		cursor: pointer;
 		margin-top: 2vh;
-	}
-	.menu__navlinks__navlink h1 {
-		transition: 200ms ease all;
-	}
-	.menu__navlinks__navlink span {
-		position: absolute;
-		top: 40%;
-		left: -10%;
-		transform: translateY(-50%);
-		width: max-content;
-		font-size: 7em;
-		user-select: none;
-		font-family: 'Thunder Light';
-		opacity: 0;
-		transition: 200ms ease all;
-		color: #819ef7;
-		z-index: -1;
-	}
-	.menu__navlinks__navlink:hover h1 {
-		transform: translateX(-25px);
-	}
-	.menu__navlinks__navlink:hover span {
-		opacity: 0.25;
-		left: -15%;
+		h1 {
+			transition: 200ms ease all;
+		}
+		span {
+			position: absolute;
+			top: 40%;
+			left: -10%;
+			transform: translateY(-50%);
+			width: max-content;
+			font-size: 7em;
+			user-select: none;
+			font-family: 'Thunder Light';
+			opacity: 0;
+			transition: 200ms ease all;
+			color: #819ef7;
+			z-index: -1;
+		}
+		&:hover h1 {
+			transform: translateX(-25px);
+		}
+		&:hover span {
+			opacity: 0.25;
+			left: -15%;
+		}
 	}
 
 	.menu__socials {

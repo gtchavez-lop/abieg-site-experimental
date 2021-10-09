@@ -1,13 +1,24 @@
+<script>
+	let scrollY;
+	const scrollToTop = (e) => {
+		scrollY = 0;
+	};
+</script>
+
+<svelte:window bind:scrollY />
+
 <footer class="footer text-white py-3 bg-grey-900">
 	<div class="container">
 		<div class="row">
 			<div class="col-4 d-flex align-items-center justify-content-start">
 				<p style="font-size: 1.2em;">© 2021</p>
 			</div>
-			<div class="col-4 d-flex align-items-center justify-content-center">
-				<p>
-					<a href="/" class="btn btn-link text-light" style="font-size: 1.2em;">ABIE G</a>
-				</p>
+			<div
+				class="col-4 d-flex align-items-center justify-content-center"
+				style="cursor: pointer;"
+				on:click={scrollToTop}
+			>
+				<p>ABIE G</p>
 			</div>
 			<div class="col-4 d-flex align-items-center justify-content-end">
 				<p>

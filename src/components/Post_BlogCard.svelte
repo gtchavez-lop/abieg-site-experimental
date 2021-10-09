@@ -62,10 +62,12 @@
 		border: none;
 		box-shadow: rgba(0, 0, 0, 0.2) 0 0.5em 2em;
 		user-select: none;
+		transform-style: preserve-3d;
 
 		&:hover {
+			transform: translateY(-10px);
 			.blog_card_bg {
-				transform: scale(1.05);
+				transform: scale(1.05) translateZ(100px);
 			}
 			.blog_card_bg1 {
 				opacity: 1;

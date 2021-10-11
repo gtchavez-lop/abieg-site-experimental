@@ -41,31 +41,29 @@
 
 	<div class="blog_card_content d-block d-lg-none">
 		<p class="display-6" style="font-size: 1.4em;">{title}</p>
-		<p class="text-muted">{author}</p>
+		<p style="color: #e2eff1;">{author}</p>
 
 		<a href="/posts/{id}" class="btn btn-primary " style="width: 100%;">Read More</a>
 	</div>
 	<div class="blog_card_content blog_card_content1 d-none d-lg-block">
 		<p class="display-6" style="font-size: 1.4em;">{title}</p>
-		<p class="text-muted">{author}</p>
+		<p style="color: #e2eff1;">{author}</p>
 	</div>
 </div>
 
 <style lang="scss">
 	.blog_card {
 		position: relative;
-		width: 20em;
+		width: 100%;
 		height: 30em;
-		border-radius: 20px;
 		overflow: hidden;
 		transition: 300ms ease all;
 		border: none;
-		box-shadow: rgba(0, 0, 0, 0.2) 0 0.5em 2em;
+		box-shadow: rgba(0, 0, 0, 0) 0 0.5em 2em;
 		user-select: none;
 		transform-style: preserve-3d;
-
 		&:hover {
-			transform: translateY(-10px);
+			box-shadow: rgba(0, 0, 0, 0.2) 0 0.5em 2em;
 			.blog_card_bg {
 				transform: scale(1.05) translateZ(100px);
 			}
@@ -78,7 +76,6 @@
 			}
 			.exclusiveBadge {
 				width: 100%;
-				border-bottom-left-radius: 0px;
 			}
 		}
 
@@ -87,6 +84,8 @@
 			width: 100%;
 			height: 100%;
 			transition: 300ms ease all;
+			border-radius: 20px;
+			overflow: hidden;
 			img {
 				width: 100%;
 				height: 100%;
@@ -103,7 +102,7 @@
 			padding: 1em;
 			bottom: 0;
 			transition: 300ms ease all;
-			background: #002a32;
+			background: #3d5467;
 			border-top-left-radius: 20px;
 			border-top-right-radius: 20px;
 		}

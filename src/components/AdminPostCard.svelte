@@ -35,8 +35,6 @@
 	let deletePost = async (e) => {
 		if (blog) {
 			let { data, error } = await supabase.from('posts').delete().match({ id: blog.id });
-			console.log(data);
-			console.log(error);
 
 			if (!error) {
 				location.reload();
@@ -148,9 +146,10 @@
 										class="form-check-input"
 										bind:checked={new_isExclusive}
 										type="checkbox"
-										id="new_visibility"
+										id={blog.id}
+										aria-label={blog.id}
 									/>
-									<label class="form-check-label" for="new_visibility">Exlusive</label>
+									<label class="form-check-label" for={blog.id}>Exlusive</label>
 								</div>
 							</div>
 							<div class="col">

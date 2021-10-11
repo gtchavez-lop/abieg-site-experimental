@@ -4,6 +4,7 @@
 	import dayjs from 'dayjs';
 	import { supabase, global_account, global_hasAccount, global_account_data } from '../global';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import { toast, SvelteToast } from '@zerodevx/svelte-toast';
 
 	let isRegister = false;
@@ -18,7 +19,6 @@
 	let reg_familyName = '';
 	let reg_gender = 'Male';
 	let reg_address = '';
-	let verificationCode = '';
 
 	let birthdateMask = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
 
@@ -103,6 +103,7 @@
 			global_account_data.set(null);
 			toast.push('You have been logged out');
 		}
+		confirmLogout = false;
 	};
 	const logoutConfirm = (e) => {
 		if (confirmLogout) {
@@ -344,6 +345,20 @@
 					<p class="lead mt-0">
 						{$global_account_data.shipping_address}
 					</p>
+				</div>
+				<div class="col-12 text-center">
+					<p class="lead text-muted mb-0 mt-4">Account Type</p>
+					<p class="lead mt-0">
+						{$global_account_data.isModerator ? 'Moderator Account' : 'Standard Account'}
+					</p>
+					{#if $global_account_data.isModerator}
+						<button
+							class="btn btn-link"
+							on:click={(e) => {
+								goto('/admin/dashboard');
+							}}>Go to Dashboard</button
+						>
+					{/if}
 				</div>
 				<div class="col-12 mt-5">
 					<div class="d-grid">

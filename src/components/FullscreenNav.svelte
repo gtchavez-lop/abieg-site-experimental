@@ -1,10 +1,13 @@
 <script>
+	import { supabase } from '../global';
+
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';
 
 	let lastScroll = 0;
 	let scrollY;
 	let nav;
 	let isActivated = false;
+	let activeNav;
 
 	const toggleNav = (e) => {
 		if (isActivated) {
@@ -34,23 +37,66 @@
 
 <svelte:window bind:scrollY on:scroll={hideNav} />
 
-<div bind:this={nav} class="navContainer">
-	<a href="/" class="homeButton" on:click={toggleNavOff}> ABIE G </a>
-	<div class={isActivated ? 'menuToggler menuToggler__active' : 'menuToggler'} on:click={toggleNav}>
+<div bind:this={nav} class="navContainer d-flex justify-content-between align-items-center">
+	<a href="/" class="homeButton ms-5" on:click={toggleNavOff}> ABIE G </a>
+	<div
+		class="menuToggler d-block d-lg-none {isActivated ? 'menuToggler__active' : ''}"
+		on:click={toggleNav}
+	>
 		<i class="bi bi-x-circle {isActivated ? '' : 'menuToggler__active-icon'}" />
 		<i class="bi bi-list {isActivated ? 'menuToggler__active-icon' : ''}" />
 	</div>
 
-	<!-- <div class={isActivated ? 'button button-activated' : 'button'} on:click={toggleNav}>
-		{#if isActivated}
-			<i class="bi bi-x" style="font-size: 2em;" />
-		{:else}
-			<i class="bi bi-list" style="font-size: 2em;" />
-		{/if}
-	</div> -->
+	<ul class="navLinks me-3 d-none d-lg-flex mt-3 text-white row row-cols-4">
+		<li>
+			<a
+				href="/"
+				on:click={(e) => {
+					activeNav = 1;
+					toggleNavOff();
+				}}
+				class="nav-link text-center text-white {activeNav == 1 ? 'text-white' : 'text-muted'}"
+				>Home</a
+			>
+		</li>
+		<li>
+			<a
+				href="/posts"
+				on:click={(e) => {
+					activeNav = 2;
+					toggleNavOff();
+				}}
+				class="nav-link text-center text-white {activeNav == 2 ? 'text-white' : 'text-muted'}"
+				>Posts</a
+			>
+		</li>
+		<li>
+			<a
+				href="/about"
+				on:click={(e) => {
+					activeNav = 3;
+					toggleNavOff();
+				}}
+				class="nav-link text-center text-white {activeNav == 3 ? 'text-white' : 'text-muted'}"
+				>About us</a
+			>
+		</li>
+		<li>
+			<a
+				href="/account"
+				on:click={(e) => {
+					activeNav = 4;
+					toggleNavOff();
+				}}
+				class="nav-link text-center text-white {activeNav == 4 ? 'text-white' : 'text-muted'}"
+			>
+				Account
+			</a>
+		</li>
+	</ul>
 </div>
 
-<div class={isActivated ? 'menu menu-activated' : 'menu'}>
+<div class="menu d-block d-lg-none {isActivated ? 'menu-activated' : ''}">
 	<ul class="menu__navlinks">
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<a href="/account">
@@ -138,18 +184,22 @@
 		width: 100%;
 		height: 100px;
 		background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), transparent);
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
 		transition: 200ms ease all;
-
 		z-index: 999;
+
+		.navLinks {
+			width: 50%;
+			list-style: none;
+			padding: 0;
+			font-size: 2em;
+			font-family: 'Thunder Medium';
+		}
+
 		.menuToggler {
 			width: 100px;
 			height: 100px;
 			transition: 500ms ease all;
 			transform-style: preserve-3d;
-			margin-right: 50px;
 			cursor: pointer;
 			.menuToggler__active-icon {
 				opacity: 0;
@@ -177,29 +227,26 @@
 	.homeButton {
 		position: relative;
 		text-align: right;
-		height: 75px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		font-family: 'Thunder Medium';
 		cursor: pointer;
 		user-select: none;
-		font-size: 1.5em;
-		margin-left: 2em;
+		font-size: 2em;
+		margin-left: 1em;
 		&::after {
 			position: absolute;
 			content: 'ABIE G';
 			color: white;
 			opacity: 0;
-			width: 150%;
+			width: 200%;
 			top: 50%;
 			transform: translateY(-50%);
-			left: -5%;
+			left: -50%;
 			font-size: 1.5em;
 			transition: 200ms ease all;
 			z-index: -1;
 		}
 		&:hover::after {
-			left: 0%;
+			left: -25%;
 			opacity: 0.2;
 		}
 	}

@@ -25,7 +25,13 @@
 </div>
 
 <!-- <div class="background" /> -->
-<main bind:this={mainContainer} transition:fade class="hero" style="overflow-x: hidden;">
+<main
+	bind:this={mainContainer}
+	in:fly={{ y: 20, duration: 500 }}
+	out:fly={{ y: 20, duration: 500 }}
+	class="hero"
+	style="overflow-x: hidden;"
+>
 	<div
 		class="floatingImage"
 		style="

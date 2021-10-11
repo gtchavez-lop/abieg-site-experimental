@@ -11,8 +11,10 @@
 	let isLoggingOut = false;
 	let hasBlog = null;
 	let blogs;
-	let username;
 	let tabActive = 2;
+	let adminAccount;
+	let hasAccount;
+	let user = supabase.auth.user();
 
 	// blog content
 	let blog_title;
@@ -39,7 +41,7 @@
 			const { data, error } = await supabase.from('posts').insert([
 				{
 					title: blog_title,
-					author: $global_mod_account.username,
+					author: user.email.split('@')[0],
 					content: blog_content,
 					header_img: blog_imageURI ? blog_imageURI : 'https://picsum.photos/500/500',
 					isExclusive: blog_visibility
@@ -58,30 +60,56 @@
 		}
 	};
 
-	onMount((e) => {
-		if (localStorage.getItem('data_mod') === null) {
-			goto('/admin');
-		} else {
-			global_mod_account.set(JSON.parse(localStorage.getItem('data_mod')));
-
-			(async (e) => {
-				if ($global_mod_account) {
-					const { data, error } = await supabase
-						.from('posts')
-						.select('*')
-						.eq('author', $global_mod_account.username);
-
-					hasBlog = null;
-					if (error || data.length < 1) {
-						hasBlog = false;
-					}
-					if (!error) {
-						blogs = data;
-						hasBlog = true;
-					}
-				}
-			})();
+	onMount(async (e) => {
+		if (supabase.auth.user().role == 'authenticated') {
+			let user = supabase.auth.user();
+			let { data, error } = await supabase.from('users').select('*').eq('id', user.id);
+			if (data[0].isModerator == true) {
+				adminAccount = data[0];
+				hasAccount = true;
+			} else {
+				goto('/admin');
+			}
 		}
+
+		if (hasAccount) {
+			const { data, error } = await supabase
+				.from('posts')
+				.select('*')
+				.eq('author', user.email.split('@')[0]);
+
+			hasBlog = null;
+			if (error || data.length < 1) {
+				hasBlog = false;
+			}
+			if (!error || data.length > 0) {
+				blogs = data;
+				hasBlog = true;
+			}
+		}
+		// if (localStorage.getItem('data_mod') === null) {
+		// 	goto('/admin');
+		// } else {
+		// 	global_mod_account.set(JSON.parse(localStorage.getItem('data_mod')));
+
+		// 	(async (e) => {
+		// 		if ($global_mod_account) {
+		// 			const { data, error } = await supabase
+		// 				.from('posts')
+		// 				.select('*')
+		// 				.eq('author', $global_mod_account.username);
+
+		// 			hasBlog = null;
+		// 			if (error || data.length < 1) {
+		// 				hasBlog = false;
+		// 			}
+		// 			if (!error) {
+		// 				blogs = data;
+		// 				hasBlog = true;
+		// 			}
+		// 		}
+		// 	})();
+		// }
 	});
 </script>
 
@@ -103,26 +131,27 @@
 					tabActive = 1;
 				}}
 				type="button"
-				class="btn btn-outline-primary">Add a Story</button
+				class="btn btn-lg btn-outline-primary">Add a Story</button
 			>
 			<button
 				on:click={(e) => {
 					tabActive = 2;
 				}}
 				type="button"
-				class="btn btn-outline-primary">Your Stories</button
+				class="btn btn-lg btn-outline-primary">Your Stories</button
 			>
-			<button
+			<!-- <button
 				on:click={(e) => {
 					tabActive = 3;
 				}}
 				type="button"
 				class="btn btn-outline-primary">Your Account</button
-			>
+			> -->
 		</div>
 
 		<!-- tabs -->
 		<div class="mt-5">
+			<!-- add story -->
 			{#if tabActive == 1}
 				<div in:fly={{ x: 20, duration: 500 }}>
 					<p class="display-5">Add a story</p>
@@ -150,15 +179,17 @@
 								<label for="story_author">The Author</label>
 							</div>
 						</div> -->
-						<div class="col-12 mb-1">
-							<img
-								style="width: 100%; height: 250px; object-fit: cover;"
-								src={blog_imageURI != ''
-									? blog_imageURI
-									: 'https://via.placeholder.com/1500?text=This+is+a+placeholder+image'}
-								alt="..."
-							/>
-						</div>
+						{#if blog_imageURI}
+							<div class="col-12 mb-1">
+								<img
+									style="width: 100%; height: 250px; object-fit: cover;"
+									src={blog_imageURI != ''
+										? blog_imageURI
+										: 'https://via.placeholder.com/1500?text=This+is+a+placeholder+image'}
+									alt="..."
+								/>
+							</div>
+						{/if}
 						<div class="col-12">
 							<div class="form-floating mb-3">
 								<input
@@ -212,39 +243,36 @@
 			{#if tabActive == 2}
 				<div in:fly={{ x: 20, duration: 500 }}>
 					<p class="display-5">Your Stories</p>
-					{#if $global_mod_account}
-						<div class="row text-white">
-							{#if hasBlog == null}
-								<div class="spinner-border text-info" role="status">
-									<span class="visually-hidden">Loading...</span>
+					<div class="row text-white">
+						{#if hasBlog == null}
+							<div class="spinner-border text-info" role="status">
+								<span class="visually-hidden">Loading...</span>
+							</div>
+						{/if}
+						{#if !hasBlog || blogs.length < 1}
+							<div class="col-12">
+								<h5>Seems like its empty</h5>
+								<p>Make one of your own</p>
+							</div>
+						{:else}
+							<div class="col-12">
+								<div class="mt-1 row row-cols-1 row-cols-md-2 g-3">
+									{#each blogs as blog, index}
+										<AdminPostCard {blog} {index} />
+									{/each}
 								</div>
-							{/if}
-							{#if !hasBlog || blogs.length < 1}
-								<div class="col-12">
-									<h5>Seems like its empty</h5>
-									<p>Make one of your own</p>
-								</div>
-							{:else}
-								<div class="col-12">
-									<div class="mt-1 row row-cols-1 row-cols-md-2 g-3">
-										{#each blogs as blog, index}
-											<AdminPostCard {blog} {index} />
-											<!-- <p>{blog.title}</p> -->
-										{/each}
-									</div>
 
-									<!-- <div class="accordion bg-transparent">
-										{#each blogs as blog, index}
-											<AdminPostCard {blog} {index} />
-										{/each}
+								<!-- <div class="accordion bg-transparent">
+									{#each blogs as blog, index}
+										<AdminPostCard {blog} {index} />
+									{/each}
 									</div> -->
-								</div>
-							{/if}
-						</div>
-					{/if}
+							</div>
+						{/if}
+					</div>
 				</div>
 			{/if}
-			{#if tabActive == 3}
+			<!-- {#if tabActive == 3}
 				<div in:fly={{ x: 20, duration: 500 }}>
 					<p class="display-5">Your Moderator Account</p>
 					{#if $global_mod_account}
@@ -277,7 +305,7 @@
 						</div>
 					{/if}
 				</div>
-			{/if}
+			{/if} -->
 		</div>
 	</div>
 </main>

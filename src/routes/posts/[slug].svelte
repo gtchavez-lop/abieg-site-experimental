@@ -50,10 +50,10 @@
 
 <div>
 	<div
-		class="imgContainer"
+		class="imgContainer shadow"
 		bind:this={image}
-		in:slide={{ duration: 1000, delay: 200, easing: quintOut }}
-		out:fly={{ y: -20, duration: 500 }}
+		in:slide={{ duration: 800, delay: 200, easing: quintOut }}
+		out:fly={{ y: -20, duration: 500, easing: quintOut }}
 		style="opacity: {1 - scrollY / 500}; transform: translateY(-{Math.min(
 			(scrollY / 500) * 100,
 			500
@@ -65,22 +65,25 @@
 			{#if blogData.isExclusive}
 				<h6
 					class="exlusiveContent text-white "
-					in:fly={{ x: 20, y: 20, duration: 500, delay: 500 }}
+					in:fly={{ y: 50, duration: 500, delay: 600, easing: quintOut }}
 				>
-					<span in:fly={{ x: 10, y: 10, duration: 500, delay: 700 }}>EXCLUSIVE</span>
+					<span in:fly={{ y: 10, duration: 500, delay: 900, easing: quintOut }}>EXCLUSIVE</span>
 				</h6>
 			{/if}
 		{/if}
 	</div>
 	<main
-		in:fly={{ y: 20, duration: 500, delay: 500 }}
+		in:fly={{ y: 60, duration: 500, delay: 500 }}
 		out:fly={{ y: -60, duration: 500 }}
 		class="mb-5"
 	>
 		<div class="container text-white">
 			<div class="row">
 				<div class="col-sm-12 col-md-8" />
-				<div class="col-sm-12 col-md-4 d-flex justify-content-end">
+				<div
+					class="col-sm-12 col-md-4 d-flex justify-content-end"
+					in:fly={{ x: 20, duration: 500, delay: 1200 }}
+				>
 					<a href="/posts" class="btn btn-lg text-white bg-secondary ">
 						<i class="bi bi-x me-3" style="font-size: 1.1em;" />
 						<span>Close Article</span>
@@ -131,7 +134,6 @@
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
-			object-position: center;
 		}
 	}
 	.exlusiveContent {
@@ -143,7 +145,7 @@
 		min-width: 200px;
 		height: 20%;
 		width: 40%;
-		font-size: 1.7em;
+		font-size: 2em;
 		margin: 0;
 		border-top-left-radius: 20px;
 		box-shadow: rgba(0, 0, 0, 0.5) 0 0 20px;
@@ -156,7 +158,18 @@
 	}
 	@media screen and (max-width: 800px) {
 		.exlusiveContent {
-			width: 50%;
+			width: 100%;
+			height: 15%;
+			border-radius: 20px;
+			font-size: 1.5em;
+		}
+
+		.imgContainer {
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+			img {
+				width: 200%;
+			}
 		}
 	}
 </style>

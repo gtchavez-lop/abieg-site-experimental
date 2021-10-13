@@ -43,8 +43,8 @@
 		class="menuToggler d-block d-lg-none {isActivated ? 'menuToggler__active' : ''}"
 		on:click={toggleNav}
 	>
-		<i class="bi bi-x-circle {isActivated ? '' : 'menuToggler__active-icon'}" />
-		<i class="bi bi-list {isActivated ? 'menuToggler__active-icon' : ''}" />
+		<i style="margin: 0;" class="bi bi-x-circle {isActivated ? '' : 'menuToggler__active-icon'}" />
+		<i style="margin: -5px;" class="bi bi-list {isActivated ? 'menuToggler__active-icon' : ''}" />
 	</div>
 
 	<ul class="navLinks me-3 d-none d-lg-flex mt-3 text-white row row-cols-4">
@@ -183,7 +183,6 @@
 		top: 0;
 		width: 100%;
 		height: 100px;
-		background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), transparent);
 		transition: 200ms ease all;
 		z-index: 999;
 
@@ -268,6 +267,9 @@
 		opacity: 1;
 		overflow: hidden;
 		box-shadow: #323232 0 0 10px;
+		border-radius: 20px;
+		border-top-right-radius: 0px;
+		border-bottom-right-radius: 0px;
 	}
 	.menu-activated {
 		opacity: 1;
@@ -280,7 +282,7 @@
 			top: 0;
 			width: 100%;
 			height: 100%;
-			border: solid white 5em;
+			border: solid white 1em;
 			border-bottom: solid transparent 0;
 			border-right: solid transparent 0;
 			border-top: solid transparent 0;
@@ -298,11 +300,6 @@
 					opacity: 0;
 				}
 			}
-		}
-	}
-	@media screen and (max-width: 800px) {
-		.menu {
-			width: 100%;
 		}
 	}
 	a {
@@ -327,11 +324,6 @@
 		font-family: 'Thunder Medium';
 	}
 
-	@media screen and (max-width: 800px) {
-		.menu__navlinks {
-			margin-left: 25px;
-		}
-	}
 	.menu__navlinks__navlink {
 		position: relative;
 		transition: 200ms ease all;
@@ -403,15 +395,14 @@
 	}
 
 	@media screen and (max-width: 800px) {
-		/* .menu__socials {
-			width: 100%;
-		}
-		.menu__socials span {
-			width: 30px;
-			height: 30px;
-		} */
 		.marquee2 {
 			width: 100%;
+		}
+		.menu {
+			width: 100%;
+		}
+		.menu__navlinks {
+			margin-left: 25px;
 		}
 	}
 </style>

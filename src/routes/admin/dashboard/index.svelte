@@ -61,31 +61,35 @@
 	};
 
 	onMount(async (e) => {
-		if (supabase.auth.user().role == 'authenticated') {
-			let user = supabase.auth.user();
-			let { data, error } = await supabase.from('users').select('*').eq('id', user.id);
-			if (data[0].isModerator == true) {
-				adminAccount = data[0];
-				hasAccount = true;
-			} else {
-				goto('/admin');
+		if (supabase.auth.user()) {
+			if (supabase.auth.user().role == 'authenticated') {
+				let user = supabase.auth.user();
+				let { data, error } = await supabase.from('users').select('*').eq('id', user.id);
+				if (data[0].isModerator == true) {
+					adminAccount = data[0];
+					hasAccount = true;
+				} else {
+					goto('/admin');
+				}
 			}
-		}
 
-		if (hasAccount) {
-			const { data, error } = await supabase
-				.from('posts')
-				.select('*')
-				.eq('author', user.email.split('@')[0]);
+			if (hasAccount) {
+				const { data, error } = await supabase
+					.from('posts')
+					.select('*')
+					.eq('author', user.email.split('@')[0]);
 
-			hasBlog = null;
-			if (error || data.length < 1) {
-				hasBlog = false;
+				hasBlog = null;
+				if (error || data.length < 1) {
+					hasBlog = false;
+				}
+				if (!error || data.length > 0) {
+					blogs = data;
+					hasBlog = true;
+				}
 			}
-			if (!error || data.length > 0) {
-				blogs = data;
-				hasBlog = true;
-			}
+		} else {
+			goto('/admin');
 		}
 		// if (localStorage.getItem('data_mod') === null) {
 		// 	goto('/admin');
@@ -125,20 +129,20 @@
 	<div class="container text-white">
 		<p class="display-3">Moderator Dashboard</p>
 
-		<div class="btn-group mt-3" role="group" aria-label="Basic example">
+		<div class="mt-3 w-100 d-flex" role="group" aria-label="Basic example">
 			<button
 				on:click={(e) => {
 					tabActive = 1;
 				}}
 				type="button"
-				class="btn btn-lg btn-outline-primary">Add a Story</button
+				class="btn btn-lg m-1 btn-primary w-100">Add a Story</button
 			>
 			<button
 				on:click={(e) => {
 					tabActive = 2;
 				}}
 				type="button"
-				class="btn btn-lg btn-outline-primary">Your Stories</button
+				class="btn btn-lg m-1 btn-primary w-100">Your Stories</button
 			>
 			<!-- <button
 				on:click={(e) => {

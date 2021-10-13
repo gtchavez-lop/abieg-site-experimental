@@ -361,7 +361,7 @@
 					{/if}
 				</div>
 				<div class="col-12 mt-5">
-					<div class="d-grid">
+					<div class="row">
 						{#if !confirmLogout}
 							<div class="d-flex justify-content-around" transition:slide|local={{ duration: 500 }}>
 								<button
@@ -373,18 +373,21 @@
 								</button>
 							</div>
 						{:else}
-							<div class="d-flex justify-content-center" transition:slide|local={{ duration: 500 }}>
+							<div
+								class="col d-flex justify-content-center"
+								transition:slide|local={{ duration: 500 }}
+							>
 								<button
 									style="min-width: 200px; width: 30%"
 									on:click={logout}
-									class="btn btn-danger me-2"
+									class="btn btn-danger"
 								>
 									Yes
 								</button>
 								<button
 									style="min-width: 200px; width: 30%"
 									on:click={logoutConfirm}
-									class="btn btn-primary ms-2"
+									class="btn btn-primary"
 								>
 									No
 								</button>

@@ -35,56 +35,23 @@
 	<div
 		class="floatingImage"
 		style="
-			transform: translateX({Math.min((windowScrollY / 500) * 30, 60)}%);
-			opacity: {windowScrollY > 200 ? 0 : 1};
-		"
+				clip-path: polygon({(windowScrollY / 100) * 10}% 0, 100% 0, 100% {100 -
+			windowScrollY / 10}%, {(windowScrollY / 100) * 10}% {100 - windowScrollY / 10}%);
+			"
 	>
 		<img bind:this={floatingImage} src="./hero.jpg" alt="" />
 	</div>
-	<div class="brand" style="transform: translateY(-{Math.min((windowScrollY / 20) * 5, 300)}%);">
-		<div class="brand__letterContainer">
-			<span class="brand__lc_letter">A</span>
-			<span class="brand__lc_letter">B</span>
-			<span class="brand__lc_letter">I</span>
-			<span class="brand__lc_letter">E</span>
-			<span class="brand__lc_letter letter-g">G</span>
-		</div>
+	<div class="brand" style="transform: translateY({Math.min((windowScrollY / 20) * 1, 300)}%);">
+		<p>ABIEG</p>
 	</div>
-	<div
-		class="brand brand2"
-		style="transform: translateY(-{Math.min((windowScrollY / 20) * 7, 300)}%);"
-	>
-		<div class="brand__letterContainer">
-			<span class="brand__lc_letter">A</span>
-			<span class="brand__lc_letter">B</span>
-			<span class="brand__lc_letter">I</span>
-			<span class="brand__lc_letter">E</span>
-			<span class="brand__lc_letter letter-g">G</span>
-		</div>
+	<div class="brand" style="transform: translateY({Math.min((windowScrollY / 20) * 1.5, 300)}%);">
+		<p>ABIEG</p>
 	</div>
-	<div
-		class="brand brand3"
-		style="transform: translateY(-{Math.min((windowScrollY / 20) * 9, 300)}%);"
-	>
-		<div class="brand__letterContainer">
-			<span class="brand__lc_letter">A</span>
-			<span class="brand__lc_letter">B</span>
-			<span class="brand__lc_letter">I</span>
-			<span class="brand__lc_letter">E</span>
-			<span class="brand__lc_letter letter-g">G</span>
-		</div>
+	<div class="brand" style="transform: translateY({Math.min((windowScrollY / 20) * 2, 300)}%);">
+		<p>ABIEG</p>
 	</div>
-	<div
-		class="brand brand4"
-		style="transform: translateY(-{Math.min((windowScrollY / 20) * 11, 300)}%);"
-	>
-		<div class="brand__letterContainer">
-			<span class="brand__lc_letter">A</span>
-			<span class="brand__lc_letter">B</span>
-			<span class="brand__lc_letter">I</span>
-			<span class="brand__lc_letter">E</span>
-			<span class="brand__lc_letter letter-g">G</span>
-		</div>
+	<div class="brand" style="transform: translateY({Math.min((windowScrollY / 20) * 2.5, 300)}%);">
+		<p>ABIEG</p>
 	</div>
 
 	<div class="content">
@@ -97,7 +64,7 @@
 		</a>
 	</div>
 	<!-- <div bind:this={rec1} class="brand__candy_rec1" />
-	<div bind:this={rec2} class="brand__candy_rec2" /> -->
+		<div bind:this={rec2} class="brand__candy_rec2" /> -->
 </main>
 
 <IntersectionObserver threshold={0.2} element={hero1} bind:intersecting={isHero1Intersecting}>
@@ -220,12 +187,13 @@
 <!-- for maintenance -->
 
 <!-- <main style="display: flex; align-items:center;">
-	<div class="container white-text">
-		<h1>Sorry, we are fixing or updating something</h1>
-		<p>Please come back in some time</p>
-	</div>
-</main> -->
+		<div class="container white-text">
+			<h1>Sorry, we are fixing or updating something</h1>
+			<p>Please come back in some time</p>
+		</div>
+	</main> -->
 <style lang="scss">
+	@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
 	.loading {
 		position: fixed;
 	}
@@ -237,15 +205,12 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		transition: 200ms ease opacity;
 		img {
 			width: 100%;
 			height: 100%;
 
 			opacity: 0.5;
 			object-fit: cover;
-			clip-path: polygon(5% 0%, 100% 0%, 100% 100%, 5% 100%);
-			transition: 500ms ease all;
 		}
 	}
 	.joinbutton {
@@ -285,40 +250,20 @@
 		position: absolute;
 		bottom: 25%;
 		left: 25px;
-		opacity: 0.4;
+		opacity: 0.25;
 		width: 100%;
 		overflow: hidden;
-	}
-	.brand2 {
-		opacity: 0.3;
-	}
-	.brand3 {
-		opacity: 0.2;
-	}
-	.brand4 {
-		opacity: 0.1;
-	}
-	.brand__letterContainer {
-		width: 100%;
-		height: 150px;
-		display: flex;
-		/* justify-content: flex-start; */
-		/* align-items: center; */
-		.brand__lc_letter {
+
+		p {
 			font-weight: 600;
-			font-family: 'Montserrat', sans-serif;
-			font-size: 8rem;
-			width: 125px;
-			height: 125px;
+			font-family: 'Righteous', cursive;
+			font-size: 10em;
 			opacity: 0.5;
 			color: transparent;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			color: transparent;
-			-webkit-text-stroke-width: 1px;
+			-webkit-text-stroke-width: 0.5px;
 			-webkit-text-stroke-color: white;
 			transition: opacity 200ms ease;
+			letter-spacing: 0.2em;
 		}
 	}
 
@@ -381,6 +326,17 @@
 		}
 		.joinbutton {
 			width: 100%;
+		}
+		.brand {
+			font-weight: 900;
+			width: 100%;
+			bottom: 35%;
+			left: -2px;
+			font-size: 0.7em;
+			p {
+				-webkit-text-stroke-width: 5px;
+				letter-spacing: 0em;
+			}
 		}
 	}
 </style>

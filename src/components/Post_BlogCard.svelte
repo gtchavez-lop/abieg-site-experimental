@@ -1,14 +1,17 @@
 <script>
-	import { fly, fade, scale, blur } from 'svelte/transition';
+	import dayjs from 'dayjs';
+
+	import { fly, slide, scale, blur } from 'svelte/transition';
 	export let index;
 	export let id;
 	export let title;
 	export let author;
 	export let header_img;
 	export let isExclusive;
+	export let created_at;
 </script>
 
-<div class="blog_card" in:fly={{ y: -10, duration: 500, delay: 100 + 100 * index }}>
+<div class="blog_card" in:fly={{ y: -10, duration: 500, delay: 200 + 150 * index }}>
 	<!-- {#if isExclusive}
 		<div class="exclusiveBadge">
 			<span>EXCLUSIVE</span>
@@ -47,7 +50,10 @@
 	</div>
 	<div class="blog_card_content blog_card_content1 d-none d-lg-block">
 		<p class="display-6" style="font-size: 1.4em;">{title}</p>
-		<p style="color: #e2eff1;">{author}</p>
+		<p style="color: #e2eff1;">
+			{author} |
+			<span style="color: #C1C1C1;">{dayjs(created_at).format('DD MMM, YYYY')}</span>
+		</p>
 	</div>
 </div>
 
@@ -62,10 +68,14 @@
 		box-shadow: rgba(0, 0, 0, 0) 0 0.5em 2em;
 		user-select: none;
 		transform-style: preserve-3d;
+		overflow: hidden;
+		border-radius: 10px;
 		&:hover {
 			box-shadow: rgba(0, 0, 0, 0.2) 0 0.5em 2em;
 			.blog_card_bg {
-				transform: scale(1.05) translateZ(100px);
+				img {
+					transform: scale(1.05) translateZ(100px);
+				}
 			}
 			.blog_card_bg1 {
 				opacity: 1;
@@ -84,12 +94,12 @@
 			width: 100%;
 			height: 100%;
 			transition: 300ms ease all;
-			border-radius: 20px;
 			overflow: hidden;
 			img {
 				width: 100%;
 				height: 100%;
 				object-fit: cover;
+				transition: 300ms ease all;
 			}
 		}
 		.blog_card_bg1 {
@@ -103,8 +113,8 @@
 			bottom: 0;
 			transition: 300ms ease all;
 			background: #3d5467;
-			border-top-left-radius: 20px;
 			border-top-right-radius: 20px;
+			border-top-left-radius: 20px;
 		}
 
 		.exclusiveBadge {

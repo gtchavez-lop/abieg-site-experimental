@@ -17,7 +17,11 @@
 		}
 		(async (e) => {
 			if (hasAccount) {
-				let { data, error } = await supabase.from('posts').select('*');
+				let { data, error } = await supabase
+					.from('posts')
+					.select('*')
+					.order('created_at', { ascending: false })
+					.range(0, 10);
 				hasBlogs = null;
 				if (!error || data) {
 					hasBlogs = true;
@@ -27,7 +31,12 @@
 					hasBlogs = false;
 				}
 			} else {
-				let { data, error } = await supabase.from('posts').select('*').eq('isExclusive', 'false');
+				let { data, error } = await supabase
+					.from('posts')
+					.select('*')
+					.eq('isExclusive', 'false')
+					.order('created_at', { ascending: false })
+					.range(0, 10);
 				hasBlogs = null;
 				if (!error || data) {
 					hasBlogs = true;

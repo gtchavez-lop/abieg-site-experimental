@@ -28,17 +28,6 @@
 			title = data[0].title;
 			// console.log(blogData);
 		}
-		// window.onscroll = (e) => {
-		// };
-		// window.onload = (e) => {
-		// 	if (window.scrollY > 100) {
-		// 		image.style.opacity = 0;
-		// 		image.style.transform = 'translateY(-10%)';
-		// 	} else {
-		// 		image.style.opacity = 1;
-		// 		image.style.transform = 'translateY(0)';
-		// 	}
-		// };
 	});
 </script>
 

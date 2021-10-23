@@ -2,22 +2,45 @@
 	import { fly, fade, scale, blur } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import IntersectionObserver from 'svelte-intersection-observer';
-	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 
 	let windowScrollY, loading, mainContainer, floatingImage;
 
 	let hero1;
 	let hero2;
 	let hero3;
+	let heroText1;
+	let heroText2;
+	let heroText3;
+	let heroText4;
 	let isHero1Intersecting;
 	let isHero2Intersecting;
 	let isHero3Intersecting;
+	let windowWidth;
+	let windowHeight;
+	let rotateImage;
+
+	const checkPosition = (e) => {
+		let x1 = -20 + (e.clientX / innerWidth) * 40;
+		let x2 = -15 + (e.clientX / innerWidth) * 30;
+		let x3 = -10 + (e.clientX / innerWidth) * 20;
+		let x4 = -5 + (e.clientX / innerWidth) * 10;
+
+		// heroText1.style.transform = `translateX(${-x1}px) `;
+		// heroText2.style.transform = `translateX(${-x2}px) `;
+		// heroText3.style.transform = `translateX(${-x3}px) `;
+		// heroText4.style.transform = `translateX(${-x4}px)  `;
+	};
 </script>
 
 <svele:head>
 	<title>Abie G</title>
 </svele:head>
-<svelte:window bind:scrollY={windowScrollY} />
+<svelte:window
+	bind:innerWidth={windowWidth}
+	bind:innerHeight={windowHeight}
+	bind:scrollY={windowScrollY}
+	on:mousemove={checkPosition}
+/>
 <!-- <svelte:body bind:offsetHeight={documentHeight} /> -->
 
 <div class="loading" bind:this={loading}>
@@ -41,17 +64,23 @@
 	>
 		<img bind:this={floatingImage} src="./hero.jpg" alt="" />
 	</div>
-	<div class="brand" style="transform: translateY({Math.min((windowScrollY / 20) * 1, 300)}%);">
-		<p>ABIEG</p>
-	</div>
-	<div class="brand" style="transform: translateY({Math.min((windowScrollY / 20) * 1.5, 300)}%);">
-		<p>ABIEG</p>
-	</div>
-	<div class="brand" style="transform: translateY({Math.min((windowScrollY / 20) * 2, 300)}%);">
-		<p>ABIEG</p>
-	</div>
-	<div class="brand" style="transform: translateY({Math.min((windowScrollY / 20) * 2.5, 300)}%);">
-		<p>ABIEG</p>
+
+	<div class="brand-container">
+		<div class="brand" style="bottom: 60%; opacity: 0.1;">
+			<p>ABIEG</p>
+		</div>
+		<div class="brand" style="bottom: 45%; opacity: 0.1;">
+			<p>ABIEG</p>
+		</div>
+		<div class="brand" style="bottom: 15%; opacity: 0.1;">
+			<p>ABIEG</p>
+		</div>
+		<div class="brand" style="bottom: 0%; opacity: 0.1;">
+			<p>ABIEG</p>
+		</div>
+		<div class="brand" style="bottom: 30%;">
+			<p style="color: #F7749C;">ABIEG</p>
+		</div>
 	</div>
 
 	<div class="content">
@@ -79,6 +108,8 @@
 			<div class="row row-cols-1 row-cols-lg-2">
 				<div class="col justify-content-center mt-5 d-flex d-lg-none">
 					<img
+						bind:this={rotateImage}
+						on:mouseenter={checkPosition}
 						class="mb-5 img-fluid"
 						style="max-height: 350px;"
 						src="./illustrations/watermelon/watermelon-pack-illustration-19.svg"
@@ -96,6 +127,9 @@
 				</div>
 				<div class="col justify-content-center mt-5 d-none d-lg-flex">
 					<img
+						bind:this={rotateImage}
+						on:mousemove={checkPosition}
+						on:focus={checkPosition}
 						class="mb-5"
 						src="./illustrations/watermelon/watermelon-pack-illustration-19.svg"
 						style="max-height: 350px;"
@@ -235,41 +269,43 @@
 
 	.hero {
 		/* margin: 0; */
+		position: relative;
 		min-height: 100vh;
 		overflow: hidden;
 		z-index: 3;
+		&:first-child {
+			bottom: 10%;
+		}
 	}
 	main {
 		transition: 500ms ease all;
 		min-height: 70vh;
-		perspective: 1000px;
-		perspective-origin: center center;
+		perspective: 2000px;
 		user-select: none;
+	}
+	.brand-container {
+		position: absolute;
+		width: 100%;
+		height: 100%;
 	}
 	.brand {
 		position: absolute;
-		bottom: 25%;
+		bottom: 35%;
 		left: 25px;
-		opacity: 0.25;
 		width: 100%;
 		overflow: hidden;
-
 		p {
+			color: transparent;
 			font-weight: 600;
 			font-family: 'Righteous', cursive;
 			font-size: 10em;
-			opacity: 0.5;
-			color: transparent;
 			-webkit-text-stroke-width: 0.5px;
-			-webkit-text-stroke-color: white;
+			-webkit-text-stroke-color: rgba(255, 255, 255, 1);
 			transition: opacity 200ms ease;
 			letter-spacing: 0.2em;
 		}
 	}
 
-	.letter-g {
-		margin-left: 25px;
-	}
 	.content {
 		position: absolute;
 		right: 5%;
@@ -327,6 +363,10 @@
 		.joinbutton {
 			width: 100%;
 		}
+		.brand-container {
+			bottom: 15%;
+			left: 5%;
+		}
 		.brand {
 			font-weight: 900;
 			width: 100%;
@@ -334,7 +374,7 @@
 			left: -2px;
 			font-size: 0.7em;
 			p {
-				-webkit-text-stroke-width: 5px;
+				-webkit-text-stroke-width: 0.2px;
 				letter-spacing: 0em;
 			}
 		}

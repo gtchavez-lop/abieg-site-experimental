@@ -91,29 +91,6 @@
 		} else {
 			goto('/admin');
 		}
-		// if (localStorage.getItem('data_mod') === null) {
-		// 	goto('/admin');
-		// } else {
-		// 	global_mod_account.set(JSON.parse(localStorage.getItem('data_mod')));
-
-		// 	(async (e) => {
-		// 		if ($global_mod_account) {
-		// 			const { data, error } = await supabase
-		// 				.from('posts')
-		// 				.select('*')
-		// 				.eq('author', $global_mod_account.username);
-
-		// 			hasBlog = null;
-		// 			if (error || data.length < 1) {
-		// 				hasBlog = false;
-		// 			}
-		// 			if (!error) {
-		// 				blogs = data;
-		// 				hasBlog = true;
-		// 			}
-		// 		}
-		// 	})();
-		// }
 	});
 </script>
 
@@ -144,13 +121,6 @@
 				type="button"
 				class="btn btn-lg m-1 btn-primary w-100">Your Stories</button
 			>
-			<!-- <button
-				on:click={(e) => {
-					tabActive = 3;
-				}}
-				type="button"
-				class="btn btn-outline-primary">Your Account</button
-			> -->
 		</div>
 
 		<!-- tabs -->

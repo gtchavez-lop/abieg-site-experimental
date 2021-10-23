@@ -12,21 +12,6 @@
 </script>
 
 <div class="blog_card" in:fly={{ y: -10, duration: 500, delay: 200 + 150 * index }}>
-	<!-- {#if isExclusive}
-		<div class="exclusiveBadge">
-			<span>EXCLUSIVE</span>
-		</div>
-	{/if} -->
-
-	<!-- <img src={header_img} height="200" alt="..." class="card-img-top" />
-	<div class="card-body">
-		<h5 class="card-title">
-			{title}
-		</h5>
-		<p class="card-text">{author}</p>
-		<a href="posts/{id}" class="btn btn-primary float-end">Read More</a>
-	</div> -->
-
 	{#if isExclusive}
 		<div class="exclusiveBadge">
 			<span>EXCLUSIVE</span>
@@ -48,7 +33,7 @@
 
 		<a href="/posts/{id}" class="btn btn-primary " style="width: 100%;">Read More</a>
 	</div>
-	<div class="blog_card_content blog_card_content1 d-none d-lg-block">
+	<div class="blog_card_content blog_card_content1 d-none d-lg-block" style="min-width: 100%;">
 		<p class="display-6" style="font-size: 1.4em;">{title}</p>
 		<p style="color: #e2eff1;">
 			{author} |
@@ -135,34 +120,4 @@
 			}
 		}
 	}
-
-	// .card {
-	// 	transition: 200ms ease all;
-	// 	overflow: hidden;
-	// 	box-shadow: rgba(0, 0, 0, 0.5) 0 0 10px;
-	// 	width: 100%;
-	// 	background: #343a40;
-	// 	user-select: none;
-	// 	max-width: 300px;
-	// 	min-height: 500px;
-	// }
-	// .card:hover {
-	// 	transform: translateY(-3px);
-	// 	box-shadow: rgba(0, 0, 0, 0.25) 0 10px 20px;
-	// }
-	// .exclusiveBadge {
-	// 	position: absolute;
-	// 	right: 0;
-	// 	width: 200px;
-	// 	border-bottom-left-radius: 20px;
-	// 	height: 50px;
-	// 	/* transform: rotate(-10deg); */
-	// 	background: #d63384;
-	// }
-	// .exclusiveBadge span {
-	// 	font-size: 1.3em;
-	// 	position: absolute;
-	// 	bottom: 0;
-	// 	right: 10px;
-	// }
 </style>

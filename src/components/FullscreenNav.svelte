@@ -27,9 +27,11 @@
 	};
 	const hideNav = (e) => {
 		if (lastScroll < scrollY) {
-			nav.style.transform = 'translateY(-75px)';
+			nav.style.transform = 'translateY(-100px)';
+			nav.style.opacity = 0;
 		} else {
 			nav.style.transform = 'translateY(0px)';
+			nav.style.opacity = 1;
 		}
 		lastScroll = scrollY;
 	};
@@ -51,44 +53,45 @@
 		<li>
 			<a
 				href="/"
+				style="color: {activeNav == 1 ? '#688BF7' : 'white'};"
 				on:click={(e) => {
 					activeNav = 1;
 					toggleNavOff();
 				}}
-				class="nav-link text-center text-white {activeNav == 1 ? 'text-white' : 'text-muted'}"
-				>Home</a
+				class="nav-link text-center">Home</a
 			>
 		</li>
 		<li>
 			<a
 				href="/posts"
+				style="color: {activeNav == 2 ? '#688BF7' : 'white'};"
 				on:click={(e) => {
 					activeNav = 2;
 					toggleNavOff();
 				}}
-				class="nav-link text-center text-white {activeNav == 2 ? 'text-white' : 'text-muted'}"
-				>Posts</a
+				class="nav-link text-center">Posts</a
 			>
 		</li>
 		<li>
 			<a
 				href="/about"
+				style="color: {activeNav == 3 ? '#688BF7' : 'white'};"
 				on:click={(e) => {
 					activeNav = 3;
 					toggleNavOff();
 				}}
-				class="nav-link text-center text-white {activeNav == 3 ? 'text-white' : 'text-muted'}"
-				>About us</a
+				class="nav-link text-center ">About us</a
 			>
 		</li>
 		<li>
 			<a
 				href="/account"
+				style="color: {activeNav == 4 ? '#688BF7' : 'white'};"
 				on:click={(e) => {
 					activeNav = 4;
 					toggleNavOff();
 				}}
-				class="nav-link text-center text-white {activeNav == 4 ? 'text-white' : 'text-muted'}"
+				class="nav-link text-center"
 			>
 				Account
 			</a>
@@ -182,16 +185,58 @@
 		position: fixed;
 		top: 0;
 		width: 100%;
-		height: 100px;
-		transition: 200ms ease all;
+		height: 75px;
+		transition: 500ms ease all;
 		z-index: 999;
+		background: rgba(33, 37, 41, 0.7);
+		backdrop-filter: blur(5px);
 
 		.navLinks {
 			width: 50%;
 			list-style: none;
 			padding: 0;
-			font-size: 2em;
+			font-size: 1.5em;
 			font-family: 'Thunder Medium';
+			li {
+				position: relative;
+				transition: 200ms ease all;
+				text-align: center;
+				&::after,
+				&::before {
+					content: '';
+					position: absolute;
+					width: 50%;
+					height: 0%;
+					left: 25%;
+					bottom: 0;
+					background: rgba(255, 255, 255, 1);
+					transition: 200ms ease all;
+					opacity: 0;
+					z-index: -1;
+				}
+				&:hover {
+					&::after {
+						animation: slideLeft 0.5s ease;
+					}
+				}
+			}
+		}
+		@keyframes slideLeft {
+			0% {
+				opacity: 0;
+				height: 0;
+				bottom: 0%;
+			}
+			50% {
+				opacity: 1;
+				height: 100%;
+				bottom: 0%;
+			}
+			100% {
+				opacity: 0;
+				height: 0%;
+				bottom: 100%;
+			}
 		}
 
 		.menuToggler {

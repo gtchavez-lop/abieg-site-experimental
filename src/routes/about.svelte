@@ -29,7 +29,7 @@
 				<img
 					class="mb-5"
 					style="max-width: 800px; width: 120%;"
-					src="./static/illustrations/undraw_Co-working_re_w93t.svg"
+					src="illustrations/undraw_Co-working_re_w93t.svg"
 					alt=""
 				/>
 			</div>
@@ -41,7 +41,7 @@
 				<img
 					class="mb-5"
 					style="max-width: 800px; width: 150%; transform: translateX(-50%)"
-					src="./static/illustrations/undraw_programming_2svr.svg"
+					src="illustrations/undraw_programming_2svr.svg"
 					alt=""
 				/>
 			</div>
@@ -69,7 +69,7 @@
 				<img
 					class="mb-5"
 					style="max-width: 800px; width: 150%; transform: translateX(-50%)"
-					src="./static/illustrations/undraw_programming_2svr.svg"
+					src="illustrations/undraw_programming_2svr.svg"
 					alt=""
 				/>
 			</div>

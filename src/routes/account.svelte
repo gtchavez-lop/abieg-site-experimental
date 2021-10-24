@@ -54,6 +54,7 @@
 			reg_givenName != '' &&
 			reg_familyName != '' &&
 			reg_gender != '' &&
+			reg_address != '' &&
 			isBirthdateMatched &&
 			dayjs().diff(reg_birthdate, 'year') > 18
 		) {

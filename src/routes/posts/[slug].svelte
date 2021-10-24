@@ -12,6 +12,7 @@
 	import { fade, fly, slide } from 'svelte/transition';
 	import { global_posts, supabase } from '../../global';
 	import { quintOut } from 'svelte/easing';
+	import dayjs from 'dayjs';
 
 	export let slug;
 	export let blogData;
@@ -83,7 +84,7 @@
 				<div class="col-12">
 					{#if blogData}
 						<h3 class="display-1">{blogData.title}</h3>
-						<h5>by: {blogData.author}</h5>
+						<h5>by: {blogData.author} | {dayjs(blogData.createdAt).format('DD MMM, YYYY')}</h5>
 					{/if}
 				</div>
 				<div class="col-12 mt-5">

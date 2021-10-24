@@ -1,0 +1,88 @@
+<script>
+	import dayjs from 'dayjs';
+
+	import { onMount } from 'svelte';
+	import { fly } from 'svelte/transition';
+	import { supabase } from '../../../global';
+
+	let _users = [];
+	let loaded = false;
+
+	onMount(async (e) => {
+		let { data: users, error } = await supabase
+			.from('users')
+			.select('*')
+			.filter('isModerator', 'eq', 'true');
+		if (!error) {
+			_users = users;
+			setTimeout(() => {
+				// console.log(users);
+				loaded = true;
+			}, 200);
+		}
+	});
+</script>
+
+<main in:fly={{ y: 20, duration: 500 }} class="text-white">
+	<div class="container">
+		<div class="card border-3 rounded-3 shadow-sm">
+			<div class="card-body">
+				<h5>Verified Moderators</h5>
+				<h1 class="mt-4">{_users.length}</h1>
+				<i class="bi bi-pencil-square" />
+			</div>
+		</div>
+	</div>
+
+	<div class="container mt-5 ">
+		<p class="display-6">List of moderators</p>
+		{#if loaded}
+			{#each _users as thisuser, index}
+				<div
+					class="card rounded-3 shadow-sm card1 p-1 mb-2 mx-2"
+					in:fly={{ y: 20, duration: 500, delay: 100 + 50 * index }}
+				>
+					<div class="card-body">
+						<div class="row row-cols-1 row-cols-md-2">
+							<p>ID: <span class="text-success">{thisuser.id}</span></p>
+							<p>ID: <span class="text-success">{thisuser.email}</span></p>
+							<p>
+								Owner: <span class="text-success">{thisuser.given_name} {thisuser.family_name}</span
+								>
+							</p>
+						</div>
+					</div>
+				</div>
+			{/each}
+		{:else}
+			<div class="d-flex align-items-center">
+				<strong>Loading...</strong>
+				<div class="spinner-border ms-auto" role="status" aria-hidden="true" />
+			</div>
+		{/if}
+	</div>
+</main>
+
+<style lang="scss">
+	main {
+		position: relative;
+		margin-top: 50px;
+		z-index: 3;
+	}
+
+	.card {
+		overflow: hidden;
+		background: #282c31;
+		.card-body {
+			position: relative;
+			i {
+				position: absolute;
+				top: 50%;
+				opacity: 0.2;
+				transform: translateY(-50%);
+				right: 0%;
+				font-size: 10em;
+			}
+		}
+	}
+</style>

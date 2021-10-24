@@ -65,7 +65,7 @@
 			if (supabase.auth.user().role == 'authenticated') {
 				let user = supabase.auth.user();
 				let { data, error } = await supabase.from('users').select('*').eq('id', user.id);
-				if (data[0].isModerator == true) {
+				if (data[0].isModerator == true || data[0].isAdmin == true) {
 					adminAccount = data[0];
 					hasAccount = true;
 				} else {

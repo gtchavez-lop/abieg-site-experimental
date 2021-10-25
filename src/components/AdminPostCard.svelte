@@ -77,6 +77,7 @@
 			</div>
 		{/if}
 		<div class="card-body mt-3">
+			<span class="text-muted">{blog.author}</span>
 			<p class="card-title h5">{new_title}</p>
 
 			<div class="form-check form-switch mb-5">

@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { supabase } from '../../../global';
+	import RootRegisteredUserCard from '../../../components/Root_RegisteredUser_Card.svelte';
 
 	let _users = [];
 	let loaded = false;
@@ -33,37 +34,18 @@
 
 	<div class="container mt-5 ">
 		<p class="display-6">List of users</p>
-		{#if loaded}
-			{#each _users as thisuser, index}
-				<div
-					class="card rounded-3 shadow-sm card1 p-1 mb-2 mx-2"
-					in:fly={{ y: 20, duration: 500, delay: 100 + 50 * index }}
-				>
-					<div class="card-body">
-						<div class="row row-cols-1 row-cols-md-2">
-							<p>ID: <span class="text-success">{thisuser.id}</span></p>
-							<p>ID: <span class="text-success">{thisuser.email}</span></p>
-							<p>
-								Owner: <span class="text-success">{thisuser.given_name} {thisuser.family_name}</span
-								>
-							</p>
-							<p>
-								Birthdate: <span class="text-success"
-									>{dayjs(thisuser.birthdate).format('MMM DD YYYY')}</span
-								>
-							</p>
-							<p>Gender: <span class="text-success">{thisuser.gender}</span></p>
-							<p>Shipping Address: <span class="text-success">{thisuser.shipping_address}</span></p>
-						</div>
-					</div>
+		<div class="row row-cols-lg-2">
+			{#if loaded}
+				{#each _users as thisuser, index}
+					<RootRegisteredUserCard {thisuser} {index} />
+				{/each}
+			{:else}
+				<div class="d-flex align-items-center">
+					<strong>Loading...</strong>
+					<div class="spinner-border ms-auto" role="status" aria-hidden="true" />
 				</div>
-			{/each}
-		{:else}
-			<div class="d-flex align-items-center">
-				<strong>Loading...</strong>
-				<div class="spinner-border ms-auto" role="status" aria-hidden="true" />
-			</div>
-		{/if}
+			{/if}
+		</div>
 	</div>
 </main>
 

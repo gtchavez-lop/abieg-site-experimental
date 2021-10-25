@@ -56,7 +56,7 @@
 		</div>
 	</div>
 	{#if loaded}
-		<div class="container mt-5">
+		<div class="container mt-5" in:fly={{ y: 20, duration: 500 }}>
 			<div class="btn-group d-flex" role="group" aria-label="Basic example">
 				<button
 					type="button"

@@ -206,17 +206,17 @@
 					content: '';
 					position: absolute;
 					width: 50%;
-					height: 0%;
+					height: 5px;
 					left: 25%;
 					bottom: 0;
-					background: rgba(255, 255, 255, 1);
+					background: #f7749c;
 					transition: 200ms ease all;
-					opacity: 0;
+					// opacity: 0;
 					z-index: -1;
 				}
 				&:hover {
 					&::after {
-						animation: slideLeft 0.5s ease;
+						height: 100%;
 					}
 				}
 			}

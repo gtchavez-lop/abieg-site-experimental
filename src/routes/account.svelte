@@ -350,7 +350,18 @@
 				<div class="col-12 text-center">
 					<p class="lead text-muted mb-0 mt-4">Account Type</p>
 					<p class="lead mt-0">
-						{$global_account_data.isModerator ? 'Moderator Account' : 'Standard Account'}
+						{#if $global_account_data.isModerator}
+							Moderator Account
+
+							{#if $global_account_data.isAdmin}
+								/ Root Account
+							{/if}
+						{:else}
+							Standard Account
+							{#if $global_account_data.isAdmin}
+								/ Root Account
+							{/if}
+						{/if}
 					</p>
 					{#if $global_account_data.isModerator}
 						<button
@@ -358,6 +369,15 @@
 							on:click={(e) => {
 								goto('/admin/dashboard');
 							}}>Go to Dashboard</button
+						>
+					{:else}<button class="btn btn-link">Request Moderator Account</button>
+					{/if}
+					{#if $global_account_data.isAdmin}
+						<button
+							class="btn btn-link"
+							on:click={(e) => {
+								goto('/root');
+							}}>Go to Root Dashboard</button
 						>
 					{/if}
 				</div>

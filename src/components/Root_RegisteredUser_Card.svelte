@@ -10,6 +10,7 @@
 	let cardExpanded = false;
 	let isPromote = false;
 	let isDemote = false;
+	let canBeDeleted = false;
 
 	const promoteAccount = async (e) => {
 		const { data, error } = await supabase
@@ -63,7 +64,7 @@
 
 			{#if cardExpanded}
 				<div transition:slide={{ duration: 200 }}>
-					<p class="display-6 m-0">{thisuser.given_name} {thisuser.family_name}</p>
+					<p class="display-6 m-0 mt-5">{thisuser.given_name} {thisuser.family_name}</p>
 					<p class="m-0">
 						{dayjs(thisuser.birthdate).format('MMMM DD, YYYY')} -
 						<span class="text-success">{dayjs().diff(thisuser.birthdate, 'year')} year old </span>
@@ -150,6 +151,12 @@
 							</div>
 						{/if}
 					{/if}
+
+					<div class="d-flex flex-column mt-3">
+						<button class="btn btn-danger" disabled={!canBeDeleted ? true : false}
+							>Remove Account</button
+						>
+					</div>
 				</div>
 			{/if}
 		</div>

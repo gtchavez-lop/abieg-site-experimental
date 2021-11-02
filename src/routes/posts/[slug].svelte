@@ -38,64 +38,64 @@
 	<title>ABIE G | {title}</title>
 </svelte:head>
 
-<div>
-	<div
-		class="imgContainer shadow"
-		bind:this={image}
-		in:slide={{ duration: 800, delay: 200, easing: quintOut }}
-		out:fly={{ y: -20, duration: 500, easing: quintOut }}
-		style="opacity: {1 - scrollY / 500}; transform: translateY(-{Math.min(
-			(scrollY / 500) * 100,
-			500
-		)}px);"
-	>
-		{#if blogData}
+{#if blogData}
+	<div>
+		<div
+			class="imgContainer"
+			bind:this={image}
+			in:slide={{ duration: 800, easing: quintOut }}
+			out:fly={{ y: -20, duration: 500, easing: quintOut }}
+			style="opacity: {1 - scrollY / 500}; transform: translateY(-{Math.min(
+				(scrollY / 500) * 100,
+				500
+			)}px);"
+		>
 			<img src={blogData.header_img} alt="" />
 
 			{#if blogData.isExclusive}
 				<h6
 					class="exlusiveContent text-white "
-					in:fly={{ y: 50, duration: 500, delay: 600, easing: quintOut }}
+					in:fly={{ y: 50, duration: 500, delay: 500, easing: quintOut }}
 				>
-					<span in:fly={{ y: 10, duration: 500, delay: 900, easing: quintOut }}>EXCLUSIVE</span>
+					<span in:fly={{ y: 10, duration: 500, delay: 800, easing: quintOut }}>EXCLUSIVE</span>
 				</h6>
 			{/if}
-		{/if}
-	</div>
-	<main
-		in:fly={{ y: 60, duration: 500, delay: 500 }}
-		out:fly={{ y: -60, duration: 500 }}
-		class="mb-5"
-	>
-		<div class="container text-white">
-			<div class="row">
-				<div class="col-sm-12 col-md-8" />
-				<div
-					class="col-sm-12 col-md-4 d-flex justify-content-end"
-					in:fly={{ x: 20, duration: 500, delay: 1200 }}
-				>
-					<a href="/posts" class="btn btn-lg text-white bg-secondary ">
-						<i class="bi bi-x me-3" style="font-size: 1.1em;" />
-						<span>Close Article</span>
-					</a>
-				</div>
-			</div>
-			<div class="row mt-3">
-				<div class="col-12">
-					{#if blogData}
-						<h3 class="display-1">{blogData.title}</h3>
-						<h5>by: {blogData.author} | {dayjs(blogData.createdAt).format('DD MMM, YYYY')}</h5>
-					{/if}
-				</div>
-				<div class="col-12 mt-5">
-					{#if blogData}
-						<p class="flow-text white-text">{@html blogData.content}</p>
-					{/if}
-				</div>
-			</div>
 		</div>
-	</main>
-</div>
+		<main
+			in:fly={{ y: 60, duration: 500, delay: 500 }}
+			out:fly={{ y: -60, duration: 500 }}
+			class="mb-5"
+		>
+			<div class="container text-white">
+				<div class="row">
+					<div class="col-sm-12 col-md-8" />
+					<div
+						class="col-sm-12 col-md-4 d-flex justify-content-end"
+						in:fly={{ x: 20, duration: 500, delay: 1200 }}
+					>
+						<a href="/posts" class="btn btn-lg text-white bg-secondary ">
+							<i class="bi bi-x me-3" style="font-size: 1.1em;" />
+							<span>Close Article</span>
+						</a>
+					</div>
+				</div>
+				<div class="row mt-3">
+					<div class="col-12">
+						{#if blogData}
+							<h3 class="display-1">{blogData.title}</h3>
+							<h5>by: {blogData.author} | {dayjs(blogData.createdAt).format('DD MMM, YYYY')}</h5>
+						{/if}
+					</div>
+					<div class="col-12 mt-5">
+						{#if blogData}
+							<p class="flow-text white-text">{@html blogData.content}</p>
+						{/if}
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+{/if}
 
 <style lang="scss">
 	main {

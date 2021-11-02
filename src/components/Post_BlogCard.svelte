@@ -2,52 +2,58 @@
 	import dayjs from 'dayjs';
 
 	import { fly, slide, scale, blur } from 'svelte/transition';
-	export let index;
 	export let id;
 	export let title;
 	export let author;
 	export let header_img;
 	export let isExclusive;
 	export let created_at;
+
+	import IntersectionObserver from 'svelte-intersection-observer';
+
+	let card;
+	let cardVisible = true;
 </script>
 
-<div class="blog_card" in:fly={{ y: -10, duration: 500, delay: 200 + 150 * index }}>
-	{#if isExclusive}
-		<div class="exclusiveBadge">
-			<span>EXCLUSIVE</span>
+<IntersectionObserver threshold={0.2} once element={card} bind:intersecting={cardVisible}>
+	<div bind:this={card} class="blog_card {cardVisible ? 'blog_card_visible' : ''}">
+		{#if isExclusive}
+			<div class="exclusiveBadge">
+				<span>EXCLUSIVE</span>
+			</div>
+		{/if}
+
+		<div class="blog_card_bg">
+			<img src={header_img} alt="" />
 		</div>
-	{/if}
+		<div
+			class="blog_card_bg blog_card_bg1 d-none d-lg-flex justify-content-center align-items-center"
+		>
+			<a href="/posts/{id}" class="btn btn-lg btn-primary">Read More</a>
+		</div>
 
-	<div class="blog_card_bg">
-		<img src={header_img} alt="" />
-	</div>
-	<div
-		class="blog_card_bg blog_card_bg1 d-none d-lg-flex justify-content-center align-items-center"
-	>
-		<a href="/posts/{id}" class="btn btn-lg btn-primary">Read More</a>
-	</div>
+		<div class="blog_card_content d-block d-lg-none" style="min-width: 100%;">
+			<p class="display-6" style="font-size: 1.4em;">{title}</p>
+			<p style="color: #e2eff1;">{author}</p>
 
-	<div class="blog_card_content d-block d-lg-none">
-		<p class="display-6" style="font-size: 1.4em;">{title}</p>
-		<p style="color: #e2eff1;">{author}</p>
-
-		<a href="/posts/{id}" class="btn btn-primary " style="width: 100%;">Read More</a>
+			<a href="/posts/{id}" class="btn btn-primary " style="width: 100%;">Read More</a>
+		</div>
+		<div class="blog_card_content blog_card_content1 d-none d-lg-block" style="min-width: 100%;">
+			<p class="display-6" style="font-size: 1.4em;">{title}</p>
+			<p style="color: #e2eff1;">
+				{author} |
+				<span style="color: #C1C1C1;">{dayjs(created_at).format('DD MMM, YYYY')}</span>
+			</p>
+		</div>
 	</div>
-	<div class="blog_card_content blog_card_content1 d-none d-lg-block" style="min-width: 100%;">
-		<p class="display-6" style="font-size: 1.4em;">{title}</p>
-		<p style="color: #e2eff1;">
-			{author} |
-			<span style="color: #C1C1C1;">{dayjs(created_at).format('DD MMM, YYYY')}</span>
-		</p>
-	</div>
-</div>
+</IntersectionObserver>
 
 <style lang="scss">
 	.blog_card {
 		position: relative;
 		width: 100%;
 		height: 30em;
-		overflow: hidden;
+		opacity: 0;
 		transition: 300ms ease all;
 		border: none;
 		box-shadow: rgba(0, 0, 0, 0) 0 0.5em 2em;
@@ -55,6 +61,7 @@
 		transform-style: preserve-3d;
 		overflow: hidden;
 		border-radius: 10px;
+		transform: translateY(50px);
 		&:hover {
 			box-shadow: rgba(0, 0, 0, 0.2) 0 0.5em 2em;
 			.blog_card_bg {
@@ -119,5 +126,9 @@
 				right: 10px;
 			}
 		}
+	}
+	.blog_card_visible {
+		opacity: 1;
+		transform: translateY(0%);
 	}
 </style>

@@ -370,7 +370,7 @@
 								goto('/admin/dashboard');
 							}}>Go to Dashboard</button
 						>
-					{:else}<button class="btn btn-link">Request Moderator Account</button>
+					{:else}<button class="btn btn-link" disabled>Request Moderator Account</button>
 					{/if}
 					{#if $global_account_data.isAdmin}
 						<button

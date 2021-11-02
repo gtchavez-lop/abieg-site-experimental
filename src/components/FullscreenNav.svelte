@@ -26,14 +26,14 @@
 		}
 	};
 	const hideNav = (e) => {
-		if (lastScroll < scrollY) {
-			nav.style.transform = 'translateY(-100px)';
-			nav.style.opacity = 0;
+		if (scrollY > 100) {
+			nav.style.height = '60px';
+			nav.style.opacity = 0.3;
 		} else {
-			nav.style.transform = 'translateY(0px)';
+			nav.style.height = '100px';
 			nav.style.opacity = 1;
 		}
-		lastScroll = scrollY;
+		// lastScroll = scrollY;
 	};
 </script>
 
@@ -185,11 +185,10 @@
 		position: fixed;
 		top: 0;
 		width: 100%;
-		height: 75px;
 		transition: 500ms ease all;
 		z-index: 999;
 		background: rgba(33, 37, 41, 0.7);
-		backdrop-filter: blur(5px);
+		backdrop-filter: blur(10px);
 
 		.navLinks {
 			width: 50%;

@@ -11,7 +11,7 @@
 	let loaded = false;
 	let post_toggler = 1;
 
-	onMount(async (e) => {
+	const getData = async (e) => {
 		let { data: posts, error } = await supabase.from('posts').select('*');
 		if (!error) {
 			_posts = posts;
@@ -26,6 +26,10 @@
 				loaded = true;
 			}, 200);
 		}
+	};
+
+	onMount(async (e) => {
+		getData();
 	});
 </script>
 

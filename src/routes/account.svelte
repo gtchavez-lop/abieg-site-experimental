@@ -5,7 +5,8 @@
 	import { supabase, global_account, global_hasAccount, global_account_data } from '../global';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { toast, SvelteToast } from '@zerodevx/svelte-toast';
+	import toastify from 'toastify-js';
+	import 'toastify-js/src/toastify.css';
 
 	let isRegister = false;
 	let isBirthdateMatched = true;
@@ -19,6 +20,7 @@
 	let reg_familyName = '';
 	let reg_gender = 'Male';
 	let reg_address = '';
+	let isLoggingIn = false;
 
 	let birthdateMask = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
 
@@ -31,19 +33,55 @@
 	};
 
 	const login_emailPass = async (e) => {
-		const { user, error } = await supabase.auth.signIn({
-			email: login_email,
-			password: login_password
-		});
-		if (!error) {
-			let { data: users, thiserror } = await supabase.from('users').select('*').eq('id', user.id);
-			if (!thiserror) {
-				toast.push(`Hello ${user.email}`);
-				global_account.set(user);
-				global_account_data.set(users[0]);
+		if (login_email && login_password) {
+			isLoggingIn = true;
+			const { user, error } = await supabase.auth.signIn({
+				email: login_email,
+				password: login_password
+			});
+			if (!error) {
+				let { data: users, thiserror } = await supabase.from('users').select('*').eq('id', user.id);
+				if (!thiserror) {
+					toastify({
+						text: `Hello ${login_email.split('@')[0]}`,
+						duration: 2000,
+						close: true,
+						gravity: 'bottom',
+						position: 'right',
+						style: {
+							background: '#06d6a0',
+							color: '#212529'
+						}
+					}).showToast();
+					global_account.set(user);
+					global_account_data.set(users[0]);
+					isLoggingIn = false;
+				}
+			} else {
+				isLoggingIn = false;
+				toastify({
+					text: 'Incorrect Email or Password',
+					duration: 2000,
+					close: true,
+					gravity: 'bottom',
+					position: 'right',
+					style: {
+						background: '#ef476f'
+					}
+				}).showToast();
 			}
 		} else {
-			toast.push(error.message);
+			isLoggingIn = false;
+			toastify({
+				text: `Please fill all the required fields`,
+				duration: 2000,
+				close: true,
+				gravity: 'bottom',
+				position: 'right',
+				style: {
+					background: '#ef476f'
+				}
+			}).showToast();
 		}
 	};
 
@@ -65,6 +103,7 @@
 			});
 			let { data: users, thiserror } = await supabase.from('users').insert([
 				{
+					email: reg_email,
 					id: user.id,
 					given_name: reg_givenName,
 					family_name: reg_familyName,
@@ -74,8 +113,7 @@
 				}
 			]);
 			if (!error) {
-				console.log(user);
-				if (!thiserror) {
+				if (!thiserror && users) {
 					login_email = reg_email;
 					isRegister = false;
 					reg_gender = null;
@@ -83,17 +121,46 @@
 					reg_familyName = null;
 					reg_birthdate = null;
 					reg_address = null;
-					toast.push('You are now registered');
-					toast.push('Please check your mail to complete your verification process verify');
+					toastify({
+						text: `You are now registered. Please check your email`,
+						duration: 4000,
+						close: true,
+						gravity: 'bottom',
+						position: 'right',
+						style: {
+							background: '#06d6a0',
+							color: '#212529'
+						}
+					}).showToast();
 				} else {
 					console.log(thiserror);
 				}
 			} else {
 				console.log(error);
 			}
+		} else {
+			toastify({
+				text: `Please fill all the required fields`,
+				duration: 2000,
+				close: true,
+				gravity: 'bottom',
+				position: 'right',
+				style: {
+					background: '#ef476f'
+				}
+			}).showToast();
 		}
 		if (dayjs().diff(reg_birthdate, 'year') < 18) {
-			toast.push('You should be at least 18 years old to register');
+			toastify({
+				text: `You should be at least 18 years old to register`,
+				duration: 2000,
+				close: true,
+				gravity: 'bottom',
+				position: 'right',
+				style: {
+					background: '#ef476f'
+				}
+			}).showToast();
 		}
 	};
 
@@ -102,7 +169,16 @@
 		if (!error) {
 			global_account.set(null);
 			global_account_data.set(null);
-			toast.push('You have been logged out');
+			toastify({
+				text: `You have been logged out`,
+				duration: 2000,
+				close: true,
+				gravity: 'bottom',
+				position: 'right',
+				style: {
+					background: '#002B36'
+				}
+			}).showToast();
 		}
 		confirmLogout = false;
 	};
@@ -130,7 +206,6 @@
 	<title>Accounts | Abie G</title>
 </svele:head>
 
-<SvelteToast options={{ duration: 4000 }} />
 <main in:fly={{ y: -40, duration: 500, delay: 500 }} out:fly={{ y: 40, duration: 500 }}>
 	<div class="container text-white" style="border-radius:10px">
 		<p class="display-3">Your Account</p>
@@ -155,7 +230,7 @@
 							placeholder="Your Registered Email Address"
 							bind:value={login_email}
 						/>
-						<label for="login_email">Your Registered Email Address</label>
+						<label for="login_email">Your Registered Email Address*</label>
 					</div>
 					<div class="form-floating mb-4 ">
 						<input
@@ -165,9 +240,25 @@
 							placeholder="Your Password"
 							bind:value={login_password}
 						/>
-						<label for="login_password">Your Password</label>
+						<label for="login_password">Your Password*</label>
 					</div>
-					<button class="btn btn-primary" on:click={login_emailPass}> Sign In </button>
+					<button
+						class="btn btn-primary"
+						disabled={isLoggingIn ? true : false}
+						on:click={login_emailPass}
+					>
+						{#if isLoggingIn}
+							<span
+								class="spinner-border spinner-border-sm me-3"
+								role="status"
+								aria-hidden="true"
+							/>
+							Logging In...
+						{/if}
+						{#if !isLoggingIn}
+							Log In
+						{/if}
+					</button>
 					<button on:click={toggleCards} class="btn btn-link mt-3 text-info"
 						>Don't have an account? Click Me</button
 					>
@@ -191,7 +282,7 @@
 										placeholder="username@domain.com"
 										bind:value={reg_email}
 									/>
-									<label for="reg_email">Your Email address</label>
+									<label for="reg_email">Your Email address*</label>
 								</div>
 							</div>
 							<div class="col col-md-6">
@@ -203,7 +294,7 @@
 										placeholder="Your Secure Password"
 										bind:value={reg_password}
 									/>
-									<label for="reg_password">Your Password</label>
+									<label for="reg_password">Your Password*</label>
 								</div>
 							</div>
 						</div>
@@ -220,7 +311,7 @@
 										placeholder="Your Given Name"
 										bind:value={reg_givenName}
 									/>
-									<label for="reg_givenName">Your Given Name</label>
+									<label for="reg_givenName">Your Given Name*</label>
 								</div>
 							</div>
 							<div class="col-sm-12 col-md-6">
@@ -232,7 +323,7 @@
 										placeholder="Your Surname"
 										bind:value={reg_familyName}
 									/>
-									<label for="reg_familyName">Your Surname</label>
+									<label for="reg_familyName">Your Surname*</label>
 								</div>
 							</div>
 							<div class="col-sm-12">
@@ -244,7 +335,7 @@
 										placeholder="Your Shipping Addresse"
 										bind:value={reg_address}
 									/>
-									<label for="reg_address">Your Shipping Address</label>
+									<label for="reg_address">Your Shipping Address*</label>
 								</div>
 							</div>
 							<div class="col-sm-12 col-md-6 mb-4">
@@ -259,12 +350,13 @@
 										bind:value={reg_birthdate}
 										on:input={changeBirthdate}
 									/>
-									<label for="reg_birthdate">Birthdate</label>
+									<label for="reg_birthdate">Birthdate*</label>
 								</div>
 								<p>*format follows MM/DD/YYYY</p>
+								<p>*i.e. 12/14/1998</p>
 							</div>
 							<div class="col-sm-12 col-md-6 ">
-								<div><h5>Gender</h5></div>
+								<div><h5>Gender*</h5></div>
 								<div class="form-check">
 									<input
 										value="Male"

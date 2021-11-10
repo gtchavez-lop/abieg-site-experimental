@@ -1,3 +1,7 @@
+<script context='module'>
+	export const prerender = true;
+</script>
+
 <script>
 	import { supabase } from '../global';
 
@@ -104,76 +108,47 @@
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<a href="/account">
 				<h1>ACCOUNT</h1>
-				<span>
-					<MarqueeTextWidget duration={20}>
-						REGISTER TO GET THE BEST OUT OF THE CONTENT FROM ABIE G &nbsp;
-					</MarqueeTextWidget>
-				</span>
 			</a>
 		</li>
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<a href="/posts">
 				<h1>POSTS</h1>
-				<span>
-					<MarqueeTextWidget duration={20}>
-						CHECK OUT WHAT IS NEW FROM ABIE G HERSELF &nbsp; CHECK OUT WHAT IS NEW FROM ABIE G
-						HERSELF &nbsp;
-					</MarqueeTextWidget>
-				</span>
 			</a>
 		</li>
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<a href="/about">
 				<h1>ABOUT</h1>
-				<span>
-					<MarqueeTextWidget duration={20}>
-						THIS IS A DESCRIPTION ABOUT THE TEAM CREATED THE SITE &nbsp; THIS IS A DESCRIPTION ABOUT
-						THE TEAM CREATED THE SITE &nbsp;
-					</MarqueeTextWidget>
-				</span>
 			</a>
 		</li>
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<a href="/contact">
 				<h1>CONTACT</h1>
-				<span>
-					<MarqueeTextWidget duration={20}>
-						CONNECT WITH THE DEVELOPERS AND CONTENT MODERATORS ABOUT YOUR CONCERNS AND SUGGESTIONS
-						&nbsp;
-					</MarqueeTextWidget>
-				</span>
 			</a>
 		</li>
 	</ul>
 	<div class="menu__socials">
-		<div class="marquee2">
-			<MarqueeTextWidget duration={15}>
-				SOCIALIZE WITH ABIE G ON THESE LINKS &nbsp; SOCIALIZE WITH ABIE G ON THESE LINKS &nbsp;
-				SOCIALIZE WITH ABIE G ON THESE LINKS &nbsp;
-			</MarqueeTextWidget>
-		</div>
 		<span>
-			<a href="https://facebook.com">
+			<a href="https://www.facebook.com/">
 				<i class="bi bi-facebook" style="font-size: 3em;" />
 			</a>
 		</span>
 		<span>
-			<a href="https://twitter.com">
+			<a href="https://twitter.com/">
 				<i class="bi bi-twitter" style="font-size: 3em;" />
 			</a>
 		</span>
 		<span>
-			<a href="https://twitch.tv">
+			<a href="https://www.twitch.tv/">
 				<i class="bi bi-twitch" style="font-size: 3em;" />
 			</a>
 		</span>
 		<span>
-			<a href="https://youtube.com">
+			<a href="https://www.youtube.com/">
 				<i class="bi bi-youtube" style="font-size: 3em;" />
 			</a>
 		</span>
 		<span>
-			<a href="https://instagram.com">
+			<a href="https://www.instagram.com/">
 				<i class="bi bi-instagram" style="font-size: 3em;" />
 			</a>
 		</span>
@@ -187,7 +162,7 @@
 		width: 100%;
 		transition: 500ms ease all;
 		z-index: 999;
-		background: rgba(33, 37, 41, 0.7);
+		background: transparent;
 		backdrop-filter: blur(10px);
 
 		.navLinks {
@@ -204,7 +179,7 @@
 				&::before {
 					content: '';
 					position: absolute;
-					width: 50%;
+					width: 0;
 					height: 5px;
 					left: 25%;
 					bottom: 0;
@@ -215,7 +190,7 @@
 				}
 				&:hover {
 					&::after {
-						height: 100%;
+						width: 50%;
 					}
 				}
 			}
@@ -376,26 +351,8 @@
 		h1 {
 			transition: 200ms ease all;
 		}
-		span {
-			position: absolute;
-			top: 40%;
-			left: -10%;
-			transform: translateY(-50%);
-			width: max-content;
-			font-size: 7em;
-			user-select: none;
-			font-family: 'Thunder Light';
-			opacity: 0;
-			transition: 200ms ease all;
-			color: #819ef7;
-			z-index: -1;
-		}
 		&:hover h1 {
 			transform: translateX(-25px);
-		}
-		&:hover span {
-			opacity: 0.25;
-			left: -15%;
 		}
 	}
 
@@ -408,17 +365,6 @@
 		bottom: 10%;
 		justify-content: space-evenly;
 		z-index: 3;
-	}
-	.marquee2 {
-		position: absolute;
-		bottom: -150%;
-		right: 0;
-		opacity: 0.2;
-		width: 200%;
-		user-select: none;
-		font-size: 3rem;
-		z-index: 1;
-		font-family: 'Thunder Bold';
 	}
 	.menu__socials span {
 		width: 50px;
@@ -439,9 +385,6 @@
 	}
 
 	@media screen and (max-width: 800px) {
-		.marquee2 {
-			width: 100%;
-		}
 		.menu {
 			width: 100%;
 		}

@@ -87,8 +87,6 @@
 		perspective: 1px;
 		opacity: 1;
 		overflow: hidden;
-		border-bottom-left-radius: 20px;
-		border-bottom-right-radius: 20px;
 		transition: all 200ms ease;
 		margin-bottom: 5vh;
 		&:hover {
@@ -116,6 +114,7 @@
 		font-size: 2em;
 		margin: 0;
 		border-top-left-radius: 20px;
+		border-top-right-radius: 0px;
 		box-shadow: rgba(0, 0, 0, 0.5) 0 0 20px;
 		z-index: 2;
 		transition: all 200ms ease;
@@ -130,7 +129,8 @@
 		.exlusiveContent {
 			width: 100%;
 			height: 15%;
-			border-radius: 20px;
+			border-top-left-radius: 20px;
+			border-top-right-radius: 20px;
 			font-size: 1.5em;
 		}
 

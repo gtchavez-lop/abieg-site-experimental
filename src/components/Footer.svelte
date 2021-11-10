@@ -1,3 +1,7 @@
+<script context='module'>
+	export const prerender = true;
+</script>
+
 <script>
 	let scrollY;
 	const scrollToTop = (e) => {
@@ -18,16 +22,16 @@
 				<p style="font-size: 1.2em; margin: 0;">© 2021 | ABIE G</p>
 			</div>
 			<div class="col-12 col-lg-8 d-flex align-items-center justify-content-around">
-				<a class="link-light me-2" href="facebook.com"
+				<a class="link-light me-2" href="/"
 					><i class="bi bi-facebook" style="font-size: 1.2em; " /></a
 				>
-				<a class="link-light me-2" href="twitch.tv"
+				<a class="link-light me-2" href="/"
 					><i class="bi bi-twitch" style="font-size: 1.2em;" /></a
 				>
-				<a class="link-light me-2" href="twitter.com"
+				<a class="link-light me-2" href="/"
 					><i class="bi bi-twitter" style="font-size: 1.2em;" /></a
 				>
-				<a class="link-light me-2" href="instagram.com"
+				<a class="link-light me-2" href="/"
 					><i class="bi bi-instagram" style="font-size: 1.2em;" /></a
 				>
 			</div>

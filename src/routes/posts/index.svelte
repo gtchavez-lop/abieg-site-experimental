@@ -1,3 +1,7 @@
+<script context='module'>
+	export const prerender = true;
+</script>
+
 <script>
 	import { fly, fade, scale, blur } from 'svelte/transition';
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';
@@ -10,8 +14,15 @@
 	let hasAccount = false;
 	let blogs;
 	let hasBlogs = null;
+	let cardRow;
 
 	onMount(async (e) => {
+		let msnry = new Masonry(cardRow, {
+			itemSelector: '.thiscard',
+			columnWidth: '.thiscard',
+			percentPosition: true,
+			gutter: 10
+		});
 		if (await supabase.auth.user()) {
 			hasAccount = true;
 		}
@@ -80,9 +91,9 @@
 				{#if !hasAccount}
 					<h4 class="my-5">Sign in to view exclusive content</h4>
 				{/if}
-				<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gx-3 gy-3 ">
+				<div bind:this={cardRow} class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gx-3 gy-3 ">
 					{#each blogs as blogs}
-						<div class="col d-flex justify-content-center">
+						<div class="col d-flex justify-content-center thiscard">
 							<PostBlogCard {...blogs} />
 						</div>
 					{/each}

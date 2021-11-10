@@ -40,125 +40,154 @@
 	<main in:fly={{ y: -40, duration: 500, delay: 500 }} out:fly={{ y: 40, duration: 500 }}>
 		<div class="container text-white">
 			<p class="display-3">Root Dashboard</p>
-			<div class="mt-2">
-				<div
-					class="btn-group d-none d-md-flex justify-content-center"
-					role="group"
-					aria-label="Basic outlined example"
+
+			<!-- horizontal -->
+			<div
+				class="d-none d-lg-flex btn-group w-100"
+				role="group"
+				aria-label="Basic radio toggle button group"
+			>
+				<input
+					type="radio"
+					class="btn-check"
+					name="btnradio"
+					id="tab1"
+					autocomplete="off"
+					on:click={() => {
+						activeTab = 1;
+					}}
+					checked={activeTab === 1 ? true : false}
+				/>
+				<label class="btn btn-outline-light" for="tab1">Overview</label>
+
+				<input
+					type="radio"
+					class="btn-check"
+					name="btnradio"
+					id="tab2"
+					autocomplete="off"
+					on:click={() => {
+						activeTab = 2;
+					}}
+					checked={activeTab === 2 ? true : false}
+				/>
+				<label class="btn btn-outline-light" for="tab2">Registered Members</label>
+
+				<input
+					type="radio"
+					class="btn-check"
+					name="btnradio"
+					id="tab3"
+					autocomplete="off"
+					on:click={() => {
+						activeTab = 3;
+					}}
+					checked={activeTab === 3 ? true : false}
+				/>
+				<label class="btn btn-outline-light" for="tab3">Moderators</label>
+
+				<input
+					type="radio"
+					class="btn-check"
+					name="btnradio"
+					id="tab4"
+					autocomplete="off"
+					on:click={() => {
+						activeTab = 4;
+					}}
+					checked={activeTab === 4 ? true : false}
+				/>
+				<label class="btn btn-outline-light" for="tab4">Moderator Request</label>
+
+				<input
+					type="radio"
+					class="btn-check"
+					name="btnradio"
+					id="tab5"
+					autocomplete="off"
+					on:click={() => {
+						activeTab = 5;
+					}}
+					checked={activeTab === 5 ? true : false}
+				/>
+				<label class="btn btn-outline-light" for="tab5">Posts</label>
+			</div>
+
+			<!-- vertical -->
+			<div class="dropdown d-block d-lg-none">
+				<button
+					class="btn btn-secondary dropdown-toggle w-100"
+					type="button"
+					id="dashboardMenu"
+					data-bs-toggle="dropdown"
+					aria-expanded="false"
 				>
-					<button
-						type="button"
-						class="btn btn-outline-light"
-						on:click={() => {
-							activeTab = 1;
-						}}>Overview</button
-					>
-					<button
-						type="button"
-						class="btn btn-outline-light"
-						on:click={() => {
-							activeTab = 5;
-						}}>Posts</button
-					>
-				</div>
-				<div
-					class="btn-group d-none d-md-flex justify-content-center"
-					role="group"
-					aria-label="Basic outlined example"
-				>
-					<button
-						type="button"
-						class="btn btn-outline-light"
-						on:click={() => {
-							activeTab = 3;
-						}}>Moderators</button
-					>
-					<button
-						type="button"
-						class="btn btn-outline-light"
-						on:click={() => {
-							activeTab = 4;
-						}}>Moderator Request</button
-					>
-					<button
-						type="button"
-						class="btn btn-outline-light"
-						on:click={() => {
-							activeTab = 2;
-						}}>Registered Members</button
-					>
-				</div>
-				<div
-					class="btn-group d-flex d-md-none justify-content-center"
-					role="group"
-					aria-label="Basic outlined example"
-				>
-					<button
-						type="button"
-						class="btn btn-outline-light"
-						on:click={() => {
-							activeTab = 1;
-						}}>Overview</button
-					>
-				</div>
-				<div
-					class="btn-group d-flex d-md-none justify-content-center"
-					role="group"
-					aria-label="Basic outlined example"
-				>
-					<button
-						type="button"
-						class="btn btn-outline-light"
-						on:click={() => {
-							activeTab = 3;
-						}}>Moderators</button
-					>
-					<button
-						type="button"
-						class="btn btn-outline-light"
-						on:click={() => {
-							activeTab = 2;
-						}}>Registered Members</button
-					>
-				</div>
-				<div
-					class="btn-group d-flex d-md-none justify-content-center"
-					role="group"
-					aria-label="Basic outlined example"
-				>
-					<button
-						type="button"
-						class="btn btn-outline-light"
-						on:click={() => {
-							activeTab = 4;
-						}}>Moderator Request</button
-					>
-					<button
-						type="button"
-						class="btn btn-outline-light"
-						on:click={() => {
-							activeTab = 5;
-						}}>Posts</button
-					>
-				</div>
+					{activeTab === 1 ? 'Overview' : ''}
+					{activeTab === 2 ? 'Registered Members' : ''}
+					{activeTab === 3 ? 'Moderators' : ''}
+					{activeTab === 4 ? 'Moderator Request' : ''}
+					{activeTab === 5 ? 'Posts' : ''}
+				</button>
+				<ul class="dropdown-menu dropdown-menu-dark w-100" aria-labelledby="dashboardMenu">
+					<li>
+						<button
+							on:click={() => {
+								activeTab = 1;
+							}}
+							class="btn btn-outline-light w-100">Overview</button
+						>
+					</li>
+					<li>
+						<button
+							on:click={() => {
+								activeTab = 2;
+							}}
+							class="btn btn-outline-light w-100">Registered Users</button
+						>
+					</li>
+					<li>
+						<button
+							on:click={() => {
+								activeTab = 3;
+							}}
+							class="btn btn-outline-light w-100">Moderators</button
+						>
+					</li>
+					<li>
+						<button
+							on:click={() => {
+								activeTab = 4;
+							}}
+							class="btn btn-outline-light w-100">Moderator Requests</button
+						>
+					</li>
+					<li>
+						<button
+							on:click={() => {
+								activeTab = 5;
+							}}
+							class="btn btn-outline-light w-100">Posts</button
+						>
+					</li>
+				</ul>
 			</div>
 		</div>
 
 		<!-- overview -->
 		{#if activeTab == 1}
-			<Overview />
+			<svelte:component this={Overview} />
 		{/if}
 		{#if activeTab == 2}
-			<RegisteredUsers />
+			<svelte:component this={RegisteredUsers} />
 		{/if}
 		{#if activeTab == 3}
-			<Moderators />
+			<svelte:component this={Moderators} />
 		{/if}
 		{#if activeTab == 4}
-			<ModeratorRequest />
+			<svelte:component this={ModeratorRequest} />
 		{/if}
 		{#if activeTab == 5}
-			<Posts />
+			<svelte:component this={Posts} />
 		{/if}
 	</main>
 {:else if isAccessible == null}

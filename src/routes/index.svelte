@@ -1,3 +1,7 @@
+<script context='module'>
+	export const prerender = true;
+</script>
+
 <script>
 	import { fly, fade, scale, blur } from 'svelte/transition';
 	import { onMount } from 'svelte';
@@ -53,7 +57,6 @@
 	in:fly={{ y: 20, duration: 500 }}
 	out:fly={{ y: 20, duration: 500 }}
 	class="hero"
-	style="overflow-x: hidden;"
 >
 	<div
 		class="floatingImage"
@@ -84,12 +87,14 @@
 	</div>
 
 	<div class="content">
-		<div class="mouse" />
-		<p>Register and get the best out of it</p>
+		<div class="mouse" style="margin-top: {(windowScrollY / 100) * 15}px;" />
 		<!-- <p>{height}</p> -->
-		<h4 class="textEffectContainer display-6">Join us with Abie G to VIRTUALIZE the world</h4>
-		<a href="/account">
-			<button class="joinbutton"> Register Now </button>
+		<h3 style="max-width: 450px; width: 100%;" class="display-4">Join us with Abie G to VIRTUALIZE the world</h3>
+		<p class="lead">
+			Register and get the best out of it
+		</p>
+		<a href="/account" class="btn btn-lg btn-primary mt-5 joinButton" style="background: #F7749C; border-color:#F7749C; min-width: 200px; width: 30vw;">
+			Register Now
 		</a>
 	</div>
 	<!-- <div bind:this={rec1} class="brand__candy_rec1" />
@@ -104,6 +109,7 @@
 			: 'transform: translateX(-10%); opacity: 0;'}
 		class="d-flex align-items-center text-white my-5"
 	>
+		<div class="dot-bg" />
 		<div class="container">
 			<div class="row row-cols-1 row-cols-lg-2">
 				<div class="col justify-content-center mt-5 d-flex d-lg-none">
@@ -112,7 +118,7 @@
 						on:mouseenter={checkPosition}
 						class="mb-5 img-fluid"
 						style="max-height: 350px;"
-						src="./illustrations/watermelon/watermelon-pack-illustration-19.svg"
+						src="./illustrations/undraw_handcrafts_welcome.svg"
 						alt=""
 					/>
 				</div>
@@ -123,7 +129,7 @@
 						media accounts, AbieG formally welcomes you (yes, you!) to her namesake website’s
 						ribbon-cutting ceremony. Fancy.
 					</p>
-					<a href="/account" class="mt-5 btn btn-outline-primary ">Register Now</a>
+					<a href="/account" class="mt-5 btn btn-outline-light " style="background: #F7749C; border-color:#F7749C;">Register Now</a>
 				</div>
 				<div class="col justify-content-center mt-5 d-none d-lg-flex">
 					<img
@@ -131,8 +137,8 @@
 						on:mousemove={checkPosition}
 						on:focus={checkPosition}
 						class="mb-5"
-						src="./illustrations/watermelon/watermelon-pack-illustration-19.svg"
-						style="max-height: 350px;"
+						src="./illustrations/undraw_handcrafts_welcome.svg"
+						style="max-width: 400px;"
 						alt=""
 					/>
 				</div>
@@ -149,11 +155,12 @@
 		class="d-flex align-items-center text-white my-5"
 	>
 		<div class="container">
+			<div class="dot-bg dot-bg1" />
 			<div class="row row-cols-1 row-cols-lg-2">
 				<div class="col justify-content-center mt-5 d-none d-lg-flex">
 					<img
 						class="mb-5"
-						src="./illustrations/watermelon/watermelon-pack-illustration-05.svg"
+						src="./illustrations/undraw_handcrafts_add_files.svg"
 						style="max-height: 350px;"
 						alt=""
 					/>
@@ -161,7 +168,7 @@
 				<div class="col justify-content-center mt-5 d-flex d-lg-none">
 					<img
 						class="mb-5"
-						src="./illustrations/watermelon/watermelon-pack-illustration-05.svg"
+						src="./illustrations/undraw_handcrafts_add_files.svg"
 						style="max-height: 350px;"
 						alt=""
 					/>
@@ -189,10 +196,11 @@
 	>
 		<div class="container">
 			<div class="row row-cols-1 row-cols-lg-2">
+				<div class="dot-bg dot-bg2" />
 				<div class="col justify-content-center mt-5 d-flex d-lg-none">
 					<img
 						class="mb-5"
-						src="./illustrations/watermelon/watermelon-pack-illustration-20.svg"
+						src="./illustrations/undraw_handcrafts_say_hello.svg"
 						style="max-height: 350px;"
 						alt=""
 					/>
@@ -208,7 +216,7 @@
 				<div class="col justify-content-center mt-5 d-none d-lg-flex">
 					<img
 						class="mb-5"
-						src="./illustrations/watermelon/watermelon-pack-illustration-20.svg"
+						src="./illustrations/undraw_handcrafts_say_hello.svg"
 						style="max-height: 350px;"
 						alt=""
 					/>
@@ -239,31 +247,13 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		z-index: 2;
 		img {
 			width: 100%;
 			height: 100%;
 
-			opacity: 0.5;
+			opacity: 0.7;
 			object-fit: cover;
-		}
-	}
-	.joinbutton {
-		padding: 1em;
-		width: 60%;
-		margin-top: 50px;
-		font-size: 1rem;
-		background: none;
-		border-radius: 100px;
-		color: white;
-		border: #f88dad solid 0.2rem;
-		cursor: pointer;
-		font-weight: 700;
-		transition: 200ms ease all;
-		&:hover {
-			color: white;
-			background: #f88dad;
-			border: #f88dad solid 0.2rem;
-			transform: scale(1.1);
 		}
 	}
 
@@ -271,22 +261,33 @@
 		/* margin: 0; */
 		position: relative;
 		min-height: 100vh;
-		overflow: hidden;
 		z-index: 3;
 		&:first-child {
 			bottom: 10%;
 		}
+	}
+	.joinButton{
+		transition: all 0.2s ease;
+	}
+	.joinButton:hover{
+		transform: scale(1.05);
+	}
+	.joinButton:active{
+		transition: all 0s ease;
+		transform: scale(1);
 	}
 	main {
 		transition: 500ms ease all;
 		min-height: 70vh;
 		perspective: 2000px;
 		user-select: none;
+		background: transparent;
 	}
 	.brand-container {
 		position: absolute;
 		width: 100%;
 		height: 100%;
+		z-index: 1;
 	}
 	.brand {
 		position: absolute;
@@ -309,19 +310,21 @@
 	.content {
 		position: absolute;
 		right: 5%;
-		bottom: 10%;
+		bottom: 20%;
 		color: white;
+		z-index: 2;
 		text-align: right;
 	}
 
 	.mouse {
-		position: absolute;
-		right: 0;
-		top: -100px;
+		position: fixed;
+		left: calc(50% - 20px);
+		top: 90vh;
 		width: 40px;
 		height: 65px;
 		border-radius: 100px;
 		border: solid white 3px;
+		z-index: 9;
 		&::before {
 			content: '';
 			position: absolute;
@@ -356,13 +359,6 @@
 			right: 5%;
 			max-width: 75%;
 		}
-		.content .textEffectContainer {
-			display: flex;
-			align-items: center;
-		}
-		.joinbutton {
-			width: 100%;
-		}
 		.brand-container {
 			bottom: 15%;
 			left: 5%;
@@ -378,5 +374,27 @@
 				letter-spacing: 0em;
 			}
 		}
+	}
+	.dot-bg {
+		position: absolute;
+		top: 40%;
+		right: 0;
+		width: 400px;
+		height: 150px;
+		background: url('./dot.png');
+		background-size: 20px;
+		z-index: -1;
+	}
+	.dot-bg1 {
+		top: 20%;
+		left: 10%;
+		width: 200px;
+		height: 380px;
+	}
+	.dot-bg2 {
+		top: 20%;
+		right: 15%;
+		width: 200px;
+		height: 300px;
 	}
 </style>

@@ -1,3 +1,7 @@
+<script context="module">
+	export const prerender = true;
+</script>
+
 <script>
 	import { fly, fade, scale, blur } from 'svelte/transition';
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';

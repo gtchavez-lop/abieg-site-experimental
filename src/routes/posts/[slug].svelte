@@ -1,4 +1,5 @@
 <script context="module">
+	export const prerender = true;
 	export const load = async (e) => {
 		let slug = e.page.params.slug;
 		return { props: { slug } };

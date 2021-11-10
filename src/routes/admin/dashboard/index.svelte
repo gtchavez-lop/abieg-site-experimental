@@ -1,3 +1,7 @@
+<script context="module">
+	export const prerender = true;
+</script>
+
 <script>
 	import { fly, fade, scale, blur } from 'svelte/transition';
 	import { goto } from '$app/navigation';
@@ -11,7 +15,7 @@
 	// component variables
 	let hasBlog = null;
 	let blogs;
-	let tabActive = 2;
+	$: tabActive = 2;
 	let hasAccount;
 	let user = supabase.auth.user();
 
@@ -114,21 +118,28 @@
 	<div class="container text-white">
 		<p class="display-3">Moderator Dashboard</p>
 
-		<div class="btn-group mt-3 w-100">
-			<button
-				on:click={(e) => {
-					tabActive = 1;
-				}}
-				type="button"
-				class="btn btn-lg btn-outline-primary">Add a Story</button
-			>
-			<button
-				on:click={(e) => {
-					tabActive = 2;
-				}}
-				type="button"
-				class="btn btn-lg btn-outline-primary">Your Stories</button
-			>
+		<div class="btn-group mt-3 w-100" role="group" aria-label="Basic radio toggle button group">
+			<input
+				type="radio"
+				class="btn-check"
+				name="btnradio"
+				id="nav1"
+				autocomplete="off"
+				on:click={() => (tabActive = 1)}
+				checked={tabActive == 1 ? true : false}
+			/>
+			<label class="btn btn-lg btn-outline-light" for="nav1">Add a Story</label>
+
+			<input
+				type="radio"
+				class="btn-check"
+				name="btnradio"
+				id="nav2"
+				autocomplete="off"
+				on:click={() => (tabActive = 2)}
+				checked={tabActive == 2 ? true : false}
+			/>
+			<label class="btn btn-lg btn-outline-light" for="nav2">Your Stories</label>
 		</div>
 
 		<!-- tabs -->
@@ -205,7 +216,9 @@
 							</div>
 						</div>
 						<div class="col-12 mt-5">
-							<button on:click={postBlog} class="btn btn-primary">Post your story</button>
+							<button on:click={postBlog} class="btn btn-lg btn-success w-100"
+								>Post your story</button
+							>
 						</div>
 					</div>
 				</div>

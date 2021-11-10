@@ -28,12 +28,13 @@
 		</div>
 		<div
 			class="blog_card_bg blog_card_bg1 d-none d-lg-flex justify-content-center align-items-center"
+			style="z-index: 2;"
 		>
 			<a href="/posts/{id}" class="btn btn-lg btn-primary">Read More</a>
 		</div>
 
 		<div class="blog_card_content d-block d-lg-none" style="min-width: 100%;">
-			<p class="display-6" style="font-size: 1.4em;">{title}</p>
+			<p class="display-6" style="font-size: 1.4em; text-overflow:ellipsis;">{title}</p>
 			<p style="color: #e2eff1;">{author}</p>
 
 			<a href="/posts/{id}" class="btn btn-primary " style="width: 100%;">Read More</a>
@@ -52,16 +53,15 @@
 	.blog_card {
 		position: relative;
 		width: 100%;
-		height: 30em;
+		height: 25em;
 		opacity: 0;
 		transition: 300ms ease all;
 		border: none;
 		box-shadow: rgba(0, 0, 0, 0) 0 0.5em 2em;
 		user-select: none;
 		transform-style: preserve-3d;
-		overflow: hidden;
-		border-radius: 10px;
 		transform: translateY(50px);
+		// clip-path: polygon(0 5%, 100% 0, 100% 95%, 0% 100%);
 		&:hover {
 			box-shadow: rgba(0, 0, 0, 0.2) 0 0.5em 2em;
 			.blog_card_bg {
@@ -74,7 +74,6 @@
 			}
 			.blog_card_content1 {
 				opacity: 0;
-				transform: translateY(1em);
 			}
 			.exclusiveBadge {
 				width: 100%;
@@ -87,10 +86,12 @@
 			height: 100%;
 			transition: 300ms ease all;
 			overflow: hidden;
+			z-index: -1;
 			img {
 				width: 100%;
 				height: 100%;
 				object-fit: cover;
+				object-position: center;
 				transition: 300ms ease all;
 			}
 		}
@@ -105,8 +106,7 @@
 			bottom: 0;
 			transition: 300ms ease all;
 			background: #3d5467;
-			border-top-right-radius: 20px;
-			border-top-left-radius: 20px;
+			text-overflow: ellipsis;
 		}
 
 		.exclusiveBadge {
@@ -114,7 +114,6 @@
 			z-index: 2;
 			right: 0;
 			width: 200px;
-			border-bottom-left-radius: 20px;
 			height: 50px;
 			transition: 300ms ease all;
 			background: #d63384;

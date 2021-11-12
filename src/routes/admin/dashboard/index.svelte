@@ -11,55 +11,33 @@
 	import AdminPostCard from '../../../components/AdminPostCard.svelte';
 	import toastify from 'toastify-js';
 	import 'toastify-js/src/toastify.css';
+	import { get, readable } from 'svelte/store';
 
 	// component variables
-	let hasBlog = null;
-	let blogs;
 	$: tabActive = 2;
-	let hasAccount;
-	let user = supabase.auth.user();
+	let user;
 
 	let blog_title;
 	let blog_imageURI;
 	let blog_content;
 	let blog_visibility = false;
+	let email = '';
 
 	// methods
 	onMount(async (e) => {
-		if (supabase.auth.user()) {
-			if (supabase.auth.user().role == 'authenticated') {
-				let user = supabase.auth.user();
+		user = await supabase.auth.user();
+		if (user) {
+			email = user.email.split('@')[0];
+			if (user.role == 'authenticated') {
 				let { data, error } = await supabase.from('users').select('*').eq('id', user.id);
-				if (data[0].isModerator == true || data[0].isAdmin == true) {
-					hasAccount = true;
-				} else {
+				if (data[0].isModerator == false || data[0].isAdmin == false) {
 					goto('/admin');
 				}
-			}
-
-			if (hasAccount) {
-				getPosts();
 			}
 		} else {
 			goto('/admin');
 		}
 	});
-
-	const getPosts = async (e) => {
-		const { data, error } = await supabase
-			.from('posts')
-			.select('*')
-			.eq('author', user.email.split('@')[0]);
-
-		hasBlog = null;
-		if (error || data.length < 1) {
-			hasBlog = false;
-		}
-		if (!error || data.length > 0) {
-			blogs = data;
-			hasBlog = true;
-		}
-	};
 
 	let postBlog = async (e) => {
 		if (blog_title && blog_content) {
@@ -89,7 +67,6 @@
 				blog_content = '';
 				blog_visibility = false;
 				tabActive = 2;
-				getPosts();
 			}
 		} else {
 			// toast.message('Please fill out all forms');
@@ -105,6 +82,46 @@
 			}).showToast();
 		}
 	};
+
+	const _blogs = readable(null, (set) => {
+		supabase
+			.from('posts')
+			.select('*')
+			.order('title', { ascending: false })
+			.then(({ data, error }) => {
+				let newData = [];
+				if (data) {
+					data.forEach((post) => {
+						if (post.author == email) {
+							newData.push(post);
+							set(newData);
+						}
+					});
+				}
+			});
+
+		const subscription = supabase
+			.from('posts')
+			.on('*', (payload) => {
+				if (payload.eventType == 'INSERT') {
+					set([payload.new, ...get(_blogs)]);
+					// console.log($_blogs);
+				}
+				if (payload.eventType === 'UPDATE') {
+					let index = $_blogs.findIndex((thisblog) => thisblog.id === payload.new.id);
+					let oldData = $_blogs;
+					oldData[index] = payload.new;
+					set(oldData);
+				}
+				if (payload.eventType == 'DELETE') {
+					let oldData = $_blogs;
+					set(oldData.filter((thisItem) => thisItem.id != payload.old.id));
+				}
+			})
+			.subscribe();
+
+		return () => supabase.removeSubscription(subscription);
+	});
 </script>
 
 <svele:head>
@@ -228,24 +245,19 @@
 				<div in:fly={{ x: 20, duration: 500 }}>
 					<p class="display-5">Your Stories</p>
 					<div class="row text-white">
-						{#if hasBlog == null}
-							<div class="spinner-border text-info" role="status">
-								<span class="visually-hidden">Loading...</span>
-							</div>
-						{/if}
-						{#if !hasBlog || blogs.length < 1}
-							<div class="col-12">
-								<h5>Seems like its empty</h5>
-								<p>Make one of your own</p>
-							</div>
-						{:else}
+						{#if $_blogs}
 							<div class="col-12">
 								<div class="mt-1 row row-cols-1 row-cols-md-2 g-3">
-									{#each blogs as blog, index}
+									{#each $_blogs as blog, index}
 										<AdminPostCard {blog} {index} />
 									{/each}
 								</div>
 							</div>
+						{:else}
+							<p class="lead">Seems like its empty</p>
+							<!-- <div class="spinner-border text-info" role="status">
+							<span class="visually-hidden">Loading...</span>
+						</div> -->
 						{/if}
 					</div>
 				</div>

@@ -6,7 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 import { writable } from "svelte/store";
 
 // supabase
-const supabaseURL = "https://sgocnrgwrtdruxnxpxyl.supabase.co";
+const supabaseURL = 'https://sgocnrgwrtdruxnxpxyl.supabase.co';
 export const supabase = createClient(supabaseURL, SUPABASE_KEY);
 
 // global objects

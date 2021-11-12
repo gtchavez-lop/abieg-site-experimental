@@ -1,4 +1,4 @@
-<script context='module'>
+<script context="module">
 	export const prerender = true;
 </script>
 
@@ -6,60 +6,47 @@
 	import { fly, fade, scale, blur } from 'svelte/transition';
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';
 
-	import { supabase, global_account, global_account_data } from '../../global';
-	import Post_BlogCard from '../../components/Post_BlogCard.svelte';
+	import { supabase } from '../../global';
 	import { onMount } from 'svelte';
 	import PostBlogCard from '../../components/Post_BlogCard.svelte';
+	import { get, readable } from 'svelte/store';
 
 	let hasAccount = false;
-	let blogs;
-	let hasBlogs = null;
-	let cardRow;
 
 	onMount(async (e) => {
-		let msnry = new Masonry(cardRow, {
-			itemSelector: '.thiscard',
-			columnWidth: '.thiscard',
-			percentPosition: true,
-			gutter: 10
-		});
 		if (await supabase.auth.user()) {
 			hasAccount = true;
 		}
-		(async (e) => {
-			if (hasAccount) {
-				let { data, error } = await supabase
-					.from('posts')
-					.select('*')
-					.order('created_at', { ascending: false })
-					.range(0, 10);
-				hasBlogs = null;
-				if (!error || data) {
-					setTimeout(() => {
-						hasBlogs = true;
-					}, 400);
-					blogs = data;
+	});
+
+	const _blogs = readable(null, (set) => {
+		supabase
+			.from('posts')
+			.select('*')
+			.order('created_at', { ascending: false })
+			.then(({ data, error }) => {
+				set(data);
+			});
+
+		const subscription = supabase
+			.from('posts')
+			.on('*', (payload) => {
+				if (payload.eventType === 'INSERT') {
+					set([payload.new, ...get(_blogs)]);
 				}
-				if (data.length < 1) {
-					hasBlogs = false;
+				if (payload.eventType === 'UPDATE') {
+					let index = $_blogs.findIndex((thisblog) => thisblog.id === payload.new.id);
+					let oldData = $_blogs;
+					oldData[index] = payload.new;
+					set(oldData);
 				}
-			} else {
-				let { data, error } = await supabase
-					.from('posts')
-					.select('*')
-					.eq('isExclusive', 'false')
-					.order('created_at', { ascending: false })
-					.range(0, 10);
-				hasBlogs = null;
-				if (!error || data) {
-					hasBlogs = true;
-					blogs = data;
+				if (payload.eventType === 'DELETE') {
+					let oldData = $_blogs;
+					set(oldData.filter((thisItem) => thisItem.id != payload.old.id));
 				}
-				if (data.length < 1) {
-					hasBlogs = false;
-				}
-			}
-		})();
+			})
+			.subscribe();
+		return () => supabase.removeSubscription(subscription);
 	});
 </script>
 
@@ -76,7 +63,7 @@
 		<h3 class="display-3">See what's new</h3>
 
 		<div class=" mt-5">
-			{#if hasBlogs == null}
+			{#if !$_blogs}
 				<div class="lds-roller">
 					<div />
 					<div />
@@ -87,15 +74,21 @@
 					<div />
 					<div />
 				</div>
-			{:else if hasBlogs}
+			{:else if $_blogs}
 				{#if !hasAccount}
 					<h4 class="my-5">Sign in to view exclusive content</h4>
 				{/if}
-				<div bind:this={cardRow} class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gx-3 gy-3 ">
-					{#each blogs as blogs}
-						<div class="col d-flex justify-content-center thiscard">
-							<PostBlogCard {...blogs} />
-						</div>
+				<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gx-3 gy-3 ">
+					{#each $_blogs as blogs}
+						{#if !blogs.isExclusive}
+							<div class="col d-flex justify-content-center thiscard">
+								<PostBlogCard {...blogs} />
+							</div>
+						{:else}
+							<div class="col d-flex justify-content-center thiscard">
+								<PostBlogCard {...blogs} />
+							</div>
+						{/if}
 					{/each}
 				</div>
 			{:else}

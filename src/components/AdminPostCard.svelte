@@ -4,6 +4,7 @@
 
 	import { fly, fade, scale, slide } from 'svelte/transition';
 	import { supabase } from '../global';
+	import { flip } from 'svelte/animate';
 	export let blog;
 
 	let isDeleting = false;
@@ -35,10 +36,6 @@
 	let deletePost = async (e) => {
 		if (blog) {
 			let { data, error } = await supabase.from('posts').delete().match({ id: blog.id });
-
-			if (!error) {
-				location.reload();
-			}
 		}
 	};
 	let updatePost = async (e) => {
@@ -62,7 +59,7 @@
 
 <SvelteToast options={{ reversed: true, intro: { y: -20 }, duration: 500 }} />
 
-<div class="col bg-transparent">
+<div class="col bg-transparent" transition:slide|local>
 	<div class="card overflow-hidden" style="width: 100%; background: #343A40;">
 		<img
 			src={new_imageURI}

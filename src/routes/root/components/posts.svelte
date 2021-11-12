@@ -2,62 +2,129 @@
 	import dayjs from 'dayjs';
 	import AdminPostCard from '../../../components/AdminPostCard.svelte';
 	import { onMount } from 'svelte';
-	import { fly } from 'svelte/transition';
+	import { fly, slide } from 'svelte/transition';
 	import { supabase } from '../../../global';
+	import { get, readable } from 'svelte/store';
 
-	let _posts = [];
-	let _public_posts = [];
-	let _exclusive_posts = [];
 	let loaded = false;
 	let post_toggler = 1;
+	let publicPost_Count = 0;
+	let exclusivePost_Count = 0;
+	let post_count = 0;
 
-	const getData = async (e) => {
-		let { data: posts, error } = await supabase.from('posts').select('*');
-		if (!error) {
-			_posts = posts;
-			posts.forEach((thispost) => {
-				if (thispost.isExclusive == false) {
-					_public_posts = [..._public_posts, thispost];
-				} else {
-					_exclusive_posts = [..._exclusive_posts, thispost];
-				}
-			});
-			setTimeout(() => {
+	const _blogs = readable(null, (set) => {
+		supabase
+			.from('posts')
+			.select('*')
+			.order('created_at', { ascending: false })
+			.then(({ data, error }) => {
+				set(data);
 				loaded = true;
-			}, 200);
-		}
-	};
 
-	onMount(async (e) => {
-		getData();
+				_posts = data;
+				post_count = data.length;
+				data.forEach((post) => {
+					if (post.isExclusive) {
+						exclusivePost_Count++;
+					}
+					if (!post.isExclusive) {
+						publicPost_Count++;
+					}
+				});
+			});
+
+		const subscription = supabase
+			.from('posts')
+			.on('*', (payload) => {
+				post_count = 0;
+				publicPost_Count = 0;
+				exclusivePost_Count = 0;
+
+				if (payload.eventType === 'INSERT') {
+					set([payload.new, ...get(_blogs)]);
+
+					post_count = $_blogs.length;
+					$_blogs.forEach((post) => {
+						if (post.isExclusive) {
+							exclusivePost_Count++;
+						}
+						if (!post.isExclusive) {
+							publicPost_Count++;
+						}
+					});
+				}
+				if (payload.eventType === 'UPDATE') {
+					let index = $_blogs.findIndex((thisblog) => thisblog.id === payload.new.id);
+					let oldData = $_blogs;
+					oldData[index] = payload.new;
+					set(oldData);
+
+					post_count = $_blogs.length;
+					$_blogs.forEach((post) => {
+						if (post.isExclusive) {
+							exclusivePost_Count++;
+						}
+						if (!post.isExclusive) {
+							publicPost_Count++;
+						}
+					});
+				}
+				if (payload.eventType === 'DELETE') {
+					let oldData = $_blogs;
+					console.log(oldData.filter((thisItem) => thisItem.id != payload.old.id));
+					set(oldData.filter((thisItem) => thisItem.id != payload.old.id));
+
+					$_blogs.forEach((post) => {
+						if (post.isExclusive) {
+							exclusivePost_Count++;
+						}
+						if (!post.isExclusive) {
+							publicPost_Count++;
+						}
+					});
+					post_count = $_blogs.length;
+					$_blogs.forEach((post) => {
+						if (post.isExclusive) {
+							exclusivePost_Count++;
+						}
+						if (!post.isExclusive) {
+							publicPost_Count++;
+						}
+					});
+				}
+			})
+			.subscribe();
+		return () => supabase.removeSubscription(subscription);
 	});
 </script>
 
 <main in:fly={{ y: 20, duration: 500 }} class="text-white">
 	<div class="container ">
-		<div class="row row-cols-md-3">
-			<div class="card border-3 rounded-3 shadow-sm">
-				<div class="card-body">
-					<h5>All Posts</h5>
-					<h1 class="mt-4">{_posts.length}</h1>
-					<i class="bi bi-eye" />
+		{#if $_blogs}
+			<div class="row row-cols-md-3" in:fly={{ y: 20, duration: 500 }}>
+				<div class="card border-3 rounded-3 shadow-sm">
+					<div class="card-body">
+						<h5>All Posts</h5>
+						<h1 class="mt-4">{post_count}</h1>
+						<i class="bi bi-eye" />
+					</div>
+				</div>
+				<div class="card border-3 rounded-3 shadow-sm">
+					<div class="card-body">
+						<h5>Public Posts</h5>
+						<h1 class="mt-4">{publicPost_Count}</h1>
+						<i class="bi bi-globe2" />
+					</div>
+				</div>
+				<div class="card border-3 rounded-3 shadow-sm">
+					<div class="card-body">
+						<h5>Exclusive Posts</h5>
+						<h1 class="mt-4">{exclusivePost_Count}</h1>
+						<i class="bi bi-file-lock" />
+					</div>
 				</div>
 			</div>
-			<div class="card border-3 rounded-3 shadow-sm">
-				<div class="card-body">
-					<h5>Public Posts</h5>
-					<h1 class="mt-4">{_public_posts.length}</h1>
-					<i class="bi bi-globe2" />
-				</div>
-			</div>
-			<div class="card border-3 rounded-3 shadow-sm">
-				<div class="card-body">
-					<h5>Exclusive Posts</h5>
-					<h1 class="mt-4">{_exclusive_posts.length}</h1>
-					<i class="bi bi-file-lock" />
-				</div>
-			</div>
-		</div>
+		{/if}
 	</div>
 	{#if loaded}
 		<div class="container mt-5" in:fly={{ y: 20, duration: 500 }}>
@@ -90,9 +157,11 @@
 					<div in:fly={{ y: 20, duration: 500 }}>
 						<p class="display-5 mt-5">All Posts</p>
 						<div class="row row-cols-1 row-cols-md-2">
-							{#each _posts as thispost}
-								<AdminPostCard blog={thispost} />
-							{/each}
+							{#if $_blogs}
+								{#each $_blogs as thispost}
+									<AdminPostCard blog={thispost} />
+								{/each}
+							{/if}
 						</div>
 					</div>
 				{/if}
@@ -100,9 +169,13 @@
 					<div in:fly={{ y: 20, duration: 500 }}>
 						<p class="display-5 mt-5">Public Posts</p>
 						<div class="row row-cols-1 row-cols-md-2">
-							{#each _public_posts as thispost}
-								<AdminPostCard blog={thispost} />
-							{/each}
+							{#if $_blogs}
+								{#each $_blogs as thispost}
+									{#if !thispost.isExclusive}
+										<AdminPostCard blog={thispost} />
+									{/if}
+								{/each}
+							{/if}
 						</div>
 					</div>
 				{/if}
@@ -110,9 +183,13 @@
 					<div in:fly={{ y: 20, duration: 500 }}>
 						<p class="display-5 mt-5">Exclusive Posts Posts</p>
 						<div class="row row-cols-1 row-cols-md-2">
-							{#each _exclusive_posts as thispost}
-								<AdminPostCard blog={thispost} />
-							{/each}
+							{#if $_blogs}
+								{#each $_blogs as thispost}
+									{#if thispost.isExclusive}
+										<AdminPostCard blog={thispost} />
+									{/if}
+								{/each}
+							{/if}
 						</div>
 					</div>
 				{/if}

@@ -16,7 +16,11 @@
 </script>
 
 <IntersectionObserver threshold={0.2} once element={card} bind:intersecting={cardVisible}>
-	<div bind:this={card} class="blog_card {cardVisible ? 'blog_card_visible' : ''}">
+	<div
+		bind:this={card}
+		transition:slide|local
+		class="blog_card {cardVisible ? 'blog_card_visible' : ''}"
+	>
 		{#if isExclusive}
 			<div class="exclusiveBadge">
 				<span>EXCLUSIVE</span>

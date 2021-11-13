@@ -24,7 +24,7 @@
 			hasAccount = true;
 		}
 
-		let { data, error } = await supabase.from('posts').select('*').eq('id', slug);
+		let { data, error } = await supabase.from('posts').select('*').eq('slug', slug);
 		if (!error || data.length > 0) {
 			blogData = data[0];
 			title = data[0].title;

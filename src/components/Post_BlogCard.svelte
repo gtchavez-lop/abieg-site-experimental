@@ -2,12 +2,12 @@
 	import dayjs from 'dayjs';
 
 	import { fly, slide, scale, blur } from 'svelte/transition';
-	export let id;
 	export let title;
 	export let author;
 	export let header_img;
 	export let isExclusive;
 	export let created_at;
+	export let slug;
 
 	import IntersectionObserver from 'svelte-intersection-observer';
 
@@ -34,14 +34,14 @@
 			class="blog_card_bg blog_card_bg1 d-none d-lg-flex justify-content-center align-items-center"
 			style="z-index: 2;"
 		>
-			<a href="/posts/{id}" class="btn btn-lg btn-primary">Read More</a>
+			<a href="/posts/{slug}" class="btn btn-lg btn-primary">Read More</a>
 		</div>
 
 		<div class="blog_card_content d-block d-lg-none" style="min-width: 100%;">
 			<p class="display-6" style="font-size: 1.4em; text-overflow:ellipsis;">{title}</p>
 			<p style="color: #e2eff1;">{author}</p>
 
-			<a href="/posts/{id}" class="btn btn-primary " style="width: 100%;">Read More</a>
+			<a href="/posts/{slug}" class="btn btn-primary " style="width: 100%;">Read More</a>
 		</div>
 		<div class="blog_card_content blog_card_content1 d-none d-lg-block" style="min-width: 100%;">
 			<p class="display-6" style="font-size: 1.4em;">{title}</p>

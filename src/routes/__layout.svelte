@@ -22,7 +22,7 @@
 		}, 100);
 	}}
 	class="scrolltotop"
-	style="right: {scrollY < 400 ? '-50px' : '5px'};"
+	style="left: {scrollY < 400 ? '-50px' : '5px'};"
 >
 	<i class="bi bi-arrow-up" />
 </div>
@@ -33,10 +33,10 @@
 		width: 50px;
 		height: 50px;
 		color: #fff;
-		top: calc(85% - 25px);
+		top: calc(90% - 25px);
 		border-radius: 100px;
 		background: #002b36;
-		right: 0;
+		left: 0;
 		z-index: 99;
 		transition: 200ms ease all;
 		display: flex;

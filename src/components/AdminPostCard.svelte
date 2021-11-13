@@ -1,5 +1,4 @@
 <script>
-	import { toast, SvelteToast } from '@zerodevx/svelte-toast';
 	import dayjs from 'dayjs';
 
 	import { fly, fade, scale, slide } from 'svelte/transition';
@@ -56,8 +55,6 @@
 		});
 	};
 </script>
-
-<SvelteToast options={{ reversed: true, intro: { y: -20 }, duration: 500 }} />
 
 <div class="col bg-transparent" transition:slide|local>
 	<div class="card overflow-hidden" style="width: 100%; background: #343A40;">

@@ -12,6 +12,14 @@
 			}
 		});
 	});
+
+	const changeImage = async (e) => {
+		await fetch(header_img).then((res) => {
+			if (!res.ok) {
+				header_img = 'https://picsum.photos/500/500';
+			}
+		});
+	};
 </script>
 
 <main class="w-100 d-flex">
@@ -25,7 +33,7 @@
 		<div class="exclusiveGlow" />
 	{/if}
 	<div class="imgContainer">
-		<img src={header_img} alt={slug} />
+		<img src={header_img} on:error={changeImage} alt={slug} />
 	</div>
 	<a class="content" href="/posts/{slug}">
 		<h4 class="lead title">{title}</h4>

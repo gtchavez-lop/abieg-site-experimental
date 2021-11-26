@@ -458,28 +458,14 @@
 				<div class="col-12 col-md-6 text-center d-flex flex-column justify-content-center">
 					<p class="lead text-muted mb-0 mt-4">Account Type</p>
 					<p class="lead mt-0 mb-5">
-						{#if $global_account_data.isModerator}
+						{#if $global_account_data.isAdmin}
+							Root account
+						{:else if $global_account_data.isModerator}
 							Moderator Account
-
-							{#if $global_account_data.isAdmin}
-								/ Root Account
-							{/if}
 						{:else}
 							Standard Account
-							{#if $global_account_data.isAdmin}
-								/ Root Account
-							{/if}
 						{/if}
 					</p>
-					{#if $global_account_data.isModerator}
-						<button
-							class="btn btn-link"
-							on:click={(e) => {
-								goto('/admin/dashboard');
-							}}>Go to Dashboard</button
-						>
-					{:else}<button class="btn btn-link" disabled>Request Moderator Account</button>
-					{/if}
 					{#if $global_account_data.isAdmin}
 						<button
 							class="btn btn-link"

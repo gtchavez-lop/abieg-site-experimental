@@ -8,8 +8,9 @@
 	import RootPostCard from '../../../components/Root_PostCard.svelte';
 	import { onMount } from 'svelte';
 	import { fly, slide } from 'svelte/transition';
-	import { supabase } from '../../../global';
+	import { supabase, _blogs } from '../../../global';
 	import { get, readable, writable } from 'svelte/store';
+	import AdminPostCardNew from '../../../components/AdminPostCard_New.svelte';
 
 	let loaded = false;
 	let post_toggler = 1;
@@ -20,52 +21,17 @@
 	$: publicBlogs = [];
 	$: exclusiveBlogs = [];
 
-	const _blogs = readable(null, (set) => {
-		supabase
-			.from('posts')
-			.select('*')
-			.order('created_at', { ascending: false })
-			.then(({ data, error }) => {
-				if (!error) {
-					set(data);
-					loaded = true;
-					post_count = data.length;
-					exclusivePost_Count = data.filter((x) => x.isExclusive).length;
-					publicPost_Count = data.filter((x) => !x.isExclusive).length;
-				}
-			});
-
-		const subscription = supabase
-			.from('posts')
-			.on('INSERT', (payload) => {
-				set([payload.new, ...get(_blogs)]);
-			})
-			.on('UPDATE', (payload) => {
-				let index = $_blogs.findIndex((thisblog) => thisblog.id === payload.new.id);
-				let oldData = $_blogs;
-				oldData[index] = payload.new;
-				set(oldData);
-			})
-			.on('DELETE', (payload) => {
-				let oldData = $_blogs;
-				set(oldData.filter((thisItem) => thisItem.id != payload.old.id));
-			})
-			.on('*', () => {
-				if ($_blogs) {
-					post_count = $_blogs.length;
-					exclusivePost_Count = $_blogs.filter((x) => x.isExclusive).length;
-					publicPost_Count = $_blogs.filter((x) => !x.isExclusive).length;
-				}
-			})
-			.subscribe();
-
-		return () => supabase.removeSubscription(subscription);
+	onMount(async (e) => {
+		post_count = await get(_blogs).length;
+		exclusivePost_Count = await $_blogs.filter((x) => x.isExclusive).length;
+		publicPost_Count = await $_blogs.filter((x) => !x.isExclusive).length;
+		loaded = true;
 	});
 </script>
 
 <main in:fly={{ y: 20, duration: 500 }} class="text-white">
 	<div class="container ">
-		{#if $_blogs}
+		{#await $_blogs then c}
 			<div class="row row-cols-md-3" in:fly={{ y: 20, duration: 500 }}>
 				<div class="card border-3 rounded-3 shadow-sm">
 					<div class="card-body">
@@ -89,7 +55,7 @@
 					</div>
 				</div>
 			</div>
-		{/if}
+		{/await}
 	</div>
 	{#if loaded}
 		<div class="container mt-5" in:fly={{ y: 20, duration: 500 }}>
@@ -136,10 +102,15 @@
 					<div in:fly|local={{ y: 20, duration: 500 }}>
 						<p class="display-5 mt-5">All Posts</p>
 						<div class="row row-cols-1 row-cols-md-2">
-							{#each $_blogs as blogData}
-								<RootPostCard {blogData} />
-								<!-- <AdminPostCard blog={thispost} /> -->
-							{/each}
+							{#await $_blogs}
+								<p>loading</p>
+							{:then c}
+								{#each c as { id }, index}
+									<div class="mb-2">
+										<AdminPostCardNew {id} {index} />
+									</div>
+								{/each}
+							{/await}
 						</div>
 					</div>
 				{/if}
@@ -147,11 +118,17 @@
 					<div in:fly|local={{ y: 20, duration: 500 }}>
 						<p class="display-5 mt-5">Public Posts</p>
 						<div class="row row-cols-1 row-cols-md-2">
-							{#each $_blogs as thispost}
-								{#if !thispost.isExclusive}
-									<AdminPostCard blog={thispost} />
-								{/if}
-							{/each}
+							{#await $_blogs}
+								<p>loading</p>
+							{:then c}
+								{#each c as { id, isExclusive }, index}
+									{#if !isExclusive}
+										<div class="mb-2">
+											<AdminPostCardNew {id} {index} />
+										</div>
+									{/if}
+								{/each}
+							{/await}
 						</div>
 					</div>
 				{/if}
@@ -159,11 +136,17 @@
 					<div in:fly|local={{ y: 20, duration: 500 }}>
 						<p class="display-5 mt-5">Exclusive Posts Posts</p>
 						<div class="row row-cols-1 row-cols-md-2">
-							{#each $_blogs as thispost}
-								{#if thispost.isExclusive}
-									<AdminPostCard blog={thispost} />
-								{/if}
-							{/each}
+							{#await $_blogs}
+								<p>loading</p>
+							{:then c}
+								{#each c as { id, isExclusive }, index}
+									{#if isExclusive}
+										<div class="mb-2">
+											<AdminPostCardNew {id} {index} />
+										</div>
+									{/if}
+								{/each}
+							{/await}
 						</div>
 					</div>
 				{/if}

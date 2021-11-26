@@ -1,13 +1,11 @@
-<script context='module'>
+<script context="module">
 	export const prerender = true;
 </script>
 
 <script>
-	import { supabase } from '../global';
+	import { global_account, global_account_data } from '../global';
+	import { onMount } from 'svelte';
 
-	import MarqueeTextWidget from 'svelte-marquee-text-widget';
-
-	let lastScroll = 0;
 	let scrollY;
 	let nav;
 	let isActivated = false;
@@ -16,12 +14,8 @@
 	const toggleNav = (e) => {
 		if (isActivated) {
 			isActivated = false;
-			setTimeout(() => {
-				nav.style.background = 'linear-gradient(180deg, rgba(0, 0, 0, 0.2), transparent)';
-			}, 200);
 		} else {
 			isActivated = true;
-			nav.style.background = 'linear-gradient(0deg, rgba(0, 0, 0, 0), transparent)';
 		}
 	};
 	const toggleNavOff = (e) => {
@@ -30,20 +24,19 @@
 		}
 	};
 	const hideNav = (e) => {
-		if (scrollY > 100) {
-			nav.style.height = '60px';
-			nav.style.opacity = 0.3;
-		} else {
-			nav.style.height = '100px';
-			nav.style.opacity = 1;
-		}
-		// lastScroll = scrollY;
+		// if (scrollY > 100) {
+		// 	nav.style.height = '60px';
+		// 	nav.style.opacity = 0.3;
+		// } else {
+		// 	nav.style.height = '100px';
+		// 	nav.style.opacity = 1;
+		// }
 	};
 </script>
 
 <svelte:window bind:scrollY on:scroll={hideNav} />
 
-<div bind:this={nav} class="navContainer d-flex justify-content-between align-items-center">
+<!-- <div bind:this={nav} class="navContainer d-flex justify-content-between align-items-center">
 	<a href="/" class="homeButton ms-5" on:click={toggleNavOff}> ABIE G </a>
 	<div
 		class="menuToggler d-block d-lg-none {isActivated ? 'menuToggler__active' : ''}"
@@ -101,10 +94,93 @@
 			</a>
 		</li>
 	</ul>
+</div> -->
+
+<div class="navbar fixed-top text-white">
+	<div class="container d-flex align-items-center">
+		<a href="/" class="homeButton" on:click={toggleNavOff}> ABIE G </a>
+
+		<div
+			class="menuToggler d-block d-lg-none {isActivated ? 'menuToggler__active' : ''}"
+			on:click={toggleNav}
+		>
+			<i
+				style="margin: 0;"
+				class="bi bi-x-circle {isActivated ? '' : 'menuToggler__active-icon'}"
+			/>
+			<i style="margin: -5px;" class="bi bi-list {isActivated ? 'menuToggler__active-icon' : ''}" />
+		</div>
+		<ul
+			class="navlist d-none d-lg-flex align-items-center"
+			style="padding: 0; list-style: none; margin: 0;"
+		>
+			<li>
+				<a
+					href="/posts"
+					style="color: {activeNav == 2 ? '#688BF7' : 'white'};"
+					on:click={(e) => {
+						activeNav = 2;
+						toggleNavOff();
+					}}
+					class="nav-link text-center">Posts</a
+				>
+			</li>
+			<li>
+				<a
+					href="/about"
+					style="color: {activeNav == 3 ? '#688BF7' : 'white'};"
+					on:click={(e) => {
+						activeNav = 3;
+						toggleNavOff();
+					}}
+					class="nav-link text-center ">About us</a
+				>
+			</li>
+			{#if $global_account}
+				{#if $global_account_data.isModerator}
+					<li>
+						<a
+							href="/admin"
+							style="color: {activeNav == 5 ? '#688BF7' : 'white'};"
+							on:click={(e) => {
+								activeNav = 5;
+								toggleNavOff();
+							}}
+							class="nav-link text-center"
+						>
+							Dashboard
+						</a>
+					</li>
+				{/if}
+			{/if}
+			<li>
+				<a
+					href="/account"
+					style="color: {activeNav == 4 ? '#688BF7' : 'white'};"
+					on:click={(e) => {
+						activeNav = 4;
+						toggleNavOff();
+					}}
+					class="nav-link text-center"
+				>
+					{$global_account ? $global_account.email.split('@', 1)[0] : 'Login'}
+				</a>
+			</li>
+		</ul>
+	</div>
 </div>
 
 <div class="menu d-block d-lg-none {isActivated ? 'menu-activated' : ''}">
 	<ul class="menu__navlinks">
+		{#if $global_account_data}
+			{#if $global_account_data.isModerator}
+				<li class="menu__navlinks__navlink" on:click={toggleNav}>
+					<a href="/admin">
+						<h1>DASHBOARD</h1>
+					</a>
+				</li>
+			{/if}
+		{/if}
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<a href="/account">
 				<h1>ACCOUNT</h1>
@@ -118,11 +194,6 @@
 		<li class="menu__navlinks__navlink" on:click={toggleNav}>
 			<a href="/about">
 				<h1>ABOUT</h1>
-			</a>
-		</li>
-		<li class="menu__navlinks__navlink" on:click={toggleNav}>
-			<a href="/contact">
-				<h1>CONTACT</h1>
 			</a>
 		</li>
 	</ul>
@@ -156,92 +227,44 @@
 </div>
 
 <style lang="scss">
-	.navContainer {
-		position: fixed;
-		top: 0;
-		width: 100%;
-		transition: 500ms ease all;
-		z-index: 999;
-		background: transparent;
-		backdrop-filter: blur(10px);
+	.navbar {
+		backdrop-filter: blur(5px);
+	}
 
-		.navLinks {
-			width: 50%;
-			list-style: none;
-			padding: 0;
-			font-size: 1.5em;
-			font-family: 'Thunder Medium';
-			li {
-				position: relative;
-				transition: 200ms ease all;
-				text-align: center;
-				&::after,
-				&::before {
-					content: '';
-					position: absolute;
-					width: 0;
-					height: 5px;
-					left: 25%;
-					bottom: 0;
-					background: #f7749c;
-					transition: 200ms ease all;
-					// opacity: 0;
-					z-index: -1;
-				}
-				&:hover {
-					&::after {
-						width: 50%;
-					}
-				}
-			}
-		}
-		@keyframes slideLeft {
-			0% {
-				opacity: 0;
-				height: 0;
-				bottom: 0%;
-			}
-			50% {
-				opacity: 1;
-				height: 100%;
-				bottom: 0%;
-			}
-			100% {
-				opacity: 0;
-				height: 0%;
-				bottom: 100%;
-			}
-		}
-
-		.menuToggler {
-			width: 100px;
-			height: 100px;
-			transition: 500ms ease all;
-			transform-style: preserve-3d;
-			cursor: pointer;
-			.menuToggler__active-icon {
-				opacity: 0;
-			}
-			.bi {
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				color: white;
-				transition: 500ms ease all;
-				font-size: 2.5em;
-			}
-			.bi-list {
-				transform: translateX(-50%) translateY(-50%) translateZ(30px);
-			}
-			.bi-x-circle {
-				transform: translateX(-50%) translateY(-50%) translateZ(-30px);
-			}
-		}
-
-		.menuToggler__active {
-			transform: rotateY(-0.5turn) rotateX(0.5turn);
+	.navlist {
+		li {
+			margin-left: 1em;
+			font-size: 1.25em;
 		}
 	}
+	.menuToggler {
+		width: 60px;
+		height: 60px;
+		transition: 500ms ease all;
+		transform-style: preserve-3d;
+		cursor: pointer;
+		.menuToggler__active-icon {
+			opacity: 0;
+		}
+		.bi {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			color: white;
+			transition: 500ms ease all;
+			font-size: 2.5em;
+		}
+		.bi-list {
+			transform: translateX(-50%) translateY(-50%) translateZ(30px);
+		}
+		.bi-x-circle {
+			transform: translateX(-50%) translateY(-50%) translateZ(-30px);
+		}
+	}
+	.menuToggler__active {
+		transform: rotateY(-0.5turn) rotateX(0.5turn);
+	}
+
 	.homeButton {
 		position: relative;
 		text-align: right;
@@ -249,7 +272,7 @@
 		cursor: pointer;
 		user-select: none;
 		font-size: 2em;
-		margin-left: 1em;
+		margin: 0;
 		&::after {
 			position: absolute;
 			content: 'ABIE G';

@@ -6,7 +6,7 @@
 	import { fly, fade, scale, blur } from 'svelte/transition';
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';
 
-	import { supabase } from '../../global';
+	import { supabase, _blogs } from '../../global';
 	import { onMount } from 'svelte';
 	import PostBlogCardCompact from '../../components/Post_BlogCardCompact.svelte';
 	import { get, readable } from 'svelte/store';
@@ -19,43 +19,43 @@
 		}
 	});
 
-	const _blogs = readable(null, (set) => {
-		supabase
-			.from('posts')
-			.select('*')
-			.order('created_at', { ascending: false })
-			.then(({ data, error }) => {
-				set(data);
-			});
+	// const _blogs = readable(null, (set) => {
+	// 	supabase
+	// 		.from('posts')
+	// 		.select('*')
+	// 		.order('created_at', { ascending: false })
+	// 		.then(({ data, error }) => {
+	// 			set(data);
+	// 		});
 
-		const subscription = supabase
-			.from('posts')
-			.on('*', (payload) => {
-				if (payload.eventType === 'INSERT') {
-					set([payload.new, ...get(_blogs)]);
-				}
-				if (payload.eventType === 'UPDATE') {
-					let index = $_blogs.findIndex((thisblog) => thisblog.id === payload.new.id);
-					let oldData = $_blogs;
-					oldData[index] = payload.new;
-					set(oldData);
-				}
-				if (payload.eventType === 'DELETE') {
-					let oldData = $_blogs;
-					set(oldData.filter((thisItem) => thisItem.id != payload.old.id));
-				}
+	// 	const subscription = supabase
+	// 		.from('posts')
+	// 		.on('*', (payload) => {
+	// 			if (payload.eventType === 'INSERT') {
+	// 				set([payload.new, ...get(_blogs)]);
+	// 			}
+	// 			if (payload.eventType === 'UPDATE') {
+	// 				let index = $_blogs.findIndex((thisblog) => thisblog.id === payload.new.id);
+	// 				let oldData = $_blogs;
+	// 				oldData[index] = payload.new;
+	// 				set(oldData);
+	// 			}
+	// 			if (payload.eventType === 'DELETE') {
+	// 				let oldData = $_blogs;
+	// 				set(oldData.filter((thisItem) => thisItem.id != payload.old.id));
+	// 			}
 
-				publicBlogs = [];
-				let oldData = get(_blogs);
-				oldData.forEach((blog) => {
-					if (!blog.isExclusive) {
-						publicBlogs = [...publicBlogs, blog];
-					}
-				});
-			})
-			.subscribe();
-		return () => supabase.removeSubscription(subscription);
-	});
+	// 			publicBlogs = [];
+	// 			let oldData = get(_blogs);
+	// 			oldData.forEach((blog) => {
+	// 				if (!blog.isExclusive) {
+	// 					publicBlogs = [...publicBlogs, blog];
+	// 				}
+	// 			});
+	// 		})
+	// 		.subscribe();
+	// 	return () => supabase.removeSubscription(subscription);
+	// });
 </script>
 
 <svele:head>
@@ -71,14 +71,11 @@
 		<h3 class="display-3">See what's new</h3>
 
 		<div class=" mt-5">
-			{#if !$_blogs}
-				<p class="display-6">Loading</p>
-			{:else if $_blogs}
-				<div
-					class="row row-cols-1 row-cols-lg-2 gx-2 gy-2 "
-					in:fly|local={{ y: 20, duration: 500, delay: 500 }}
-				>
-					{#each $_blogs as { title, header_img, created_at, isExclusive, author, slug }}
+			{#await $_blogs}
+				<p>loading</p>
+			{:then c}
+				{#if c}
+					{#each c as { title, header_img, created_at, isExclusive, author, slug }}
 						<div class="col d-flex justify-content-center">
 							<!-- <PostBlogCard {title} {author} {header_img} {isExclusive} {created_at} {slug} /> -->
 							<PostBlogCardCompact
@@ -91,8 +88,29 @@
 							/>
 						</div>
 					{/each}
+				{/if}
+			{/await}
+			<!-- {#if !$_blogs}
+				<p class="display-6">Loading</p>
+			{:else if $_blogs}
+				<div
+					class="row row-cols-1 row-cols-lg-2 gx-2 gy-2 "
+					in:fly|local={{ y: 20, duration: 500, delay: 500 }}
+				>
+					{#each $_blogs as { title, header_img, created_at, isExclusive, author, slug }}
+						<div class="col d-flex justify-content-center">
+							<PostBlogCardCompact
+								{title}
+								{header_img}
+								{slug}
+								{author}
+								{created_at}
+								{isExclusive}
+							/>
+						</div>
+					{/each}
 				</div>
-			{/if}
+			{/if} -->
 		</div>
 	</div>
 	<div class="scroller" transition:fade={{ duration: 500 }}>

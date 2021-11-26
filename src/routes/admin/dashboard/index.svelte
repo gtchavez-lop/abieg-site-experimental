@@ -3,15 +3,17 @@
 </script>
 
 <script>
-	import { fly, fade, scale, blur } from 'svelte/transition';
+	import { fly, slide } from 'svelte/transition';
 	import { goto } from '$app/navigation';
+	import { expoOut } from 'svelte/easing';
 
 	import { onMount } from 'svelte';
-	import { supabase } from '../../../global';
+	import { supabase, _blogs } from '../../../global';
 	import AdminPostCard from '../../../components/AdminPostCard.svelte';
 	import toastify from 'toastify-js';
 	import 'toastify-js/src/toastify.css';
-	import { get, readable } from 'svelte/store';
+	import { get, readable, writable } from 'svelte/store';
+	import AdminPostCardNew from '../../../components/AdminPostCard_New.svelte';
 
 	// component variables
 	$: tabActive = 2;
@@ -22,13 +24,58 @@
 	let blog_content;
 	let blog_slug;
 	let blog_visibility = false;
-	let email = '';
+	$: loaded = false;
 
 	// methods
+	// let _blogs = readable(null, (set) => {
+	// 	supabase
+	// 		.from('posts')
+	// 		.select('*')
+	// 		.order('title', { ascending: false })
+	// 		.then(({ data, error }) => {
+	// 			loaded = true;
+	// 			set(data);
+	// 		});
+
+	// 	const subscription = supabase
+	// 		.from('posts')
+	// 		.on('*', (payload) => {
+	// 			if (payload.eventType == 'INSERT') {
+	// 				loaded = false;
+	// 				set([payload.new, ...$_blogs]);
+	// 				setTimeout(() => {
+	// 					loaded = true;
+	// 				}, 200);
+	// 			}
+	// 			if (payload.eventType === 'UPDATE') {
+	// 				loaded = false;
+	// 				let index = $_blogs.findIndex((thisblog) => thisblog.id === payload.new.id);
+	// 				let oldData = $_blogs;
+	// 				oldData[index] = payload.new;
+
+	// 				set(oldData);
+	// 				setTimeout(() => {
+	// 					loaded = true;
+	// 				}, 200);
+	// 			}
+	// 			if (payload.eventType == 'DELETE') {
+	// 				loaded = false;
+	// 				let newData = get(_blogs).filter((thisItem) => thisItem.id != payload.old.id);
+	// 				set(newData);
+	// 				setTimeout(() => {
+	// 					loaded = true;
+	// 				}, 200);
+	// 			}
+	// 		})
+	// 		.subscribe();
+
+	// 	return () => supabase.removeSubscription(subscription);
+	// });
+
 	onMount(async (e) => {
 		user = await supabase.auth.user();
 		if (user) {
-			email = user.email.split('@')[0];
+			// email = user.email.split('@')[0];
 			if (user.role == 'authenticated') {
 				let { data, error } = await supabase.from('users').select('*').eq('id', user.id);
 				if (data[0].isModerator == false || data[0].isAdmin == false) {
@@ -85,44 +132,6 @@
 			}).showToast();
 		}
 	};
-
-	const _blogs = readable(null, (set) => {
-		supabase
-			.from('posts')
-			.select('*')
-			.order('title', { ascending: false })
-			.then(({ data, error }) => {
-				if (!error) {
-					set(data);
-				}
-			});
-
-		const subscription = supabase
-			.from('posts')
-			.on('*', (payload) => {
-				console.log(payload);
-				if (payload.eventType == 'INSERT') {
-					set([payload.new, ...$_blogs]);
-					console.log($_blogs);
-				}
-				if (payload.eventType === 'UPDATE') {
-					let index = $_blogs.findIndex((thisblog) => thisblog.id === payload.new.id);
-					let oldData = $_blogs;
-					oldData[index] = payload.new;
-					set(oldData);
-					console.log($_blogs);
-				}
-				if (payload.eventType == 'DELETE') {
-					let oldData = $_blogs;
-					let newData = oldData.filter((thisItem) => thisItem.id != payload.old.id);
-					set(newData);
-					console.log($_blogs);
-				}
-			})
-			.subscribe();
-
-		return () => supabase.removeSubscription(subscription);
-	});
 
 	const slugify = (str) => {
 		str = str.replace(/^\s+|\s+$/g, '');
@@ -283,18 +292,17 @@
 					<p class="display-5">Your Stories</p>
 					<div class="row text-white">
 						<div class="col-12">
-							<div class="mt-1 row row-cols-1 row-cols-md-2 g-3">
-								{#if $_blogs}
-									{#if $_blogs.length > 0}
-										{#each $_blogs as blog, index}
-											{#if blog.author == email.split('@')[0]}
-												<AdminPostCard {blog} {index} />
+							<div class="mt-1 d-flex row row-cols-1 row-cols-md-2 g-3">
+								{#await $_blogs then c}
+									{#if c}
+										{#each c as { id, author }}
+											{#if author == supabase.auth.user().email.split('@')[0]}
+												<AdminPostCardNew {id} />
+												<!-- <svelte:component this={AdminPostCardNew} id={blog.id} {index} /> -->
 											{/if}
 										{/each}
-									{:else}
-										<p class="lead">Seems like its empty</p>
 									{/if}
-								{/if}
+								{/await}
 							</div>
 						</div>
 					</div>

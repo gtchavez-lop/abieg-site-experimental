@@ -1,11 +1,18 @@
+<script context="module">
+	export const prerender = true;
+</script>
+
 <script>
 	import dayjs from 'dayjs';
 
 	import { fly, fade, scale, slide } from 'svelte/transition';
 	import { supabase } from '../global';
-	import { flip } from 'svelte/animate';
+	import toastify from 'toastify-js';
+	import 'toastify-js/src/toastify.css';
+	import { onMount } from 'svelte';
 	export let blog;
 
+	let comments = [];
 	let isDeleting = false;
 	let isEditing = false;
 	let new_title = blog.title;
@@ -13,6 +20,7 @@
 	let new_imageURI = blog.header_img;
 	let new_blogContent = blog.content;
 	let isContentRevealed = false;
+	let isCommentRevealed = false;
 
 	let confirmDelete = (e) => {
 		if (isDeleting) {
@@ -34,11 +42,24 @@
 	};
 	let deletePost = async (e) => {
 		if (blog) {
-			let { data, error } = await supabase.from('posts').delete().match({ id: blog.id });
+			await supabase.from('posts').delete().eq('id', blog.id);
+
+			toastify({
+				text: `Post Removed`,
+				duration: 2000,
+				close: true,
+				gravity: 'bottom',
+				position: 'right',
+				style: {
+					background: '#F77E44',
+					color: '#fff'
+				}
+			}).showToast();
+			isDeleting = false;
 		}
 	};
 	let updatePost = async (e) => {
-		let { data, error } = await supabase
+		await supabase
 			.from('posts')
 			.update({
 				title: new_title,
@@ -48,15 +69,49 @@
 			})
 			.eq('id', blog.id);
 
-		toast.push('Post Updated', {
-			onpop: (e) => {
-				location.reload();
+		toastify({
+			text: `Post Updated`,
+			duration: 2000,
+			close: true,
+			gravity: 'bottom',
+			position: 'right',
+			style: {
+				background: '#C3E186',
+				color: '#fff'
 			}
-		});
+		}).showToast();
+		isEditing = false;
+	};
+
+	onMount(async (e) => {
+		getComments(blog.id);
+	});
+
+	const getComments = async (targetPostID) => {
+		let { data, error } = await supabase.from('comments').select('*').eq('post', targetPostID);
+		// console.log(data, error);
+		comments = data;
+	};
+
+	const deleteComment = async (commentID) => {
+		await supabase.from('comments').delete().eq('id', commentID);
+
+		toastify({
+			text: `Comment Removed`,
+			duration: 2000,
+			close: true,
+			gravity: 'bottom',
+			position: 'right',
+			style: {
+				background: '#F77E44',
+				color: '#fff'
+			}
+		}).showToast();
+		getComments(blog.id);
 	};
 </script>
 
-<div class="col bg-transparent" transition:slide|local>
+<div class="col bg-transparent">
 	<div class="card overflow-hidden" style="width: 100%; background: #343A40;">
 		<img
 			src={new_imageURI}
@@ -74,24 +129,54 @@
 			<span class="text-muted">{blog.author}</span>
 			<p class="card-title h5">{new_title}</p>
 
-			<div class="form-check form-switch mb-5">
-				<input
-					class="form-check-input"
-					bind:checked={isContentRevealed}
-					type="checkbox"
-					id="toggleContentView"
-					aria-label={blog.id}
-				/>
-				<label class="form-check-label" for="toggleContentView">Toggle Content</label>
-			</div>
+			<input
+				type="checkbox"
+				bind:checked={isContentRevealed}
+				class="btn-check"
+				id="content_{blog.id}"
+				autocomplete="off"
+			/>
+			<label class="btn btn-outline-primary  mb-3" for="content_{blog.id}"
+				>{isContentRevealed ? 'Hide Content' : 'Show Content'}</label
+			>
+			<input
+				type="checkbox"
+				bind:checked={isCommentRevealed}
+				class="btn-check"
+				id="comment_{blog.id}"
+				autocomplete="off"
+			/>
+			<label class="btn btn-outline-primary  mb-3" for="comment_{blog.id}"
+				>{isCommentRevealed ? 'Hide Comments' : 'Show Comments'}</label
+			>
 
 			{#if isContentRevealed}
 				<div class="container " transition:slide|local>
 					{@html new_blogContent}
 				</div>
 			{/if}
+			{#if isCommentRevealed}
+				<div class="container " transition:slide|local>
+					{#if comments.length > 0}
+						{#each comments as comment}
+							<div class="card bg-transparent">
+								<div class="card-body">
+									<p class="lead">{comment.commentor}</p>
+									<p>{dayjs(comment.created_at).format('MMMM DD YYYY @hh:m:sa')}</p>
+									<p class="ms-2">{comment.content}</p>
+									<button on:click={deleteComment(comment.id)} class="btn btn-outline-danger mt-4"
+										>Delete Comment</button
+									>
+								</div>
+							</div>
+						{/each}
+					{:else}
+						<p>Nothing to see here</p>
+					{/if}
+				</div>
+			{/if}
 
-			<div class="row row-cols-1 row-cols-lg-2 g-3">
+			<div class="row row-cols-1 row-cols-lg-2 g-3 mt-3">
 				{#if !isEditing && !isDeleting}
 					<div class="col" transition:slide|local>
 						<button on:click={confirmEdit} style="width: 100%;" class="btn btn-outline-primary"

@@ -10,6 +10,7 @@
 	import { onMount } from 'svelte';
 	import { supabase } from '../../global';
 	import SlugContent from './components/SlugContent.svelte';
+	import { fly } from 'svelte/transition';
 
 	export let slug;
 	export let blogData;
@@ -30,6 +31,10 @@
 			title = data[0].title;
 		}
 	});
+
+	const goBack = () => {
+		window.history.back();
+	};
 </script>
 
 <svelte:window bind:scrollY />
@@ -38,16 +43,18 @@
 	<title>ABIE G | {title}</title>
 </svelte:head>
 
-{#if blogData}
-	{#if blogData.isExclusive && hasAccount == false}
-		<main>
-			<p class="lead text-white">Please Sign in to view this page</p>
-		</main>
+<main class="container">
+	{#if blogData}
+		{#if blogData.isExclusive && !hasAccount}
+			<div class="d-flex flex-column" in:fly={{ y: -20, duration: 500 }}>
+				<p class="lead text-white">Please Sign in to view this page</p>
+				<button class="btn btn-outline-primary px-5" on:click={goBack}>Go Back</button>
+			</div>
+		{:else}
+			<SlugContent {blogData} />
+		{/if}
 	{/if}
-	{#if (blogData.isExclusive && hasAccount) || (!blogData.isExclusive && !hasAccount) || (!blogData.isExclusive && hasAccount)}
-		<SlugContent {blogData} />
-	{/if}
-{/if}
+</main>
 
 <style lang="scss">
 	main {

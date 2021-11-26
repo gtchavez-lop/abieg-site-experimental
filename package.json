@@ -22,8 +22,10 @@
     "svelte": "^3.34.0",
     "svelte-calendar": "^3.1.6",
     "svelte-intersection-observer": "^0.8.0",
+    "svelte-lazy": "^1.0.12",
     "svelte-parallax": "^0.3.1",
-    "svelte-preprocess": "^4.9.8"
+    "svelte-preprocess": "^4.9.8",
+    "svelte-skeleton": "^1.1.0"
   },
   "type": "module",
   "dependencies": {
@@ -37,7 +39,6 @@
     "svelte-marquee": "^0.1.4",
     "svelte-marquee-text-widget": "^1.1.0",
     "svelte-material-icons": "^1.0.3",
-    "toastify-js": "^1.11.2",
-    "uuid": "^8.3.2"
+    "toastify-js": "^1.11.2"
   }
 }

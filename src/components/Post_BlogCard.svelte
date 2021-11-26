@@ -1,15 +1,23 @@
+<script context="module">
+	export const prerender = true;
+</script>
+
 <script>
+	export let title, author, header_img, isExclusive, created_at, slug;
+
 	import dayjs from 'dayjs';
-
 	import { fly, slide, scale, blur } from 'svelte/transition';
-	export let title;
-	export let author;
-	export let header_img;
-	export let isExclusive;
-	export let created_at;
-	export let slug;
-
 	import IntersectionObserver from 'svelte-intersection-observer';
+	import { onMount } from 'svelte';
+	import { supabase } from '../global';
+
+	let hasAccount = false;
+
+	onMount(async (e) => {
+		if (await supabase.auth.user()) {
+			hasAccount = true;
+		}
+	});
 
 	let card;
 	let cardVisible = true;
@@ -19,7 +27,7 @@
 	<div
 		bind:this={card}
 		transition:slide|local
-		class="blog_card {cardVisible ? 'blog_card_visible' : ''}"
+		class="blog_card {cardVisible ? 'blog_card_visible' : ''} "
 	>
 		{#if isExclusive}
 			<div class="exclusiveBadge">
@@ -28,7 +36,7 @@
 		{/if}
 
 		<div class="blog_card_bg">
-			<img src={header_img} alt="" />
+			<img src={header_img ? header_img : './Logo1.svg'} alt="" />
 		</div>
 		<div
 			class="blog_card_bg blog_card_bg1 d-none d-lg-flex justify-content-center align-items-center"
@@ -43,6 +51,7 @@
 
 			<a href="/posts/{slug}" class="btn btn-primary " style="width: 100%;">Read More</a>
 		</div>
+
 		<div class="blog_card_content blog_card_content1 d-none d-lg-block" style="min-width: 100%;">
 			<p class="display-6" style="font-size: 1.4em;">{title}</p>
 			<p style="color: #e2eff1;">

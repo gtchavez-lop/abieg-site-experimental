@@ -1,8 +1,8 @@
 <script>
-	import { slide, fly } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 	import dayjs from 'dayjs';
-	import { get, readable, writable } from 'svelte/store';
+	import { get, readable } from 'svelte/store';
 	import { supabase } from '../../../global';
 	import { onMount } from 'svelte';
 	import Toastify from 'toastify-js';
@@ -16,6 +16,12 @@
 
 	onMount(async (e) => {
 		user = await supabase.auth.user();
+
+		await fetch(blogData.header_img).then((res) => {
+			if (!res.ok) {
+				blogData.header_img = 'https://picsum.photos/1366/768';
+			}
+		});
 	});
 
 	const _comments = readable(null, (set) => {
@@ -93,14 +99,14 @@
 
 <svelte:window bind:scrollY />
 
-<main>
+<main class="container">
 	<div>
 		<div
 			in:fly={{ y: 60, duration: 500, delay: 500 }}
 			out:fly={{ y: -60, duration: 500 }}
 			class="mb-5"
 		>
-			<div class="container text-white">
+			<div class="text-white">
 				<div class="row">
 					<div
 						class="col-sm-12 col-md-4 d-flex justify-content-start"
@@ -153,9 +159,10 @@
 								style="border: solid white 2px;"
 							>
 								<div class="card-title">
-									<span>{comment.commentor.split('@')[0]}</span>
-									-
-									<span>{dayjs(comment.created_at).format('MMMM DD YYYY @H:mm:ss A')}</span>
+									<p style="opacity: .5;" class="m-0">{comment.commentor.split('@')[0]}</p>
+									<p style="opacity: .5;" class="m-0 mb-3">
+										{dayjs(comment.created_at).format('MMMM DD YYYY @H:mm:ss A')}
+									</p>
 								</div>
 								<div class="card-text">
 									<p class="m-0">{comment.content}</p>

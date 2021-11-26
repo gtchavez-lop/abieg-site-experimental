@@ -20,6 +20,7 @@
 	let blog_title;
 	let blog_imageURI;
 	let blog_content;
+	let blog_slug;
 	let blog_visibility = false;
 	let email = '';
 
@@ -45,6 +46,7 @@
 				{
 					title: blog_title,
 					author: user.email.split('@')[0],
+					slug: blog_slug,
 					content: blog_content,
 					header_img: blog_imageURI ? blog_imageURI : 'https://picsum.photos/500/500',
 					isExclusive: blog_visibility
@@ -65,13 +67,14 @@
 				}).showToast();
 				blog_title = '';
 				blog_content = '';
+				blog_slug = '';
 				blog_visibility = false;
 				tabActive = 2;
 			}
 		} else {
 			// toast.message('Please fill out all forms');
 			toastify({
-				text: 'Please fill the Title and the Description',
+				text: 'Please fill the required fields',
 				duration: 2000,
 				close: true,
 				gravity: 'bottom',
@@ -89,39 +92,58 @@
 			.select('*')
 			.order('title', { ascending: false })
 			.then(({ data, error }) => {
-				let newData = [];
-				if (data) {
-					data.forEach((post) => {
-						if (post.author == email) {
-							newData.push(post);
-							set(newData);
-						}
-					});
+				if (!error) {
+					set(data);
 				}
 			});
 
 		const subscription = supabase
 			.from('posts')
 			.on('*', (payload) => {
+				console.log(payload);
 				if (payload.eventType == 'INSERT') {
-					set([payload.new, ...get(_blogs)]);
-					// console.log($_blogs);
+					set([payload.new, ...$_blogs]);
+					console.log($_blogs);
 				}
 				if (payload.eventType === 'UPDATE') {
 					let index = $_blogs.findIndex((thisblog) => thisblog.id === payload.new.id);
 					let oldData = $_blogs;
 					oldData[index] = payload.new;
 					set(oldData);
+					console.log($_blogs);
 				}
 				if (payload.eventType == 'DELETE') {
 					let oldData = $_blogs;
-					set(oldData.filter((thisItem) => thisItem.id != payload.old.id));
+					let newData = oldData.filter((thisItem) => thisItem.id != payload.old.id);
+					set(newData);
+					console.log($_blogs);
 				}
 			})
 			.subscribe();
 
 		return () => supabase.removeSubscription(subscription);
 	});
+
+	const slugify = (str) => {
+		str = str.replace(/^\s+|\s+$/g, '');
+
+		str = str.toLowerCase();
+
+		var from =
+			'ÁÄÂÀÃÅČÇĆĎÉĚËÈÊẼĔȆÍÌÎÏŇÑÓÖÒÔÕØŘŔŠŤÚŮÜÙÛÝŸŽáäâàãåčçćďéěëèêẽĕȇíìîïňñóöòôõøðřŕšťúůüùûýÿžþÞĐđßÆa·/_,:;';
+		var to =
+			'AAAAAACCCDEEEEEEEEIIIINNOOOOOORRSTUUUUUYYZaaaaaacccdeeeeeeeeiiiinnooooooorrstuuuuuyyzbBDdBAa------';
+		for (var i = 0, l = from.length; i < l; i++) {
+			str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+		}
+
+		str = str
+			.replace(/[^a-z0-9 -]/g, '')
+			.replace(/\s+/g, '-')
+			.replace(/-+/g, '-');
+
+		blog_slug = str;
+	};
 </script>
 
 <svele:head>
@@ -173,8 +195,23 @@
 									class="form-control bg-transparent text-white"
 									id="story_title"
 									bind:value={blog_title}
+									on:input={slugify(blog_title)}
 								/>
 								<label for="story_title">The Title of your story</label>
+							</div>
+						</div>
+						<div class="col-12">
+							<div class="form-floating input-group mb-3">
+								<input
+									type="text"
+									class="form-control bg-transparent text-white"
+									id="story_title"
+									readonly
+									bind:value={blog_slug}
+								/>
+								<label for="story_title"
+									>Post Slug(this will identify a Post that will be seen in the address)
+								</label>
 							</div>
 						</div>
 						{#if blog_imageURI}
@@ -245,20 +282,21 @@
 				<div in:fly={{ x: 20, duration: 500 }}>
 					<p class="display-5">Your Stories</p>
 					<div class="row text-white">
-						{#if $_blogs}
-							<div class="col-12">
-								<div class="mt-1 row row-cols-1 row-cols-md-2 g-3">
-									{#each $_blogs as blog, index}
-										<AdminPostCard {blog} {index} />
-									{/each}
-								</div>
+						<div class="col-12">
+							<div class="mt-1 row row-cols-1 row-cols-md-2 g-3">
+								{#if $_blogs}
+									{#if $_blogs.length > 0}
+										{#each $_blogs as blog, index}
+											{#if blog.author == email.split('@')[0]}
+												<AdminPostCard {blog} {index} />
+											{/if}
+										{/each}
+									{:else}
+										<p class="lead">Seems like its empty</p>
+									{/if}
+								{/if}
 							</div>
-						{:else}
-							<p class="lead">Seems like its empty</p>
-							<!-- <div class="spinner-border text-info" role="status">
-							<span class="visually-hidden">Loading...</span>
-						</div> -->
-						{/if}
+						</div>
 					</div>
 				</div>
 			{/if}

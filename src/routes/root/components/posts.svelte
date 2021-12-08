@@ -22,8 +22,10 @@
 	$: exclusiveBlogs = [];
 
 	onMount(async (e) => {
+		await get(_blogs);
+
 		if (get(_blogs)) {
-			post_count = await get(_blogs).length;
+			post_count = await $_blogs.length;
 			exclusivePost_Count = await $_blogs.filter((x) => x.isExclusive).length;
 			publicPost_Count = await $_blogs.filter((x) => !x.isExclusive).length;
 		}

@@ -11,6 +11,7 @@
 	let isPromote = false;
 	let isDemote = false;
 	let canBeDeleted = false;
+	let isRequest = false;
 
 	const promoteAccount = async (e) => {
 		const { data, error } = await supabase
@@ -27,6 +28,18 @@
 		const { data, error } = await supabase
 			.from('users')
 			.update({ isModerator: 'false' })
+			.eq('id', thisuser.id);
+
+		if (!error) {
+			console.log('Account Updated');
+			window.location.reload();
+		}
+	};
+
+	const approveRequest = async (e) => {
+		const { data, error } = await supabase
+			.from('users')
+			.update({ canRequestMod: true })
 			.eq('id', thisuser.id);
 
 		if (!error) {
@@ -147,6 +160,47 @@
 								>
 									<i class="bi bi-arrow-up me-2" />
 									Promote to Moderator
+								</button>
+							</div>
+						{/if}
+					{/if}
+
+					{#if !thisuser.isModerator}
+						{#if isRequest && !thisuser.canRequestMod}
+							<div
+								in:fade={{ duration: 200 }}
+								out:slide={{ duration: 200 }}
+								class="d-flex flex-column"
+							>
+								<p>This user can request for a moderator account. Proceed?</p>
+								<div class="btn-group" role="group" aria-label="">
+									<button on:click={approveRequest} type="button" class="btn btn-outline-primary"
+										>Yes</button
+									>
+									<button
+										on:click={() => {
+											isRequest = !isRequest;
+										}}
+										type="button"
+										class="btn btn-outline-danger">No</button
+									>
+								</div>
+							</div>
+						{/if}
+						{#if !isRequest && !thisuser.canRequestMod}
+							<div
+								in:fade={{ duration: 200 }}
+								out:slide={{ duration: 200 }}
+								class="d-flex flex-column mb-2"
+							>
+								<button
+									on:click={() => {
+										isRequest = !isRequest;
+									}}
+									class="btn btn-outline-success"
+								>
+									<i class="bi bi-arrow-up me-2 " />
+									Give Request
 								</button>
 							</div>
 						{/if}

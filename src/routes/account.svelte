@@ -2,7 +2,7 @@
 	import { fly, fade, slide } from 'svelte/transition';
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';
 	import dayjs from 'dayjs';
-	import { supabase, global_account, global_hasAccount, global_account_data } from '../global';
+	import { supabase, global_account, global_hasAccount, _user, _userData } from '../global';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import toastify from 'toastify-js';
@@ -20,6 +20,7 @@
 	let reg_familyName = '';
 	let reg_gender = 'Male';
 	let reg_address = '';
+	let scrollY;
 	$: isLoggingIn = false;
 	$: hasUser = false;
 
@@ -54,8 +55,6 @@
 							color: '#212529'
 						}
 					}).showToast();
-					global_account.set(user);
-					global_account_data.set(users[0]);
 					isLoggingIn = false;
 					hasUser = true;
 				}
@@ -170,8 +169,6 @@
 	const logout = async (e) => {
 		const { error } = await supabase.auth.signOut();
 		if (!error) {
-			global_account.set(null);
-			global_account_data.set(null);
 			toastify({
 				text: `You have been logged out`,
 				duration: 2000,
@@ -182,10 +179,13 @@
 					background: '#002B36'
 				}
 			}).showToast();
-			hasUser = false;
 		}
+		hasUser = false;
+		scrollY = 0;
+		_userData.set(null);
 		confirmLogout = false;
 	};
+
 	const logoutConfirm = (e) => {
 		if (confirmLogout) {
 			confirmLogout = false;
@@ -194,22 +194,38 @@
 		}
 	};
 
+	const requestMod = async (e) => {
+		if (hasUser) {
+			const { data: users, thiserror } = await supabase
+				.from('users')
+				.update({ canRequestMod: false, isRequestingModAccount: true })
+				.eq('id', $_userData.id);
+
+			// console.log(users);
+			getData();
+		}
+	};
 	onMount(async (e) => {
-		let thisUser = await supabase.auth.user();
-		if (thisUser) {
-			let { data: users, error } = await supabase.from('users').select('*').eq('id', thisUser.id);
+		getData();
+	});
+
+	const getData = async (e) => {
+		if ($_user != null) {
+			let { data: users, error } = await supabase.from('users').select('*').eq('id', $_user.id);
 			if (!error) {
-				global_account.set(thisUser);
-				global_account_data.set(users[0]);
 				hasUser = true;
+				_userData.set(users[0]);
+				// console.log($_userData);
 			}
 		}
-	});
+	};
 </script>
 
 <svele:head>
 	<title>Accounts | Abie G</title>
 </svele:head>
+
+<svelte:window bind:scrollY />
 
 <main in:fly={{ y: -40, duration: 500, delay: 500 }} out:fly={{ y: 40, duration: 500 }}>
 	<div class="scroller" transition:fade={{ duration: 500 }}>
@@ -219,6 +235,96 @@
 	</div>
 	<div class="container text-white" style="border-radius:10px">
 		<p class="display-3">Your Account</p>
+
+		{#if hasUser && $_userData}
+			<div class="row mt-5" in:fly|local={{ y: -20, duration: 500 }}>
+				<div class="col-12 col-md-6 text-center mb-5">
+					<img
+						src="https://ui-avatars.com/api/?name={$_userData.given_name}+{$_userData.family_name}&background=F7749C&color=fff"
+						alt="User Avatar"
+						width="150"
+						style="border-radius: 100%;"
+					/>
+					<p class="display-6 mt-2 mb-0">
+						{$_userData.given_name}
+						{$_userData.family_name}
+					</p>
+					<p class="mb-0 mt-2">
+						{$_userData.email}
+					</p>
+					<p class="text-muted mt-0">
+						{$_userData.id.toUpperCase()}
+					</p>
+					<p class="lead">
+						<span class="text-muted me-3"> Birthdate </span>
+						{dayjs($_userData.birthdate).format('MMMM D YYYY')}
+					</p>
+					<p class="lead">
+						<span class="text-muted me-3"> Gender </span>
+						{$_userData.gender}
+					</p>
+					<p class="lead text-muted mb-0 mt-4">Shipping Address</p>
+					<p class="lead mt-0">
+						{$_userData.shipping_address}
+					</p>
+				</div>
+
+				<div class="col-12 col-md-6 text-center d-flex flex-column justify-content-center">
+					<p class="lead text-muted mb-0 mt-4">Account Type</p>
+					<p class="lead mt-0 mb-5">
+						{#if $_userData.isAdmin}
+							Root Account /
+						{/if}
+						{#if $_userData.isModerator}
+							Moderator Account
+						{/if}
+						{#if !$_userData.isModerator}
+							Standard Account
+						{/if}
+					</p>
+					{#if $_userData.isAdmin}
+						<button
+							class="btn btn-link"
+							on:click={(e) => {
+								goto('/root');
+							}}>Go to Root Dashboard</button
+						>
+					{/if}
+
+					{#if $_userData.isRequestingModAccount}
+						<p>Pending approval</p>
+					{/if}
+					{#if $_userData.canRequestMod == true}
+						<button class="btn btn-primary" on:click={requestMod}>Request Mod Account</button>
+					{/if}
+
+					<div class="row mt-4">
+						{#if !confirmLogout}
+							<div class="d-flex justify-content-around" transition:slide|local={{ duration: 500 }}>
+								<button
+									class="btn btn-danger"
+									on:click={logoutConfirm}
+									style="min-width: 150px; width: 50%"
+								>
+									Log out
+								</button>
+							</div>
+						{:else}
+							<h4 transition:slide|local={{ duration: 500 }} class="text-center">
+								Do you really want to log out
+							</h4>
+							<div transition:slide|local={{ duration: 500 }} class="btn-group" role="group">
+								<button type="button" on:click={logout} class="btn btn-outline-danger">Yes</button>
+								<button type="button" on:click={logoutConfirm} class="btn btn-outline-light"
+									>No</button
+								>
+							</div>
+						{/if}
+					</div>
+				</div>
+			</div>
+		{/if}
+
 		{#if !hasUser}
 			<div in:fly|local={{ y: -20, duration: 500 }}>
 				{#if !isRegister}
@@ -422,84 +528,6 @@
 		{/if}
 
 		<!-- account details -->
-		{#if hasUser && $global_account.aud === 'authenticated'}
-			<div class="row mt-5" in:fly|local={{ y: -20, duration: 500 }}>
-				<div class="col-12 col-md-6 text-center mb-5">
-					<img
-						src="https://ui-avatars.com/api/?name={$global_account_data.given_name}+{$global_account_data.family_name}&background=F7749C&color=fff"
-						alt="User Avatar"
-						width="150"
-						style="border-radius: 100%;"
-					/>
-					<p class="display-6 mt-2 mb-0">
-						{$global_account_data.given_name}
-						{$global_account_data.family_name}
-					</p>
-					<p class="mb-0 mt-2">
-						{$global_account.email}
-					</p>
-					<p class="text-muted mt-0">
-						{$global_account.id.toUpperCase()}
-					</p>
-					<p class="lead">
-						<span class="text-muted me-3"> Birthdate </span>
-						{dayjs($global_account_data.birthdate).format('MMMM D YYYY')}
-					</p>
-					<p class="lead">
-						<span class="text-muted me-3"> Gender </span>
-						{$global_account_data.gender}
-					</p>
-					<p class="lead text-muted mb-0 mt-4">Shipping Address</p>
-					<p class="lead mt-0">
-						{$global_account_data.shipping_address}
-					</p>
-				</div>
-
-				<div class="col-12 col-md-6 text-center d-flex flex-column justify-content-center">
-					<p class="lead text-muted mb-0 mt-4">Account Type</p>
-					<p class="lead mt-0 mb-5">
-						{#if $global_account_data.isAdmin}
-							Root account
-						{:else if $global_account_data.isModerator}
-							Moderator Account
-						{:else}
-							Standard Account
-						{/if}
-					</p>
-					{#if $global_account_data.isAdmin}
-						<button
-							class="btn btn-link"
-							on:click={(e) => {
-								goto('/root');
-							}}>Go to Root Dashboard</button
-						>
-					{/if}
-					<div class="row mt-4">
-						{#if !confirmLogout}
-							<div class="d-flex justify-content-around" transition:slide|local={{ duration: 500 }}>
-								<button
-									class="btn btn-danger"
-									on:click={logoutConfirm}
-									style="min-width: 150px; width: 50%"
-								>
-									Log out
-								</button>
-							</div>
-						{:else}
-							<h4 transition:slide|local={{ duration: 500 }} class="text-center">
-								Do you really want to log out
-							</h4>
-							<div transition:slide|local={{ duration: 500 }} class="btn-group" role="group">
-								<button type="button" on:click={logout} class="btn btn-outline-danger">Yes</button>
-								<button type="button" on:click={logoutConfirm} class="btn btn-outline-light"
-									>No</button
-								>
-							</div>
-						{/if}
-					</div>
-				</div>
-			</div>
-		{/if}
 	</div>
 </main>
 

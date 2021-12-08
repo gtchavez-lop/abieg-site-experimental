@@ -17,7 +17,7 @@
 				_status = 'Account detected';
 				let { data: users, error } = await supabase.from('users').select('*').eq('id', user.id);
 				setTimeout(() => {
-					console.log(users);
+					// console.log(users);
 					if (users[0].isAdmin) {
 						_status = 'Redirecting to dashboard';
 						setTimeout(() => {

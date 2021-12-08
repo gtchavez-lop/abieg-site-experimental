@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import { global_account, global_account_data } from '../global';
+	import { global_account, global_account_data, _user, _userData } from '../global';
 	import { onMount } from 'svelte';
 
 	let scrollY;
@@ -23,78 +23,12 @@
 			isActivated = false;
 		}
 	};
-	const hideNav = (e) => {
-		// if (scrollY > 100) {
-		// 	nav.style.height = '60px';
-		// 	nav.style.opacity = 0.3;
-		// } else {
-		// 	nav.style.height = '100px';
-		// 	nav.style.opacity = 1;
-		// }
-	};
+	onMount(() => {
+		// console.log($_user);
+	});
 </script>
 
-<svelte:window bind:scrollY on:scroll={hideNav} />
-
-<!-- <div bind:this={nav} class="navContainer d-flex justify-content-between align-items-center">
-	<a href="/" class="homeButton ms-5" on:click={toggleNavOff}> ABIE G </a>
-	<div
-		class="menuToggler d-block d-lg-none {isActivated ? 'menuToggler__active' : ''}"
-		on:click={toggleNav}
-	>
-		<i style="margin: 0;" class="bi bi-x-circle {isActivated ? '' : 'menuToggler__active-icon'}" />
-		<i style="margin: -5px;" class="bi bi-list {isActivated ? 'menuToggler__active-icon' : ''}" />
-	</div>
-
-	<ul class="navLinks me-3 d-none d-lg-flex mt-3 text-white row row-cols-4">
-		<li>
-			<a
-				href="/"
-				style="color: {activeNav == 1 ? '#688BF7' : 'white'};"
-				on:click={(e) => {
-					activeNav = 1;
-					toggleNavOff();
-				}}
-				class="nav-link text-center">Home</a
-			>
-		</li>
-		<li>
-			<a
-				href="/posts"
-				style="color: {activeNav == 2 ? '#688BF7' : 'white'};"
-				on:click={(e) => {
-					activeNav = 2;
-					toggleNavOff();
-				}}
-				class="nav-link text-center">Posts</a
-			>
-		</li>
-		<li>
-			<a
-				href="/about"
-				style="color: {activeNav == 3 ? '#688BF7' : 'white'};"
-				on:click={(e) => {
-					activeNav = 3;
-					toggleNavOff();
-				}}
-				class="nav-link text-center ">About us</a
-			>
-		</li>
-		<li>
-			<a
-				href="/account"
-				style="color: {activeNav == 4 ? '#688BF7' : 'white'};"
-				on:click={(e) => {
-					activeNav = 4;
-					toggleNavOff();
-				}}
-				class="nav-link text-center"
-			>
-				Account
-			</a>
-		</li>
-	</ul>
-</div> -->
+<svelte:window bind:scrollY />
 
 <div class="navbar fixed-top text-white">
 	<div class="container d-flex align-items-center">
@@ -136,8 +70,8 @@
 					class="nav-link text-center ">About us</a
 				>
 			</li>
-			{#if $global_account}
-				{#if $global_account_data.isModerator}
+			{#if $_user && $_userData}
+				{#if $_userData.isModerator}
 					<li>
 						<a
 							href="/admin"
@@ -163,7 +97,7 @@
 					}}
 					class="nav-link text-center"
 				>
-					{$global_account ? $global_account.email.split('@', 1)[0] : 'Login'}
+					{$_user ? $_user.email.split('@', 1)[0] : 'Login'}
 				</a>
 			</li>
 		</ul>

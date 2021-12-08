@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import { supabase } from '../global';
 	import toastify from 'toastify-js';
+	import dayjs from 'dayjs';
 
 	export let id;
 
@@ -13,12 +14,16 @@
 	let oldData;
 	let isDeleting = false;
 	let isUpdating = false;
+	let showComments = false;
+	let showContent = false;
+	let comments = [];
 
 	onMount(async (e) => {
 		let { data, error } = await supabase.from('posts').select('*').eq('id', id);
 		if (!error) {
 			_blog = data[0];
 			oldData = { ..._blog };
+			getComments();
 		}
 	});
 
@@ -83,8 +88,7 @@
 			.update({
 				title: oldData.title,
 				isExclusive: oldData.isExclusive,
-				header_img:
-					oldData.new_imageURI == '' ? 'https://picsum.photos/500/500' : oldData.new_imageURI,
+				header_img: oldData.imageURI == '' ? 'https://picsum.photos/500/500' : oldData.imageURI,
 				content: oldData.content
 			})
 			.eq('id', id);
@@ -103,6 +107,29 @@
 			}).showToast();
 			isEditing = false;
 		}
+	};
+
+	const getComments = async () => {
+		let { data, error } = await supabase.from('comments').select('*').eq('post', oldData.id);
+		// console.log(data, error);
+		comments = data;
+	};
+
+	const deleteComment = async (commentID) => {
+		await supabase.from('comments').delete().eq('id', commentID);
+
+		toastify({
+			text: `Comment Removed`,
+			duration: 2000,
+			close: true,
+			gravity: 'bottom',
+			position: 'right',
+			style: {
+				background: '#F77E44',
+				color: '#fff'
+			}
+		}).showToast();
+		getComments();
 	};
 </script>
 
@@ -140,7 +167,7 @@
 {/if}
 
 {#if isEditing}
-	<div class="editPostOverlay pt-5 text-white" out:slide={{ duration: 500 }}>
+	<div class="editPostOverlay py-5 text-white" out:slide={{ duration: 500 }}>
 		<div class="container mt-5">
 			<div
 				class="card bg-dark text-white"
@@ -209,6 +236,74 @@
 						/>
 					</div>
 
+					<!-- blog content and comment-->
+					<div>
+						<div class="btn-group w-100 mt-5" role="group">
+							<button
+								type="button"
+								class="btn btn-outline-light"
+								on:click={(e) => (showContent = !showContent)}
+							>
+								{#if showContent}
+									Hide Content
+								{:else}
+									Show Content
+								{/if}
+							</button>
+							<button
+								type="button"
+								class="btn btn-outline-light"
+								on:click={(e) => (showComments = !showComments)}
+							>
+								{#if showComments}
+									Hide Comment
+								{:else}
+									Show Comment
+								{/if}
+							</button>
+						</div>
+						<div class="mt-5">
+							{#if showContent}
+								<div transition:slide={{ duration: 500 }}>
+									<div class="form-floating">
+										<textarea
+											class="form-control bg-transparent text-white"
+											placeholder="Leave a comment here"
+											id="content"
+											style="min-height: 400px;"
+											contenteditable
+											bind:innerHTML={oldData.content}
+										/>
+										<label for="content">Blog Content</label>
+									</div>
+								</div>
+							{/if}
+							{#if showComments}
+								<div transition:slide={{ duration: 500 }}>
+									{#if comments.length > 0}
+										{#each comments as comment}
+											<div class="card bg-transparent border-5">
+												<div class="card-body">
+													<p class="lead">{comment.commentor}</p>
+													<p class="small">
+														{dayjs(comment.created_at).format('MMMM DD YYYY @hh:m:sa')}
+													</p>
+													<p class="ms-2">{comment.content}</p>
+													<button
+														on:click={deleteComment(comment.id)}
+														class="btn btn-outline-danger mt-4">Delete Comment</button
+													>
+												</div>
+											</div>
+										{/each}
+									{:else}
+										<p class="lead m-0">Nothing to see here</p>
+									{/if}
+								</div>
+							{/if}
+						</div>
+					</div>
+
 					<!-- actions -->
 					{#if !isDeleting && !isUpdating}
 						<div class="btn-group w-100 mt-5" role="group">
@@ -257,6 +352,7 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
+		overflow-y: scroll;
 		background: rgba(0, 0, 0, 0.5);
 		z-index: 9;
 	}

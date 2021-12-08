@@ -22,9 +22,11 @@
 	$: exclusiveBlogs = [];
 
 	onMount(async (e) => {
-		post_count = await get(_blogs).length;
-		exclusivePost_Count = await $_blogs.filter((x) => x.isExclusive).length;
-		publicPost_Count = await $_blogs.filter((x) => !x.isExclusive).length;
+		if (get(_blogs)) {
+			post_count = await get(_blogs).length;
+			exclusivePost_Count = await $_blogs.filter((x) => x.isExclusive).length;
+			publicPost_Count = await $_blogs.filter((x) => !x.isExclusive).length;
+		}
 		loaded = true;
 	});
 </script>
@@ -105,11 +107,13 @@
 							{#await $_blogs}
 								<p>loading</p>
 							{:then c}
-								{#each c as { id }, index}
-									<div class="mb-2">
-										<AdminPostCardNew {id} {index} />
-									</div>
-								{/each}
+								{#if c}
+									{#each c as { id }, index}
+										<div class="mb-2">
+											<AdminPostCardNew {id} {index} />
+										</div>
+									{/each}
+								{/if}
 							{/await}
 						</div>
 					</div>

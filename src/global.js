@@ -35,23 +35,37 @@ export const _blogs = readable(null, (set) => {
 			if (!error) {
 				set(data);
 			}
-
-			// if (payload.eventType == 'INSERT') {
-			// 	set([payload.new, ...get(_blogs)]);
-			// }
-			// if (payload.eventType === 'UPDATE') {
-			// 	let index = get(_blogs).findIndex((thisblog) => thisblog.id === payload.new.id);
-			// 	let oldData = get(_blogs);
-			// 	oldData[index] = payload.new;
-
-			// 	set(oldData);
-			// }
-			// if (payload.eventType == 'DELETE') {
-			// 	let newData = get(_blogs).filter((thisItem) => thisItem.id != payload.old.id);
-			// 	set(newData);
-			// }
 		})
 		.subscribe();
 
 	return () => supabase.removeSubscription(subscription);
 });
+
+export const _user = readable(supabase.auth.user(), (set) => {
+	if (supabase.auth.user()) {
+		supabase
+			.from('users')
+			.select('*')
+			.eq('id', supabase.auth.user().id)
+			.then(({ data, error }) => {
+				_userData.set(data[0]);
+			});
+	}
+	supabase.auth.onAuthStateChange((event, session) => {
+		if (event == 'SIGNED_IN') {
+			supabase
+				.from('users')
+				.select('*')
+				.eq('id', supabase.auth.user().id)
+				.then(({ data, error }) => {
+					_userData.set(data[0]);
+				});
+			set(session.user);
+		}
+		if (event == 'SIGNED_OUT') {
+			_userData.set('');
+			set(null);
+		}
+	});
+});
+export const _userData = writable();

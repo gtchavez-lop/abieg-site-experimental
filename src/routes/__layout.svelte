@@ -1,17 +1,12 @@
 <script>
 	import FullscreenNav from '../components/FullscreenNav.svelte';
-	import BackgroundBlob from '../components/BackgroundBlob.svelte';
-	import { onMount } from 'svelte';
 	import Footer from '../components/Footer.svelte';
-
-	let mainContainer;
 	let scrollY;
 </script>
 
 <svelte:window bind:scrollY />
 
 <FullscreenNav />
-<main bind:this={mainContainer} />
 <slot />
 <Footer />
 
@@ -22,7 +17,7 @@
 		}, 100);
 	}}
 	class="scrolltotop"
-	style="left: {scrollY < 400 ? '-50px' : '5px'};"
+	style="right: {scrollY < 400 ? '-50px' : '10px'};"
 >
 	<i class="bi bi-arrow-up" />
 </div>
@@ -36,7 +31,7 @@
 		top: calc(90% - 25px);
 		border-radius: 100px;
 		background: #002b36;
-		left: 0;
+		right: 10px;
 		z-index: 99;
 		transition: 200ms ease all;
 		display: flex;

@@ -6,7 +6,7 @@
 	import { fly, fade, scale, blur } from 'svelte/transition';
 	import MarqueeTextWidget from 'svelte-marquee-text-widget';
 
-	import { supabase, global_mod_account, global_account_data } from '../../global';
+	import { supabase, _userData } from '../../global';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { toast, SvelteToast } from '@zerodevx/svelte-toast';
@@ -18,14 +18,15 @@
 		if (user) {
 			let { data, error } = await supabase.from('users').select('*').eq('id', user.id);
 			if (data[0].isModerator == true) {
+				hasAccess = true;
 				setTimeout(() => {
-					hasAccess = true;
+					_userData.set(data[0]);
 					goto('/admin/dashboard');
 				}, 1000);
 			} else {
 				hasAccess = false;
 				setTimeout(() => {
-					goto('/admin/dashboard');
+					goto('/');
 				}, 1000);
 			}
 		} else {

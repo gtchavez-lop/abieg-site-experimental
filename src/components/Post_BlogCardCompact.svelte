@@ -5,37 +5,26 @@
 
 	export let header_img, title, slug, author, created_at, isExclusive;
 
-	onMount(async (e) => {
-		await fetch(header_img).then((res) => {
-			if (!res.ok) {
-				header_img = 'https://picsum.photos/500/500';
-			}
-		});
-	});
+	let newHeaderImg = 'https://via.placeholder.com/150';
 
 	const changeImage = async (e) => {
-		await fetch(header_img).then((res) => {
-			if (!res.ok) {
-				header_img = 'https://picsum.photos/500/500';
-			}
-		});
+		header_img = 'https://via.placeholder.com/150';
 	};
 </script>
 
-<main class="w-100 d-flex">
+<main class="d-flex">
 	{#if isExclusive && !supabase.auth.user()}
 		<div class="exclusiveFilter d-flex justify-content-center align-items-center">
 			<p>Please sign in to see this exclusive content</p>
 		</div>
 	{/if}
-	{#if isExclusive}
-		<img class="exclusiveBadge" src="./Star_glow_plus_more.png" alt="" />
-		<div class="exclusiveGlow" />
-	{/if}
-	<div class="imgContainer">
+	<div class="imgContainer {isExclusive ? 'exzclusiveCard' : ''}">
 		<img src={header_img} on:error={changeImage} alt={slug} />
 	</div>
 	<a class="content" href="/posts/{slug}">
+		{#if isExclusive}
+			<p class="lead exclusiveBadge">EXLUSIVE</p>
+		{/if}
 		<h4 class="lead title">{title}</h4>
 		<p class="lead author">
 			{author} <span aria-hidden="true">•</span>
@@ -51,55 +40,41 @@
 		transition: 200ms ease all;
 		margin-bottom: 2em;
 		&:hover {
-			transform: translateX(1em);
-			.exclusiveBadge {
-				transform: translate(-30px);
-			}
-			.exclusiveGlow {
-				opacity: 1;
-				left: -30px;
+			transform: translateY(-0.2em);
+			.exclusiveCard {
+				box-shadow: #f83edfb3 0px 0 20px 0;
 			}
 		}
+	}
+	.exclusiveCard {
+		transition: 200ms ease all;
+		box-shadow: #f83edfb3 0px 0 10px 0;
 	}
 	.exclusiveFilter {
 		position: absolute;
 		z-index: 9;
 		background: #212529f3;
 		user-select: none;
-		width: 110%;
+		width: 100%;
 		left: -5%;
-		height: 100%;
+		height: 110%;
 	}
 	.exclusiveBadge {
-		position: absolute;
-		width: 50px;
-		height: 50px;
-		top: 0;
-		left: 0;
-		z-index: 2;
-		transition: 200ms ease all;
-	}
-	.exclusiveGlow {
-		position: absolute;
-		width: 40px;
-		height: 100%;
-		top: 0;
-		left: 10px;
-		z-index: -1;
-		opacity: 0;
-		background: linear-gradient(-90deg, #f7749c, transparent);
-		transition: 200ms ease all;
+		font-size: 0.8em;
+		color: #f83edf;
+		letter-spacing: 0.5em;
+		margin: 0;
+		font-weight: 700;
 	}
 	.imgContainer {
 		position: relative;
 		height: 100%;
-		min-width: 125px;
+		width: 100%;
 		max-width: 125px;
 		border-radius: 10px;
 		overflow: hidden;
 
 		img {
-			position: absolute;
 			width: 100%;
 			height: 100%;
 			object-fit: cover;

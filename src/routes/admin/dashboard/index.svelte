@@ -25,13 +25,7 @@
 	$: loaded = false;
 
 	onMount(async (e) => {
-		if (await $_user) {
-			if ($_user.role == 'authenticated') {
-				if ((await $_userData.isModerator) == false || (await $_userData.isAdmin) == false) {
-					goto('/admin');
-				}
-			}
-		} else {
+		if (await !$_user) {
 			goto('/admin');
 		}
 	});

@@ -12,50 +12,6 @@
 	import { get, readable } from 'svelte/store';
 
 	let publicBlogs = [];
-
-	onMount(async (e) => {
-		if (await supabase.auth.user()) {
-			hasAccount = true;
-		}
-	});
-
-	// const _blogs = readable(null, (set) => {
-	// 	supabase
-	// 		.from('posts')
-	// 		.select('*')
-	// 		.order('created_at', { ascending: false })
-	// 		.then(({ data, error }) => {
-	// 			set(data);
-	// 		});
-
-	// 	const subscription = supabase
-	// 		.from('posts')
-	// 		.on('*', (payload) => {
-	// 			if (payload.eventType === 'INSERT') {
-	// 				set([payload.new, ...get(_blogs)]);
-	// 			}
-	// 			if (payload.eventType === 'UPDATE') {
-	// 				let index = $_blogs.findIndex((thisblog) => thisblog.id === payload.new.id);
-	// 				let oldData = $_blogs;
-	// 				oldData[index] = payload.new;
-	// 				set(oldData);
-	// 			}
-	// 			if (payload.eventType === 'DELETE') {
-	// 				let oldData = $_blogs;
-	// 				set(oldData.filter((thisItem) => thisItem.id != payload.old.id));
-	// 			}
-
-	// 			publicBlogs = [];
-	// 			let oldData = get(_blogs);
-	// 			oldData.forEach((blog) => {
-	// 				if (!blog.isExclusive) {
-	// 					publicBlogs = [...publicBlogs, blog];
-	// 				}
-	// 			});
-	// 		})
-	// 		.subscribe();
-	// 	return () => supabase.removeSubscription(subscription);
-	// });
 </script>
 
 <svele:head>
@@ -70,35 +26,13 @@
 	<div class="container text-white">
 		<h3 class="display-3">See what's new</h3>
 
-		<div class=" mt-5">
-			{#await $_blogs}
-				<p>loading</p>
-			{:then c}
-				{#if c}
+		{#await $_blogs}
+			<h3 class="display-3">Please wait</h3>
+		{:then c}
+			{#if c}
+				<div class="row mt-5">
 					{#each c as { title, header_img, created_at, isExclusive, author, slug }}
-						<div class="col d-flex justify-content-center">
-							<!-- <PostBlogCard {title} {author} {header_img} {isExclusive} {created_at} {slug} /> -->
-							<PostBlogCardCompact
-								{title}
-								{header_img}
-								{slug}
-								{author}
-								{created_at}
-								{isExclusive}
-							/>
-						</div>
-					{/each}
-				{/if}
-			{/await}
-			<!-- {#if !$_blogs}
-				<p class="display-6">Loading</p>
-			{:else if $_blogs}
-				<div
-					class="row row-cols-1 row-cols-lg-2 gx-2 gy-2 "
-					in:fly|local={{ y: 20, duration: 500, delay: 500 }}
-				>
-					{#each $_blogs as { title, header_img, created_at, isExclusive, author, slug }}
-						<div class="col d-flex justify-content-center">
+						<div class="col-12 col-lg-6">
 							<PostBlogCardCompact
 								{title}
 								{header_img}
@@ -110,8 +44,8 @@
 						</div>
 					{/each}
 				</div>
-			{/if} -->
-		</div>
+			{/if}
+		{/await}
 	</div>
 	<div class="scroller" transition:fade={{ duration: 500 }}>
 		<MarqueeTextWidget duration={15}

@@ -30,6 +30,7 @@
 
 <svelte:window bind:scrollY />
 
+<!-- top navigation -->
 <div class="navbar fixed-top text-white">
 	<div class="container d-flex align-items-center">
 		<a href="/" class="homeButton" on:click={toggleNavOff}> ABIE G </a>
@@ -97,17 +98,18 @@
 					}}
 					class="nav-link text-center"
 				>
-					{$_user ? $_user.email.split('@', 1)[0] : 'Login'}
+					{$_user ? 'Account' : 'Login'}
 				</a>
 			</li>
 		</ul>
 	</div>
 </div>
 
+<!-- side menu -->
 <div class="menu d-block d-lg-none {isActivated ? 'menu-activated' : ''}">
 	<ul class="menu__navlinks">
-		{#if $global_account_data}
-			{#if $global_account_data.isModerator}
+		{#if $_userData}
+			{#if $_userData.isModerator}
 				<li class="menu__navlinks__navlink" on:click={toggleNav}>
 					<a href="/admin">
 						<h1>DASHBOARD</h1>
@@ -167,8 +169,8 @@
 
 	.navlist {
 		li {
-			margin-left: 1em;
-			font-size: 1.25em;
+			// margin-left: ;
+			font-size: 1em;
 		}
 	}
 	.menuToggler {

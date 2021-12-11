@@ -1,1 +1,0 @@
-import{P as s,C as I}from"./vendor-969998bb.js";const o=s("https://sgocnrgwrtdruxnxpxyl.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzMjAxNTk3OCwiZXhwIjoxOTQ3NTkxOTc4fQ.0T8XLQUmBOidmG8YXoG_FEC8vnKw7_WQGLcJ00LjtNw"),a=I(),i=I();export{i as a,a as g,o as s};
